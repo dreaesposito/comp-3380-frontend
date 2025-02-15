@@ -17,13 +17,13 @@ The [component documentation](https://react-bootstrap.netlify.app/docs/component
 1. Clone the repo
 
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/dreaesposito/comp-3380-frontend.git
    ```
 
 2. Navigate to the directory
 
    ```sh
-   cd repo_name
+   cd comp-3380-frontend
    ```
 
 3. Install node modules
@@ -41,5 +41,5 @@ The [component documentation](https://react-bootstrap.netlify.app/docs/component
 5. Start the development server
 
    ```sh
-   npm run-dev
+   npm run dev
    ```
