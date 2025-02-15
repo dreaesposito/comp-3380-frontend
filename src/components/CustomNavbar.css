@@ -25,7 +25,7 @@
 
 
 
-.custom-text:hover, img:hover {
+.custom-text:hover {
     position: relative;
     text-decoration: none;
     color: var(--hover-color) !important; /* Adjust color */
