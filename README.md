@@ -10,7 +10,7 @@ This template provides a minimal setup to get set up with React and Vite (a tool
 
 Bootstrap is a general library of components that can be imported into any web project. [React-Bootstrap](https://react-bootstrap.netlify.app/docs/getting-started/why-react-bootstrap/) is a complete re-implementation of the Bootstrap components using React.
 
-The [component documentation](https://react-bootstrap.netlify.app/docs/components/accordion) will probably be your best friend for finding all the components and seeing their properties/styling options. In addition to style components, it also provides a mechanism using containers, rows, and columns to help guide the design process.
+The [component documentation](https://react-bootstrap.netlify.app/docs/components/accordion) will probably be your best friend for finding all the components and seeing their properties/styling options. In addition to pre-styled components, it also provides a mechanism using containers, rows, and columns to help guide the design process.
 
 ### Running the project
 
