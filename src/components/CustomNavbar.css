@@ -1,0 +1,50 @@
+:root {
+    --hover-color: #434449;
+    --white: #ffffff;
+}
+
+.custom-navbar img {
+    height: 2rem; /* Change logo size */
+    width: auto;
+}
+
+.custom-text {
+    font-size: 2rem;
+    position: relative;
+    text-decoration: none;
+    color: #000000; /* Adjust color */
+}
+
+.navbar .nav-link {
+    color: #000000;
+}
+
+.navbar .nav-link:hover {
+    color: var(--hover-color)
+}
+
+
+
+.custom-text:hover, img:hover {
+    position: relative;
+    text-decoration: none;
+    color: var(--hover-color) !important; /* Adjust color */
+    opacity: 0.75 !important;
+}
+
+
+.custom-text::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -1px; /* Adjust underline position */
+    width: 0;
+    height: 1px; /* Adjust underline thickness */
+    background-color: #000000; /* Adjust color */
+    transition: width 0.3s, left 0.3s;
+}
+
+.custom-text:hover::after {
+    width: 95%;
+    left: 2.5%;
+}
