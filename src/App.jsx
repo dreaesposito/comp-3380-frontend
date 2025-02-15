@@ -1,9 +1,10 @@
-import "./App.css"; // CSS class to add custom styling (if you want)
-import ExampleComponent from "./ExampleComponent";
+import ExLayoutComponent from "./components/ExLayoutComponent";
 
+// App component is essentially the top most component in a 
+// React-based application, from whom all other components are children of
 function App() {
   return (
-    <ExampleComponent></ExampleComponent>
+    <ExLayoutComponent></ExLayoutComponent>
   );
 }
 
