@@ -38,7 +38,7 @@ The [component documentation](https://react-bootstrap.netlify.app/docs/component
    git checkout -b new-branch-name
    ```
 
-5. Start the development server
+5. Start the development server to see code changes in real time
 
    ```sh
    npm run dev
