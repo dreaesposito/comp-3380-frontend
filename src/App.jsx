@@ -6,7 +6,7 @@ import { Navbar, Container, Nav } from "react-bootstrap";
 function App() {
   return (
     <>
-      {/* reach function must return exactly one root element, so the navbar and ExLayoutComponent are wrapped in an empty tag */}
+      {/* each function must return exactly one root element, so the navbar and ExLayoutComponent are wrapped in an empty tag */}
 
       <Navbar
         expand="lg"
