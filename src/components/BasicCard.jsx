@@ -1,21 +1,26 @@
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
+import { useNavigate } from 'react-router-dom'
+import { Panel } from 'primereact/panel'
 
-// Component made from smaller bootstrap components, which can be imported and used anywhere
+import './BasicCard.css' // Import the CSS file for hover effect
 
-function BasicCard() {
-  return (
-    <Card style={{ width: '18rem' }}>
-      <Card.Img variant="top" src="https://53.fs1.hubspotusercontent-na1.net/hub/53/hubfs/image8-2.jpg?width=595&height=400&name=image8-2.jpg" />
-      <Card.Body>
-        <Card.Title>Card Title</Card.Title>
-        <Card.Text>
-          Example Card with a button
-        </Card.Text>
-        <Button variant="primary">Go somewhere</Button>
-      </Card.Body>
-    </Card>
-  );
+
+
+const BasicCard = ({ title, text, link }) => {
+    const navigate = useNavigate()
+
+    const handleClick = () => {
+        navigate(link); // Navigate to the specified link
+    }
+
+    return (
+        <Panel className="hover-card" header={title} onClick={handleClick}>
+            {/*<Card.Header><h2>{title}</h2></Card.Header>*/}
+            {/*<Card.Body>*/}
+            {/*    <Card.Text>{text}</Card.Text>*/}
+            {/*</Card.Body>*/}
+            {/*<Button type="button" label="Button 3" className="p-button-help"></Button>*/}
+        </Panel>
+    )
 }
 
-export default BasicCard; // alternative type of syntax to export the component
+export default BasicCard;

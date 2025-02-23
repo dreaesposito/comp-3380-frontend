@@ -1,9 +1,10 @@
 import BasicCard from "../components/BasicCard.jsx";
-import {Col, Container, Row} from "react-bootstrap";
+import {Col, Container, Row,} from "react-bootstrap";
 
 const HomePage = () => {
     return (
         <Container className="my-3">
+
             <Row className="justify-content-center">
                 <h1>HOME PAGE</h1>
             </Row>
