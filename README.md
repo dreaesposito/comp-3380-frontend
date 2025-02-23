@@ -1,45 +1,50 @@
-## React + Vite
+# Vite & HeroUI Template
 
-This template provides a minimal setup to get set up with React and Vite (a tool to help speed up render times when making changes to the code).
+This is a template for creating applications using Vite and HeroUI (v2).
 
-### Getting started with React
+[Try it on CodeSandbox](https://githubbox.com/frontio-ai/vite-template)
 
-[Basic React tutorial](https://react.dev/learn)
+## Technologies Used
 
-### React Bootstrap
+- [Vite](https://vitejs.dev/guide/)
+- [HeroUI](https://heroui.com)
+- [Tailwind CSS](https://tailwindcss.com)
+- [Tailwind Variants](https://tailwind-variants.org)
+- [TypeScript](https://www.typescriptlang.org)
+- [Framer Motion](https://www.framer.com/motion)
 
-Bootstrap is a general library of components that can be imported into any web project. [React-Bootstrap](https://react-bootstrap.netlify.app/docs/getting-started/why-react-bootstrap/) is a complete re-implementation of the Bootstrap components using React.
+## How to Use
 
-The [component documentation](https://react-bootstrap.netlify.app/docs/components/accordion) will probably be your best friend for finding all the components and seeing their properties/styling options. In addition to pre-styled components, it also provides a mechanism using containers, rows, and columns to help guide the design process.
+To clone the project, run the following command:
 
-### Running the project
+```bash
+git clone https://github.com/frontio-ai/vite-template.git
+```
 
-1. Clone the repo
+### Install dependencies
 
-   ```sh
-   git clone https://github.com/dreaesposito/comp-3380-frontend.git
-   ```
+You can use one of them `npm`, `yarn`, `pnpm`, `bun`, Example using `npm`:
 
-2. Navigate to the directory
+```bash
+npm install
+```
 
-   ```sh
-   cd comp-3380-frontend
-   ```
+### Run the development server
 
-3. Install node modules
+```bash
+npm run dev
+```
 
-   ```sh
-   npm install
-   ```
+### Setup pnpm (optional)
 
-4. Create your own branch (can also do this from the IDE)
+If you are using `pnpm`, you need to add the following code to your `.npmrc` file:
 
-   ```sh
-   git checkout -b new-branch-name
-   ```
+```bash
+public-hoist-pattern[]=*@heroui/*
+```
 
-5. Start the development server to see code changes in real time
+After modifying the `.npmrc` file, you need to run `pnpm install` again to ensure that the dependencies are installed correctly.
 
-   ```sh
-   npm run dev
-   ```
+## License
+
+Licensed under the [MIT license](https://github.com/frontio-ai/vite-template/blob/main/LICENSE).

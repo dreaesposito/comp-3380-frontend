@@ -23,8 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
-# Ignore .env files
-.env
-.env.local
-.env.development
-.env.production
+
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+bun.lockb
