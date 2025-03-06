@@ -1,4 +1,4 @@
-enum queryCategories {
+export const enum QueryTabs {
     skaters,
     goalies,
     teams

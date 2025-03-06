@@ -2,23 +2,21 @@
 import { Tab, Tabs } from "@heroui/tabs";
 import DefaultLayout from "@/layouts/default";
 import Queries from "./queries";
+import { QueryTabs } from "@/types/queryTabs";
 
 export default function IndexPage() {
   const tabs = [
     {
-      id: "0",
-      label: "Skaters",
-      content: "list queries"
+      id: QueryTabs.skaters,
+      label: "Skaters"
     },
     {
-      id: "1",
-      label: "Goalies",
-      content: "list quries"
+      id: QueryTabs.goalies,
+      label: "Goalies"
     },
     {
-      id: "2",
-      label: "Teams",
-      content: "list queries"
+      id: QueryTabs.teams,
+      label: "Teams"
     }
   ]
 
@@ -36,7 +34,7 @@ export default function IndexPage() {
           <Tabs aria-label="Dynamic tabs" items={tabs}>
             {(item) => (
               <Tab key={item.id} title={item.label} className="flex flex-row">
-                    <Queries/>
+                    <Queries selectedKey={item.id}/>
               </Tab>
             )}
           </Tabs>
