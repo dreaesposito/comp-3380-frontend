@@ -1,12 +1,192 @@
-import { title } from "@/components/primitives";
 import DefaultLayout from "@/layouts/default";
+import { Image } from "@heroui/react";
+import { subtitle, title } from "@/components/primitives";
+import { PersonCard } from "@/components/common/personCard.tsx";
 
-export default function DocsPage() {
+import pandasLogo from "@/assets/pandas-logo.png";
+import pythonLogo from "@/assets/python-logo.png";
+import supabaseIcon from "@/assets/supabase-logo-icon.svg";
+import reactLogo from "@/assets/React-icon.png";
+import vercelLogo from "@/assets/logo-vercel.svg";
+import postgresIcon from "@/assets/postgresql-icon.png";
+import javaLogo from "@/assets/java-logo.webp";
+import heroUILogo from "@/assets/heroui.png";
+
+const cardStyle =
+  "w-70 shadow-md h-fit font-medium text-default-900 bg-background border rounded-lg dark:bg-zinc-900 dark:border-zinc-700";
+
+const listHeadStyle =
+  "flex w-full px-4 py-2 border-b border-gray-300 dark:border-zinc-700";
+
+function PreprocessStack() {
+  return (
+    <ul className={cardStyle}>
+      <li className={listHeadStyle}>
+        <h1 className="text-2xl opacity-90">Preprocessing</h1>
+      </li>
+      <li className="flex w-full px-4 py-2 border-b border-gray-200 dark:border-zinc-700">
+        <Image alt="pandas logo" height="50px" src={pythonLogo} width="50px" />
+        <h1 className="text-xl p-3 opacity-85">Python</h1>
+      </li>
+      <li className="flex w-full px-4 py-2">
+        <Image alt="pandas logo" height="50px" src={pandasLogo} width="50px" />
+        <h1 className="text-xl p-3 opacity-85">Pandas</h1>
+      </li>
+    </ul>
+  );
+}
+
+function DatabaseStack() {
+  return (
+    <ul className={cardStyle}>
+      <li className={listHeadStyle}>
+        <h1 className="text-2xl opacity-90">Database</h1>
+      </li>
+      <li className="flex w-full px-4 py-2 border-b border-gray-200 dark:border-zinc-700">
+        <Image
+          alt="postgres logo"
+          height="50px"
+          src={postgresIcon}
+          width="50px"
+        />
+        <h1 className="text-xl p-3 opacity-85">Postgres</h1>
+      </li>
+      <li className="flex w-full px-4 py-2 ">
+        <Image
+          alt="supabase logo"
+          height="50px"
+          src={supabaseIcon}
+          width="50px"
+        />
+        <h1 className="text-xl p-3 opacity-85">Supabase</h1>
+      </li>
+    </ul>
+  );
+}
+
+function BackendStack() {
+  return (
+    <ul className={cardStyle}>
+      <li className={listHeadStyle}>
+        <h1 className="text-2xl opacity-90">Backend</h1>
+      </li>
+      <li className="flex w-full px-4 py-2 border-b border-gray-200 rounded-t-lg dark:border-zinc-700">
+        <Image alt="" height="50px" width="50px" />
+        <h1 className="text-xl p-3 opacity-85">TBD...</h1>
+      </li>
+      <li className="flex w-full px-4 py-2">
+        <Image alt="supabase logo" height="50px" src={javaLogo} width="50px" />
+        <h1 className="text-xl p-3 opacity-85">Java</h1>
+      </li>
+    </ul>
+  );
+}
+
+function FrontendStack() {
+  return (
+    <ul className={cardStyle}>
+      <li className={listHeadStyle}>
+        <h1 className="text-2xl opacity-90">Frontend</h1>
+      </li>
+      <li className="flex w-full px-4 py-2 border-b border-gray-200 rounded-t-lg dark:border-zinc-700">
+        <Image
+          alt="supabase logo"
+          height="50px"
+          src={vercelLogo}
+          width="50px"
+        />
+        <h1 className="text-xl p-3 opacity-85">Vercel</h1>
+      </li>
+      <li className="flex w-full px-4 py-2 border-b border-gray-200 rounded-t-lg dark:border-zinc-700">
+        <Image alt="supabase logo" height="50px" src={reactLogo} width="50px" />
+        <h1 className="text-xl p-3 opacity-85">React</h1>
+      </li>
+      <li className="flex w-full px-4 py-2">
+        <Image
+          alt="supabase logo"
+          height="50px"
+          src={heroUILogo}
+          width="50px"
+        />
+        <h1 className="text-xl p-3 opacity-85">HeroUI</h1>
+      </li>
+    </ul>
+  );
+}
+
+export default function AboutPage() {
+  const people = {
+    drea: {
+      name: "Drea Esposito",
+      desc: "Computer Science @ U of M",
+      profileImage: "https://avatars.githubusercontent.com/u/108188633?v=4",
+      github: "https://github.com/dreaesposito",
+      linkedin: "https://www.linkedin.com/in/drea-esposito/",
+    },
+    luc: {
+      name: "Luc Benedictson",
+      desc: "Computer Science @ U of M",
+      profileImage: "https://avatars.githubusercontent.com/u/108703609?v=4",
+      github: "https://github.com/lucbenedictson",
+      linkedin: "https://www.linkedin.com/in/luc-benedictson/",
+    },
+    ethan: {
+      name: "Ethan Robson",
+      desc: "Data Science @ U of M",
+      profileImage: "https://avatars.githubusercontent.com/u/97577286?v=4",
+      github: "https://github.com/ethanrobson10",
+      linkedin: "https://www.linkedin.com/in/ethan-robson-0a2176323/",
+    },
+  };
+
   return (
     <DefaultLayout>
-      <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-        <div className="inline-block max-w-lg text-center justify-center">
-          <h1 className={title()}>About</h1>
+      <section>
+        <h1 className={title({ size: "xs" })}>About the project</h1>
+        <p className={`${subtitle()} py-4`}>
+          We built this project to bring NHL stats to life in a way that goes
+          beyond just basic numbers. Our database covers over eight years of
+          player and game statistics, capturing key aspects of the league—like
+          how players, teams, and games connect. With our strong background in
+          hockey, we wanted to create a system that reflects the true depth of
+          the sport and offers interesting insights.
+        </p>
+
+        <p className={`${subtitle()} pb-4`}>
+          Instead of just listing stats, our project digs deeper. We track
+          everything from individual player performance and referee involvement,
+          to team schedules and even specific hockey plays. Whether you're a
+          casual fan curious about the game or an analyst looking for some
+          interesting data, we wanted to make it easy to explore the NHL like
+          never before.{" "}
+          <a
+            className="text-default-400 dark:text-gray-400 text-md hover:opacity-75"
+            href="https://www.kaggle.com/datasets/martinellis/nhl-game-data"
+            rel="noreferrer"
+            target="_blank"
+          >
+            {"data source"}
+          </a>
+        </p>
+      </section>
+
+      <section>
+        <h1 className={title({ size: "xs" })}>Technology Used</h1>
+        <div className="py-6 grid gap-2 lg:grid-cols-4 md:gap-5 sm:gap-10 md:grid-cols-2">
+          {/**/}
+          <PreprocessStack />
+          <DatabaseStack />
+          <BackendStack />
+          <FrontendStack />
+        </div>
+      </section>
+
+      <section>
+        <h1 className={title({ size: "xs" })}>Contributors</h1>
+        <div className="py-6 grid gap-20 lg:grid-cols-3 md:gap-20 sm:gap-10 md:grid-cols-2">
+          <PersonCard person={people.drea} />
+          <PersonCard person={people.ethan} />
+          <PersonCard person={people.luc} />
         </div>
       </section>
     </DefaultLayout>
