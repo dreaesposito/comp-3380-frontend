@@ -11,6 +11,7 @@ import vercelLogo from "@/assets/logo-vercel.svg";
 import postgresIcon from "@/assets/postgresql-icon.png";
 import javaLogo from "@/assets/java-logo.webp";
 import heroUILogo from "@/assets/heroui.png";
+import tailwindLogo from "@/assets/tailwind-logo.svg";
 
 const cardStyle =
   "w-70 shadow-md h-fit font-medium text-default-900 bg-background border rounded-lg dark:bg-zinc-900 dark:border-zinc-700";
@@ -89,19 +90,19 @@ function FrontendStack() {
         <h1 className="text-2xl opacity-90">Frontend</h1>
       </li>
       <li className="flex w-full px-4 py-2 border-b border-gray-200 rounded-t-lg dark:border-zinc-700">
-        <Image
-          alt="supabase logo"
-          height="50px"
-          src={vercelLogo}
-          width="50px"
-        />
-        <h1 className="text-xl p-3 opacity-85">Vercel</h1>
-      </li>
-      <li className="flex w-full px-4 py-2 border-b border-gray-200 rounded-t-lg dark:border-zinc-700">
         <Image alt="supabase logo" height="50px" src={reactLogo} width="50px" />
         <h1 className="text-xl p-3 opacity-85">React</h1>
       </li>
-      <li className="flex w-full px-4 py-2">
+      <li className="flex w-full px-4 py-2 border-b border-gray-200 rounded-t-lg dark:border-zinc-700">
+        <Image
+          alt="supabase logo"
+          height="50px"
+          src={tailwindLogo}
+          width="50px"
+        />
+        <h1 className="text-xl p-3 opacity-85">Tailwind CSS</h1>
+      </li>
+      <li className="flex w-full px-4 py-2 border-b border-gray-200 rounded-t-lg dark:border-zinc-700">
         <Image
           alt="supabase logo"
           height="50px"
@@ -109,6 +110,16 @@ function FrontendStack() {
           width="50px"
         />
         <h1 className="text-xl p-3 opacity-85">HeroUI</h1>
+      </li>
+
+      <li className="flex w-full px-4 py-2">
+        <Image
+          alt="supabase logo"
+          height="50px"
+          src={vercelLogo}
+          width="50px"
+        />
+        <h1 className="text-xl p-3 opacity-85">Vercel</h1>
       </li>
     </ul>
   );
@@ -118,21 +129,21 @@ export default function AboutPage() {
   const people = {
     drea: {
       name: "Drea Esposito",
-      desc: "Computer Science @ U of M",
+      desc: "Computer Science @ University of Manitoba",
       profileImage: "https://avatars.githubusercontent.com/u/108188633?v=4",
       github: "https://github.com/dreaesposito",
       linkedin: "https://www.linkedin.com/in/drea-esposito/",
     },
     luc: {
       name: "Luc Benedictson",
-      desc: "Computer Science @ U of M",
+      desc: "Computer Science @ University of Manitoba",
       profileImage: "https://avatars.githubusercontent.com/u/108703609?v=4",
       github: "https://github.com/lucbenedictson",
       linkedin: "https://www.linkedin.com/in/luc-benedictson/",
     },
     ethan: {
       name: "Ethan Robson",
-      desc: "Data Science @ U of M",
+      desc: "Data Science @ University of Manitoba",
       profileImage: "https://avatars.githubusercontent.com/u/97577286?v=4",
       github: "https://github.com/ethanrobson10",
       linkedin: "https://www.linkedin.com/in/ethan-robson-0a2176323/",
@@ -155,18 +166,10 @@ export default function AboutPage() {
         <p className={`${subtitle()} pb-4`}>
           Instead of just listing stats, our project digs deeper. We track
           everything from individual player performance and referee involvement,
-          to team schedules and even specific hockey plays. Whether you're a
+          to team schedules and even specific hockey plays. Whether you&#39;re a
           casual fan curious about the game or an analyst looking for some
           interesting data, we wanted to make it easy to explore the NHL like
           never before.{" "}
-          <a
-            className="text-default-400 dark:text-gray-400 text-md hover:opacity-75"
-            href="https://www.kaggle.com/datasets/martinellis/nhl-game-data"
-            rel="noreferrer"
-            target="_blank"
-          >
-            {"data source"}
-          </a>
         </p>
       </section>
 

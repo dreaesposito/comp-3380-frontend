@@ -5,6 +5,7 @@ export const siteConfig = {
   description: "Make beautiful websites regardless of your design experience.",
   navItems: [],
   navMenuItems: [],
+  validRoutes: ["/", "/about", "/blog", "/pricing", "/docs"],
   links: {
     github: "https://github.com/frontio-ai/heroui",
     twitter: "https://twitter.com/hero_ui",

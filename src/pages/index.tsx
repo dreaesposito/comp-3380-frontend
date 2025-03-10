@@ -39,7 +39,14 @@ export default function IndexPage() {
             href="/blog"
           >
             <GithubIcon size={20} />
-            All Players
+            Default Table
+          </Link>
+          <Link
+            className={buttonStyles({ variant: "bordered", radius: "full" })}
+            href="/docs"
+          >
+            <GithubIcon size={20} />
+            All Players Call
           </Link>
         </div>
 
