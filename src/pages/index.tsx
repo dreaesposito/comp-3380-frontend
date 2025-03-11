@@ -13,16 +13,13 @@ export default function IndexPage() {
     <DefaultLayout>
       <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
         <div className="inline-block max-w-lg text-center justify-center">
-          <span className={title()}>Make&nbsp;</span>
-          <span className={title({ color: "violet" })}>beautiful&nbsp;</span>
-          <br />
-          <span className={title()}>
-            websites regardless of your design experience.
-          </span>
-          <div className={subtitle({ class: "mt-4" })}>
-            Beautiful, fast and modern React UI library.
-          </div>
+          <span className={title()}>DreLucEth Technologies&nbsp;</span>
+          <br></br>
+          <br></br>
+          <span className={title({ color: "blue" })}>3 Studs&nbsp;</span>
+   
         </div>
+
 
         <div className="flex gap-3">
           <Link
@@ -32,9 +29,9 @@ export default function IndexPage() {
               radius: "full",
               variant: "shadow",
             })}
-            href={siteConfig.links.docs}
+            href={siteConfig.links.github}
           >
-            Documentation
+            About Us
           </Link>
           <Link
             isExternal
@@ -49,8 +46,8 @@ export default function IndexPage() {
         <div className="mt-8">
           <Snippet hideCopyButton hideSymbol variant="bordered">
             <span>
-              Get started by editing{" "}
-              <Code color="primary">pages/index.tsx</Code>
+              Discover Hockey Stats Like Never Before{" "}
+              {/* <Code color="primary">pages/index.tsx</Code> */}
             </span>
           </Snippet>
         </div>

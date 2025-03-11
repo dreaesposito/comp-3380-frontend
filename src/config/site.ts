@@ -9,20 +9,16 @@ export const siteConfig = {
       href: "/",
     },
     {
-      label: "Docs",
-      href: "/docs",
+      label: "Leaders",
+      href: "/leaders",
     },
     {
-      label: "Pricing",
-      href: "/pricing",
+      label: "Trends",
+      href: "/trends",
     },
     {
-      label: "Blog",
-      href: "/blog",
-    },
-    {
-      label: "About",
-      href: "/about",
+      label: "Search",
+      href: "/search",
     },
   ],
   navMenuItems: [
@@ -60,7 +56,7 @@ export const siteConfig = {
     },
   ],
   links: {
-    github: "https://github.com/frontio-ai/heroui",
+    github: "https://github.com/dreaesposito/comp-3380-frontend",
     twitter: "https://twitter.com/hero_ui",
     docs: "https://heroui.com",
     discord: "https://discord.gg/9b6yyZKmH4",

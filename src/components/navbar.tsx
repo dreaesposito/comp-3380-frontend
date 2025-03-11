@@ -25,6 +25,86 @@ import {
 } from "@/components/icons";
 import { Logo } from "@/components/icons";
 
+import nhlLogo from '../components/nhl.svg';
+
+import supabase from "../utils/supabase";
+
+import { useState, useEffect } from "react";
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react";
+
+
+
+// export const Navbar = () => {
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const [players, setPlayers] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchPlayers = async () => {
+  //     if (!searchQuery) {
+  //       setPlayers([]);
+  //       return;
+  //     }
+
+  //     const { data, error } = await supabase.rpc("get_players", { str: '%'+searchQuery+'%' });
+
+  //     if (error) {
+  //       console.error("Error fetching players:", error);
+  //     } else {
+  //       console.log(data)
+  //       setPlayers(data);
+  //     }
+  //   };
+
+  //   const delayDebounce = setTimeout(() => {
+  //     fetchPlayers();
+  //   }, 300); // Delay to avoid excessive calls
+
+  //   return () => clearTimeout(delayDebounce);
+  // }, [searchQuery]);
+
+//   return (
+//     <HeroUINavbar maxWidth="xl" position="sticky">
+//       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
+//         <NavbarBrand>
+//           <Link href="/">
+//             <img src={nhlLogo} alt="NHL Logo" width="40" height="40" className="object-contain" />
+//             <p className="font-bold">DRELUCETH</p>
+//           </Link>
+//         </NavbarBrand>
+//       </NavbarContent>
+
+//       <NavbarContent className="hidden lg:flex basis-1/5 sm:basis-full" justify="end">
+//       <Dropdown>
+//   <DropdownTrigger>
+//     <Input
+//       aria-label="Search"
+//       className="w-[200px] bg-default-100 text-sm"
+//       placeholder="Search..."
+//       startContent={<SearchIcon className="text-base text-default-400" />}
+//       type="search"
+//       value={searchQuery}
+//       onChange={(e) => setSearchQuery(e.target.value)}
+//     />
+//   </DropdownTrigger>
+
+//   {players.length > 0 && (
+//     <DropdownMenu className="w-[200px] bg-white border rounded-md shadow-lg">
+//       {players.map((player: any) => (
+//         <DropdownItem
+//           key={player.fn}
+//           onPress={() => console.log("Selected:", player.fn)}
+//         >
+//           {player.fn}
+//         </DropdownItem>
+//       ))}
+//     </DropdownMenu>
+//   )}
+// </Dropdown>
+//       </NavbarContent>
+//     </HeroUINavbar>
+//   );
+//  };
+
 export const Navbar = () => {
   const searchInput = (
     <Input
@@ -56,8 +136,8 @@ export const Navbar = () => {
             color="foreground"
             href="/"
           >
-            <Logo />
-            <p className="font-bold text-inherit">ACME</p>
+            <img src={nhlLogo} alt="NHL Logo" width="40" height="40" className="object-contain" />
+            <p className="font-bold text-inherit">DRELUCETH</p>
           </Link>
         </NavbarBrand>
         <div className="hidden lg:flex gap-4 justify-start ml-2">
