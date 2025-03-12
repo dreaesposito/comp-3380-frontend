@@ -686,7 +686,7 @@ function TableTester() {
 export default function DocsPage() {
   return (
     <DefaultLayout>
-      <TableTester/>
+      <TableTester />
     </DefaultLayout>
   );
 }
