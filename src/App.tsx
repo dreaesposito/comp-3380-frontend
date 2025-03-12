@@ -9,6 +9,7 @@ import SearchPage from "@/pages/search";
 import LeadersPage from "@/pages/leaders";
 import TrendsPage from "@/pages/trends";
 
+
 function App() {
   return (
     <Routes>
@@ -20,6 +21,8 @@ function App() {
       <Route element={<BlogPage />} path="/blog" />
       <Route element={<AboutPage />} path="/about" />
       <Route element={<NotFound />} path="*" />
+      {/*<Route element={<Navigate replace to="/404" />} path="*" />*/}
+      {/*Use mapping for this in the future*/}
     </Routes>
   );
 }

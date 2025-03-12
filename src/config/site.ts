@@ -55,8 +55,6 @@ export const siteConfig = {
       href: "/logout",
     },
   ],
-  navItems: [],
-  navMenuItems: [],
   validRoutes: ["/", "/about", "/blog", "/pricing", "/docs"],
   links: {
     github: "https://github.com/dreaesposito/comp-3380-frontend",
