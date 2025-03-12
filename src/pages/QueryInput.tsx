@@ -1,61 +1,56 @@
-
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { Form } from "@heroui/form";
 import React from "react";
-
 
 export default function QueryInput() {
   const [action, setAction] = React.useState("");
 
   return (
     <div className="flex flex-row gap-4">
-        <Form
+      <Form
         className="w-full max-w-xs flex flex-col gap-4"
         onReset={() => setAction("reset")}
         onSubmit={(e) => {
-            e.preventDefault();
-            let data = Object.fromEntries(new FormData(e.currentTarget));
+          e.preventDefault();
+          let data = Object.fromEntries(new FormData(e.currentTarget));
 
-            setAction(`submit ${JSON.stringify(data)}`);
+          setAction(`submit ${JSON.stringify(data)}`);
         }}
-        >
+      >
         <Input
-            isRequired
-            errorMessage="Please enter a valid username"
-            label="Username"
-            labelPlacement="outside"
-            name="username"
-            placeholder="Enter your username"
-            type="text"
+          isRequired
+          errorMessage="Please enter a valid username"
+          label="Username"
+          labelPlacement="outside"
+          name="username"
+          placeholder="Enter your username"
+          type="text"
         />
 
         <Input
-            isRequired
-            errorMessage="Please enter a valid email"
-            label="Email"
-            labelPlacement="outside"
-            name="email"
-            placeholder="Enter your email"
-            type="email"
+          isRequired
+          errorMessage="Please enter a valid email"
+          label="Email"
+          labelPlacement="outside"
+          name="email"
+          placeholder="Enter your email"
+          type="email"
         />
         <div className="flex gap-2">
-            <Button color="primary" type="submit">
+          <Button color="primary" type="submit">
             Submit
-            </Button>
-            <Button type="reset" variant="flat">
+          </Button>
+          <Button type="reset" variant="flat">
             Reset
-            </Button>
+          </Button>
         </div>
         {action && (
-            <div className="text-small text-default-500">
+          <div className="text-small text-default-500">
             Action: <code>{action}</code>
-            </div>
+          </div>
         )}
-        </Form>
-
-        
+      </Form>
     </div>
   );
 }
-

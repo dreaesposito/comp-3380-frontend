@@ -5,6 +5,5 @@
 @tailwind utilities;
 
 .horizontal-listbox ul[data-slot="list"] {
-    flex-direction: row !important;
+  flex-direction: row !important;
 }
-  

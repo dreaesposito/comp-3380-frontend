@@ -4,7 +4,7 @@ import { Code } from "@heroui/code";
 import { button as buttonStyles } from "@heroui/theme";
 
 import { Tab, Tabs } from "@heroui/tabs";
-import { title, subtitle } from "@/components/primitives";
+import { title, querySubtitle as subtitle } from "@/components/primitives";
 import { GithubIcon } from "@/components/icons";
 import DefaultLayout from "@/layouts/default";
 import Queries from "./queries";
@@ -14,16 +14,16 @@ export default function IndexPage() {
   const tabs = [
     {
       id: QueryTabs.skaters,
-      label: "Skaters"
+      label: "Skaters",
     },
     {
       id: QueryTabs.goalies,
-      label: "Goalies"
+      label: "Goalies",
     },
     {
       id: QueryTabs.teams,
-      label: "Teams"
-    }
+      label: "Teams",
+    },
   ];
 
   return (
@@ -33,10 +33,15 @@ export default function IndexPage() {
           <Tabs aria-label="Dynamic tabs" items={tabs}>
             {(item) => (
               <Tab key={item.id} title={item.label}>
-                    <Queries selectedKey={item.id}/>
+                <Queries selectedKey={item.id} />
               </Tab>
             )}
           </Tabs>
+        </div>
+      </section>
+
+      <h1>Testing 123</h1>
+
       <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
         <div className="inline-block max-w-lg text-center justify-center">
           <span className={title()}>Make&nbsp;</span>
