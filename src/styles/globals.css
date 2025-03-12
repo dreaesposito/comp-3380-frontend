@@ -3,3 +3,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.horizontal-listbox ul[data-slot="list"] {
+    flex-direction: row !important;
+}
+  
