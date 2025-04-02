@@ -56,15 +56,17 @@ export const Navbar = () => {
           className="hidden md:flex gap-2"
           isActive={location.pathname === "/leaders"}
         >
-          <NavbarBrand className="gap-3 max-w-fit">
-            <Link
-              className={styles.linkStyle}
-              color="foreground"
-              href="/leaders"
-            >
-              <p className="text-inherit">Players</p>
-            </Link>
-          </NavbarBrand>
+          <Link className={styles.linkStyle} color="foreground" href="/leaders">
+            <p className="text-inherit">Players</p>
+          </Link>
+        </NavbarItem>
+        <NavbarItem
+          className="hidden md:flex gap-2"
+          isActive={location.pathname === "/trends"}
+        >
+          <Link className={styles.linkStyle} color="foreground" href="/trends">
+            <p className="text-inherit">Trends</p>
+          </Link>
         </NavbarItem>
       </NavbarContent>
 
