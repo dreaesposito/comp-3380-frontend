@@ -42,7 +42,7 @@ export const title = tv({
 });
 
 export const queryTitle = tv({
-  base: "w-full md:w-1/2 my-2 text-lg lg:text-base block max-w-full",
+  base: "w-full md:w-1/2 my-2 text-xl lg:text-base block font-medium max-w-full",
   variants: {
     fullWidth: {
       true: "!w-full",
@@ -54,7 +54,7 @@ export const queryTitle = tv({
 });
 
 export const querySubtitle = tv({
-  base: "w-full md:w-3/4 my-1 text-xs lg:text-sm block max-w-full",
+  base: "w-full md:w-3/4 my-1 text-xs lg:text-sm block max-w-full text-default-600",
   variants: {
     fullWidth: {
       true: "!w-full",
