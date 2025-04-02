@@ -23,7 +23,7 @@ import {
 } from "recharts";
 
 import { Button } from "@heroui/button";
-import { Switch } from "@heroui/react";
+import { Spinner, Switch } from "@heroui/react";
 
 const metrics = [
   { key: "numpenalties", label: "Penalties" },
@@ -33,6 +33,7 @@ const metrics = [
 
 export default function TrendsPage() {
   const [data, setData] = useState([]);
+  const [loading, setIsLoading] = useState(false);
   const [selectedMetric, setSelectedMetric] = useState("numpenalties");
   const [chartType, setChartType] = useState("bar");
 
@@ -44,14 +45,17 @@ export default function TrendsPage() {
       else if (selectedMetric === "numgoals") rpcfunc = "get_goals_per_season";
       else if (selectedMetric === "numshots") rpcfunc = "get_shots_per_season";
 
+      setIsLoading(true);
       const { data, error } = await supabase.rpc(rpcfunc);
 
       if (error) {
         console.error("Error fetching penalties:", error);
       } else {
-        console.log(data);
+        // console.log(data);
         setData(data);
       }
+
+      setIsLoading(false);
     };
 
     fetchData();
@@ -110,7 +114,7 @@ export default function TrendsPage() {
         <h1 className="text-center text-4xl font-bold">Stats by Season</h1>
       </div>
 
-      <div className="p-6 border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-900 rounded-xl shadow-lg w-3/4 mx-auto">
+      <div className="md:w-3/4 w-lg place-items-center p-6 border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-900 rounded-xl shadow-lg mx-auto">
         {/* <h2 className="text-xl font-bold mb-4">Trends Per Season</h2> */}
 
         <div className="flex justify-center space-x-4 mb-6">
@@ -132,22 +136,17 @@ export default function TrendsPage() {
           {selectedMetric === "numshots" && "Shots Per Season"}
         </h2> */}
 
-        <ResponsiveContainer width="100%" height={300}>
-          {chartContent}
-          {/* <BarChart data={data} margin={{ top: 20, right: 30, left: 30, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="season" />
-            <YAxis label={{ 
-              value: `Number of ${metrics.find(metric => metric.key === selectedMetric)?.label}`,
-              angle: -90, 
-              position: "insideLeft", 
-              dx: -25,
-              style: { textAnchor: "middle", fill: "#555" }
-            }} />
-            <Tooltip />
-            <Bar dataKey={selectedMetric} fill="#8884d8" />
-          </BarChart> */}
-        </ResponsiveContainer>
+        {loading ? (
+          <Spinner size="lg" className="scale-150 p-14" color="default" variant="gradient" />
+        ) : (
+          <ResponsiveContainer
+            className="items-center"
+            height={300}
+            width="100%"
+          >
+            {chartContent}
+          </ResponsiveContainer>
+        )}
 
         {/* <ResponsiveContainer width="100%" height={300}>
           <LineChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
