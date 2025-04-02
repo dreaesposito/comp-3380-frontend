@@ -44,6 +44,7 @@ export const PersonCard: React.FC<Props> = ({ person }) => {
           <CardFooter className="pb-0 pt-2 px-4">
             <div className="grid grid-cols-2 content-center md:grid-cols-2 md:gap-3 mx-auto">
               <Button
+                isExternal
                 as={Link}
                 className="object-cover rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600"
                 color="default"
@@ -55,6 +56,7 @@ export const PersonCard: React.FC<Props> = ({ person }) => {
               </Button>
               <Button
                 as={Link}
+                isExternal
                 className="object-cover rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600"
                 color="primary"
                 href={person.linkedin}
