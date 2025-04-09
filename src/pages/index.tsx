@@ -2,7 +2,9 @@
 // import { Snippet } from "@heroui/snippet";
 // import { Code } from "@heroui/code";
 // import { button as buttonStyles } from "@heroui/theme";
-
+import { ReactElement } from "react";
+import TotalGoalsByTeam from "@/components/tables/totalGoalsByTeam.tsx";
+import TotalGAP from "@/components/tables/totalGAP.tsx";
 import { Tab, Tabs } from "@heroui/tabs";
 // import { title, querySubtitle as subtitle } from "@/components/primitives";
 // import { GithubIcon } from "@/components/icons";
@@ -49,6 +51,17 @@ export default function IndexPage() {
     },
   ];
 
+  function tableRenderSwitch(param: string): ReactElement {
+    switch (param) {
+      case "totalGoalsByTeam":
+        return <TotalGoalsByTeam first="Claude" last="Giroux" />;
+      case "totalGAP":
+        return <TotalGAP first="Sidney" last="Crosby" />;
+      default:
+        return <TestTable />;
+    }
+  }
+
   return (
     <DefaultLayout>
       <div className="pb-4">
@@ -78,7 +91,9 @@ export default function IndexPage() {
           </Link>
         </div>
 
-        <div className={`${menuVisible ? "" : "hidden"} items-center mt-2 p-2 bg-default/10 shadow-gray-400 rounded-2xl`}>
+        <div
+          className={`${menuVisible ? "" : "hidden"} items-center mt-2 p-2 bg-default/10 shadow-gray-400 rounded-2xl`}
+        >
           <Tabs
             className="content-center"
             isVertical
@@ -97,7 +112,7 @@ export default function IndexPage() {
       </div>
 
       {/*Table type for each Query type*/}
-      <TestTable />
+      {tableRenderSwitch("totalGAP")}
 
       {/*info modal popup*/}
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
