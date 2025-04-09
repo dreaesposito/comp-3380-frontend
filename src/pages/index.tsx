@@ -5,6 +5,8 @@
 import { ReactElement } from "react";
 import TotalGoalsByTeam from "@/components/tables/totalGoalsByTeam.tsx";
 import TotalGAP from "@/components/tables/totalGAP.tsx";
+import AvgShiftByPlay from "@/components/tables/avgShiftByPlay.tsx";
+import GoalsByVenue from "@/components/tables/goalsByVenue.tsx";
 import { Tab, Tabs } from "@heroui/tabs";
 // import { title, querySubtitle as subtitle } from "@/components/primitives";
 // import { GithubIcon } from "@/components/icons";
@@ -57,6 +59,10 @@ export default function IndexPage() {
         return <TotalGoalsByTeam first="Claude" last="Giroux" />;
       case "totalGAP":
         return <TotalGAP first="Sidney" last="Crosby" />;
+      case "avgShiftByPlay":
+        return <AvgShiftByPlay />;
+      case "goalsByVenue":
+        return <GoalsByVenue season="2018-2019" />;
       default:
         return <TestTable />;
     }
