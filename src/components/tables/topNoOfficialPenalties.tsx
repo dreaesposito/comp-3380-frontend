@@ -10,47 +10,46 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
   Pagination,
   Table,
   TableBody,
   TableCell,
   TableColumn,
   TableHeader,
-  TableRow, useDisclosure,
-  User,
+  TableRow,
 } from "@heroui/react";
 
 import supabase from "@/utils/supabase.ts";
-import { Link } from "@heroui/link";
 
-// for dropdown mapping
 export const columns = [
   {
-    name: "Play Type",
-    uid: "play_type",
+    name: "#",
+    uid: "rank",
+    width: "8%",
   },
   {
-    name: "Average Shift (seconds)",
-    uid: "avg_shift_length",
-    sortable: true,
+    name: "Official",
+    uid: "official_name",
+    width: "40%",
+  },
+  {
+    name: "Penalties Called",
+    uid: "num_penalties",
+    width: "52",
   },
 ];
 
-const INITIAL_VISIBLE_COLUMNS = ["play_type", "avg_shift_length"];
+const INITIAL_VISIBLE_COLUMNS = ["rank", "official_name", "num_penalties"];
 
 export function capitalize(s) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
 }
 
-export default function AvgShiftByPlay() {
+interface Props {
+  numRows: number;
+}
 
-  const { isOpen, onOpen, onOpenChange } = useDisclosure(); // for modal
-
+export default function TopNoOfficialPenalties({ numRows }: Props) {
   const [filterValue, setFilterValue] = React.useState("");
 
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -59,22 +58,28 @@ export default function AvgShiftByPlay() {
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
 
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
 
   const [sortDescriptor, setSortDescriptor] = React.useState({
-    column: "play_type",
-    direction: "ascending",
+    column: "num_penalties",
+    direction: "descending",
   });
 
   const [players, setPlayers] = useState<any[]>([]);
 
   useEffect(() => {
     const getPlayers = async () => {
-      const { data, error } = await supabase.rpc("avg_shift_by_play");
+      const { data, error } = await supabase.rpc("top_no_official_penalties", {
+        num_rows: numRows,
+      });
 
       if (error) {
         console.error("Error performing query:", error);
       } else {
+        // assign rank numbering
+        data.forEach((player, index) => {
+          player.rank = index + 1;
+        });
         setPlayers(data);
       }
     };
@@ -119,9 +124,11 @@ export default function AvgShiftByPlay() {
   const renderCell = React.useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
 
+    // console.log(user);
+
     switch (columnKey) {
-      case "avg_shift_length":
-        return cellValue.toFixed(1);
+      case "num_penalties":
+        return cellValue.toLocaleString(); // gives decimal formatting
       default:
         return cellValue;
     }
@@ -175,16 +182,10 @@ export default function AvgShiftByPlay() {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-700 text-medium">
-            {"Avg. Shift by Play Type"}{" "}
-            {/*<span className="font-semibold">{" " + first + " " + last}</span>*/}
-            <Link
-              aria-label="Query info"
-              className="text-default-400 text-sm hover:opacity-75 hover:cursor-pointer"
-              onPress={onOpen}
-            >
-              <i className="bi bi-question-circle text-sm text-default-600" />
-            </Link>
+          <span className="text-default-600 text-medium">
+            {"Top " +
+              (numRows > players.length ? players.length : numRows) +
+              " Officials"}
           </span>
 
           <label className="flex items-center text-default-400 text-small">
@@ -193,9 +194,9 @@ export default function AvgShiftByPlay() {
               className="bg-transparent outline-none text-default-400 text-small"
               onChange={onRowsPerPageChange}
             >
-              <option value="10">10</option>
-              <option value="15">15</option>
-              <option value="25">25</option>
+              <option value="15">25</option>
+              <option value="25">50</option>
+              <option value="25">100</option>
             </select>
           </label>
         </div>
@@ -277,6 +278,7 @@ export default function AvgShiftByPlay() {
               key={column.uid}
               alignItems="center"
               allowsSorting={column.sortable}
+              width={column.width}
             >
               {column.name}
             </TableColumn>
@@ -298,29 +300,6 @@ export default function AvgShiftByPlay() {
           ))}
         </TableBody>
       </Table>
-
-      {/*info modal popup*/}
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Average Shift by Play
-              </ModalHeader>
-              <ModalBody>
-                <p>
-                  This query displays the average shift length of a player when they attain the associated play type.
-                </p>
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="flat" onPress={onClose}>
-                  Close
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
     </div>
   );
 }

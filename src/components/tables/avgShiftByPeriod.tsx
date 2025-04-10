@@ -21,8 +21,8 @@ import {
   TableCell,
   TableColumn,
   TableHeader,
-  TableRow, useDisclosure,
-  User,
+  TableRow,
+  useDisclosure,
 } from "@heroui/react";
 
 import supabase from "@/utils/supabase.ts";
@@ -31,24 +31,24 @@ import { Link } from "@heroui/link";
 // for dropdown mapping
 export const columns = [
   {
-    name: "Play Type",
-    uid: "play_type",
+    name: "Period",
+    uid: "period_num",
+    sortable: true,
   },
   {
     name: "Average Shift (seconds)",
-    uid: "avg_shift_length",
+    uid: "shift_length",
     sortable: true,
   },
 ];
 
-const INITIAL_VISIBLE_COLUMNS = ["play_type", "avg_shift_length"];
+const INITIAL_VISIBLE_COLUMNS = ["period_num", "shift_length"];
 
 export function capitalize(s) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
 }
 
-export default function AvgShiftByPlay() {
-
+export default function AvgShiftByPeriod() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure(); // for modal
 
   const [filterValue, setFilterValue] = React.useState("");
@@ -62,7 +62,7 @@ export default function AvgShiftByPlay() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const [sortDescriptor, setSortDescriptor] = React.useState({
-    column: "play_type",
+    column: "period_num",
     direction: "ascending",
   });
 
@@ -70,7 +70,7 @@ export default function AvgShiftByPlay() {
 
   useEffect(() => {
     const getPlayers = async () => {
-      const { data, error } = await supabase.rpc("avg_shift_by_play");
+      const { data, error } = await supabase.rpc("avg_shift_length_by_period");
 
       if (error) {
         console.error("Error performing query:", error);
@@ -120,8 +120,10 @@ export default function AvgShiftByPlay() {
     const cellValue = user[columnKey];
 
     switch (columnKey) {
-      case "avg_shift_length":
+      case "shift_length":
         return cellValue.toFixed(1);
+      case "period_num":
+        return cellValue > 3 ? cellValue - 3 + " OT" : cellValue;
       default:
         return cellValue;
     }
@@ -176,7 +178,7 @@ export default function AvgShiftByPlay() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-700 text-medium">
-            {"Avg. Shift by Play Type"}{" "}
+            {"Avg. Shift by Period"}{" "}
             {/*<span className="font-semibold">{" " + first + " " + last}</span>*/}
             <Link
               aria-label="Query info"
@@ -309,7 +311,8 @@ export default function AvgShiftByPlay() {
               </ModalHeader>
               <ModalBody>
                 <p>
-                  This query displays the average shift length of a player when they attain the associated play type.
+                  This query displays the average shift length of all players by
+                  each period.
                 </p>
               </ModalBody>
               <ModalFooter>
