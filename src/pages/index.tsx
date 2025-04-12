@@ -5,6 +5,8 @@
 import { ReactElement } from "react";
 import TotalGoalsByTeam from "@/components/tables/totalGoalsByTeam.tsx";
 import TotalGAP from "@/components/tables/totalGAP.tsx";
+import AvgShiftByPlay from "@/components/tables/avgShiftByPlay.tsx";
+import GoalsByVenue from "@/components/tables/goalsByVenue.tsx";
 import { Tab, Tabs } from "@heroui/tabs";
 // import { title, querySubtitle as subtitle } from "@/components/primitives";
 // import { GithubIcon } from "@/components/icons";
@@ -23,6 +25,10 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import { Link } from "@heroui/link";
+import TopNoOfficialPenalties from "@/components/tables/topNoOfficialPenalties.tsx";
+import TopTeamsPlayedFor from "@/components/tables/topTeamsPlayedFor.tsx";
+import TopPlayersPenalties from "@/components/tables/topPlayersPenalties.tsx";
+import AvgShiftByPeriod from "@/components/tables/avgShiftByPeriod.tsx";
 
 export default function IndexPage() {
   const [menuVisible, setMenuVisible] = useState<boolean>(true);
@@ -57,6 +63,19 @@ export default function IndexPage() {
         return <TotalGoalsByTeam first="Claude" last="Giroux" />;
       case "totalGAP":
         return <TotalGAP first="Sidney" last="Crosby" />;
+      case "avgShiftByPlay":
+        return <AvgShiftByPlay />;
+      case "avgShiftByPeriod":
+        return <AvgShiftByPeriod />;
+      case "goalsByVenue":
+        return <GoalsByVenue season="2018-2019" />;
+      case "topNoOfficialPenalties":
+        return <TopNoOfficialPenalties numRows={25} />;
+      case "topTeamsPlayedFor":
+        return <TopTeamsPlayedFor numRows={20} />;
+      case "topPlayersPenalties":
+        return <TopPlayersPenalties numRows={15} />;
+
       default:
         return <TestTable />;
     }
@@ -112,7 +131,7 @@ export default function IndexPage() {
       </div>
 
       {/*Table type for each Query type*/}
-      {tableRenderSwitch("totalGAP")}
+      {tableRenderSwitch("avgShiftByPeriod")}
 
       {/*info modal popup*/}
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
