@@ -389,7 +389,7 @@ function TableTester() {
     () => ({
       wrapper: ["max-h-[382px]", "max-w-3xl"],
       // th: ["bg-transparent", "text-default-500", "border-b", "border-divider"],
-      th: ["bg-default/30", "text-default-500","border-divider"],
+      th: ["bg-default/30", "text-default-500", "border-divider"],
       td: [
         // changing the rows border radius
         // first

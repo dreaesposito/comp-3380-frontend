@@ -47,7 +47,13 @@ export const columns = [
   },
 ];
 
-const INITIAL_VISIBLE_COLUMNS = ["rank", "first_name", "player_weight", "player_height", "num_penalties"];
+const INITIAL_VISIBLE_COLUMNS = [
+  "rank",
+  "first_name",
+  "player_weight",
+  "player_height",
+  "num_penalties",
+];
 
 export function capitalize(s) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";

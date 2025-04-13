@@ -21,7 +21,8 @@ import {
   TableCell,
   TableColumn,
   TableHeader,
-  TableRow, useDisclosure,
+  TableRow,
+  useDisclosure,
   User,
 } from "@heroui/react";
 
@@ -48,7 +49,6 @@ export function capitalize(s) {
 }
 
 export default function AvgShiftByPlay() {
-
   const { isOpen, onOpen, onOpenChange } = useDisclosure(); // for modal
 
   const [filterValue, setFilterValue] = React.useState("");
@@ -309,7 +309,8 @@ export default function AvgShiftByPlay() {
               </ModalHeader>
               <ModalBody>
                 <p>
-                  This query displays the average shift length of a player when they attain the associated play type.
+                  This query displays the average shift length of a player when
+                  they attain the associated play type.
                 </p>
               </ModalBody>
               <ModalFooter>
