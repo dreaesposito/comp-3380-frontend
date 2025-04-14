@@ -29,17 +29,25 @@ import TopNoOfficialPenalties from "@/components/tables/topNoOfficialPenalties.t
 import TopTeamsPlayedFor from "@/components/tables/topTeamsPlayedFor.tsx";
 import TopPlayersPenalties from "@/components/tables/topPlayersPenalties.tsx";
 import AvgShiftByPeriod from "@/components/tables/avgShiftByPeriod.tsx";
+import RowInputModal from "@/components/selection-modals/RowInputModal.tsx";
 
 export default function IndexPage() {
   const [menuVisible, setMenuVisible] = useState<boolean>(true);
   const [childData, setChildData] = useState(""); // to display from the child
   const { isOpen, onOpen, onOpenChange } = useDisclosure(); // for modal
+  const [currTable, setCurrTable] = useState<string>("totalGoalsByTeam"); // to toggle which table is rendered
 
   // a function is passed to the child component (callback function)
   // so then this funtion is 'called' in the child with the
   const handleChildData = (first: string, last: string) => {
     //console.log("Received data from child:", first, first);
     setChildData(first + " " + last);
+  };
+
+
+  const handleRowData = (numRows: number, tableCode: string) => {
+    setChildData(numRows);
+    setCurrTable(tableCode);
   };
 
   const tabs = [
@@ -74,7 +82,7 @@ export default function IndexPage() {
       case "topTeamsPlayedFor":
         return <TopTeamsPlayedFor numRows={20} />;
       case "topPlayersPenalties":
-        return <TopPlayersPenalties numRows={15} />;
+        return <TopPlayersPenalties numRows={Number(childData)} />; // Experiment
 
       default:
         return <TestTable />;
@@ -84,6 +92,11 @@ export default function IndexPage() {
   return (
     <DefaultLayout>
       <div className="pb-4">
+        <RowInputModal
+          emitData={handleRowData}
+          tableCode="topPlayersPenalties"
+        />
+
         <div className="flex gap-3">
           <Button
             className="text-default-500"
@@ -131,7 +144,7 @@ export default function IndexPage() {
       </div>
 
       {/*Table type for each Query type*/}
-      {tableRenderSwitch("avgShiftByPeriod")}
+      {tableRenderSwitch(currTable)}
 
       {/*info modal popup*/}
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
