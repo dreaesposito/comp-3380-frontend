@@ -29,6 +29,13 @@ import TopNoOfficialPenalties from "@/components/tables/topNoOfficialPenalties.t
 import TopTeamsPlayedFor from "@/components/tables/topTeamsPlayedFor.tsx";
 import TopPlayersPenalties from "@/components/tables/topPlayersPenalties.tsx";
 import AvgShiftByPeriod from "@/components/tables/avgShiftByPeriod.tsx";
+import TotalPlayoffWins from "@/components/tables/totalPlayoffWins";
+import PlayersScoredAgainstAllTeams from "@/components/tables/playersScoredAgainstAllTeams";
+import Top25ByStat from "@/components/tables/top25ByStat";
+import AvgGoalsPerShot from "@/components/tables/avgGoalsPerShot";
+import AllTeams from "@/components/tables/allTeams";
+import SearchPlayer from "@/components/tables/searchPlayer";
+import Schedule from "@/components/tables/schedule";
 
 export default function IndexPage() {
   const [menuVisible, setMenuVisible] = useState<boolean>(true);
@@ -75,6 +82,22 @@ export default function IndexPage() {
         return <TopTeamsPlayedFor numRows={20} />;
       case "topPlayersPenalties":
         return <TopPlayersPenalties numRows={15} />;
+      case "totalPlayoffWins":
+        return <TotalPlayoffWins season_name="2013-2014" team_name="Rangers" />;
+      case "playersScoredAgainstAllTeams":
+        return <PlayersScoredAgainstAllTeams />;
+      case "top25ByStat":
+        return <Top25ByStat season="2015-2016" stat="goals" />;
+      case "avgGoalsPerShot":
+        return <AvgGoalsPerShot first="Sidney" last="Crosby" />;
+      case "allTeams":
+        return <AllTeams />;
+      case "searchPlayer":
+        return <SearchPlayer name="alex" />;
+      case "schedule":
+        return (
+          <Schedule end_year="2016" start_year="2015" team_name="Rangers" />
+        );
 
       default:
         return <TestTable />;
@@ -131,7 +154,7 @@ export default function IndexPage() {
       </div>
 
       {/*Table type for each Query type*/}
-      {tableRenderSwitch("avgShiftByPeriod")}
+      {tableRenderSwitch("schedule")}
 
       {/*info modal popup*/}
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>

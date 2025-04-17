@@ -1,56 +1,57 @@
 // @ts-nocheck
 
-import { ChevronDownIcon } from "@/components/common/tableIcons.tsx";
-
-import React, { useEffect, useState } from "react";
-
+import React, { EventHandler, useEffect, useState } from "react";
 import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Pagination,
   Table,
-  TableBody,
-  TableCell,
-  TableColumn,
   TableHeader,
+  TableColumn,
+  TableBody,
   TableRow,
-  useDisclosure,
+  TableCell,
+  Input,
+  Button,
+  DropdownTrigger,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
   User,
+  Pagination,
 } from "@heroui/react";
 
+import {
+  SearchIcon,
+  ChevronDownIcon,
+} from "@/components/common/tableIcons.tsx";
 import supabase from "@/utils/supabase.ts";
-import { Link } from "@heroui/link";
 
 // for dropdown mapping
 export const columns = [
   {
-    name: "Play Type",
-    uid: "play_type",
+    name: "Total Wins",
+    uid: "total_playoff_wins",
+    classes: "",
+    width: "55%",
   },
   {
-    name: "Average Shift (seconds)",
-    uid: "avg_shift_length",
-    sortable: true,
+    name: "Max Possible",
+    uid: "max_possible",
+    classes: "sm:w-auto",
+    width: "20%",
   },
 ];
-
-const INITIAL_VISIBLE_COLUMNS = ["play_type", "avg_shift_length"];
 
 export function capitalize(s) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
 }
 
-export default function AvgShiftByPlay() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure(); // for modal
+const INITIAL_VISIBLE_COLUMNS = ["total_playoff_wins", "max_possible"];
 
+interface Props {
+  season_name: string;
+  team_name: string;
+}
+
+export default function TotalGoalsByTeam({ season_name, team_name }: Props) {
   const [filterValue, setFilterValue] = React.useState("");
 
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -58,34 +59,6 @@ export default function AvgShiftByPlay() {
   const [visibleColumns, setVisibleColumns] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
-
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  const [sortDescriptor, setSortDescriptor] = React.useState({
-    column: "play_type",
-    direction: "ascending",
-  });
-
-  const [players, setPlayers] = useState<any[]>([]);
-
-  useEffect(() => {
-    const getPlayers = async () => {
-      const { data, error } = await supabase.rpc("avg_shift_by_play");
-
-      if (error) {
-        console.error("Error performing query:", error);
-      } else {
-        setPlayers(data);
-      }
-    };
-
-    getPlayers(); // Call the async function
-  }, []);
-
-  const [page, setPage] = React.useState(1);
-
-  const pages = Math.ceil(players.length / rowsPerPage);
-  const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
@@ -95,37 +68,36 @@ export default function AvgShiftByPlay() {
     );
   }, [visibleColumns]);
 
-  const filteredItems = React.useMemo(() => {
-    return [...players];
-  }, [players, filterValue]);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const [players, setPlayers] = useState<any[]>([]);
+
+  useEffect(() => {
+    const getPlayers = async () => {
+      const { data, error } = await supabase.rpc("total_playoff_wins", {
+        season_name: season_name,
+        team_name: team_name,
+      });
+
+      if (error) {
+        console.error("Error performing query:", error);
+      } else {
+        console.log("Data:", data);
+        setPlayers(data);
+      }
+    };
+
+    getPlayers(); // Call the async function
+  }, []);
+
+  const [page, setPage] = React.useState(1);
+
+  //   const pages = Math.ceil(players.length / rowsPerPage);
+  const hasSearchFilter = Boolean(filterValue);
 
   const items = React.useMemo(() => {
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-
-    return filteredItems.slice(start, end);
-  }, [page, filteredItems, rowsPerPage]);
-
-  const sortedItems = React.useMemo(() => {
-    return [...items].sort((a, b) => {
-      const first = a[sortDescriptor.column];
-      const second = b[sortDescriptor.column];
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
-
-      return sortDescriptor.direction === "descending" ? -cmp : cmp;
-    });
-  }, [sortDescriptor, items]);
-
-  const renderCell = React.useCallback((user, columnKey) => {
-    const cellValue = user[columnKey];
-
-    switch (columnKey) {
-      case "avg_shift_length":
-        return cellValue.toFixed(1);
-      default:
-        return cellValue;
-    }
-  }, []);
+    return [...players];
+  }, [players]);
 
   const onRowsPerPageChange = React.useCallback((e) => {
     setRowsPerPage(Number(e.target.value));
@@ -145,7 +117,20 @@ export default function AvgShiftByPlay() {
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
-          <div />
+          <Input
+            isClearable
+            classNames={{
+              base: "w-full sm:max-w-[44%]",
+              inputWrapper: "border-1",
+            }}
+            placeholder="Search team..."
+            size="sm"
+            startContent={<SearchIcon className="text-default-300" />}
+            value={filterValue}
+            variant="bordered"
+            onClear={() => setFilterValue("")}
+            onValueChange={onSearchChange}
+          />
           <div className="flex gap-3">
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
@@ -176,17 +161,11 @@ export default function AvgShiftByPlay() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-700 text-medium">
-            {"Avg. Shift by Play Type"}{" "}
-            {/*<span className="font-semibold">{" " + first + " " + last}</span>*/}
-            <Link
-              aria-label="Query info"
-              className="text-default-400 text-sm hover:opacity-75 hover:cursor-pointer"
-              onPress={onOpen}
-            >
-              <i className="bi bi-question-circle text-sm text-default-600" />
-            </Link>
+            Total playoff wins for the
+            <span className="font-semibold">
+              {" " + season_name + " " + team_name}
+            </span>
           </span>
-
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
@@ -209,25 +188,6 @@ export default function AvgShiftByPlay() {
     players.length,
     hasSearchFilter,
   ]);
-
-  const bottomContent = React.useMemo(() => {
-    return (
-      <div className="py-2 px-2 flex justify-center items-center">
-        <Pagination
-          showControls
-          classNames={{
-            cursor: "bg-foreground text-background",
-          }}
-          color="default"
-          isDisabled={hasSearchFilter}
-          page={page}
-          total={pages}
-          variant="light"
-          onChange={setPage}
-        />
-      </div>
-    );
-  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
   const classNames = React.useMemo(
     () => ({
@@ -256,7 +216,6 @@ export default function AvgShiftByPlay() {
         isHeaderSticky
         removeWrapper
         aria-label="Database table"
-        bottomContent={bottomContent}
         bottomContentPlacement="outside"
         checkboxesProps={{
           classNames: {
@@ -265,11 +224,9 @@ export default function AvgShiftByPlay() {
           },
         }}
         classNames={classNames}
-        sortDescriptor={sortDescriptor}
         topContent={topContent}
         topContentPlacement="outside"
         onSelectionChange={setSelectedKeys}
-        onSortChange={setSortDescriptor}
       >
         <TableHeader columns={headerColumns}>
           {(column) => (
@@ -277,51 +234,24 @@ export default function AvgShiftByPlay() {
               key={column.uid}
               alignItems="center"
               allowsSorting={column.sortable}
+              className={column.classes}
+              width={column.width}
             >
               {column.name}
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody
-          emptyContent={"Select an option to load data"}
-          items={sortedItems}
-        >
-          {sortedItems.map((item) => (
+        <TableBody emptyContent={"Select an option to load data"} items={items}>
+          {items.map((item) => (
             <TableRow
               key={item.id}
               className="cursor-pointer hover:bg-default/40 hover:rounded-full"
             >
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
+              {(columnKey) => <TableCell>{item[columnKey]}</TableCell>}
             </TableRow>
           ))}
         </TableBody>
       </Table>
-
-      {/*info modal popup*/}
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Average Shift by Play
-              </ModalHeader>
-              <ModalBody>
-                <p>
-                  This query displays the average shift length of a player when
-                  they attain the associated play type.
-                </p>
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="flat" onPress={onClose}>
-                  Close
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
     </div>
   );
 }

@@ -1,5 +1,7 @@
 // @ts-nocheck
 
+// TODO - add games played?
+
 import { ChevronDownIcon } from "@/components/common/tableIcons.tsx";
 
 import React, { useEffect, useState } from "react";
@@ -10,11 +12,6 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
   Pagination,
   Table,
   TableBody,
@@ -22,35 +19,93 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-  useDisclosure,
   User,
 } from "@heroui/react";
 
 import supabase from "@/utils/supabase.ts";
-import { Link } from "@heroui/link";
 
 // for dropdown mapping
-export const columns = [
+// export const columns = [
+//   {
+//     name: "Season",
+//     uid: "season_name",
+//     sortable: true,
+//   },
+//   {
+//     name: "Goals",
+//     uid: "total_goals",
+//     sortable: true,
+//   },
+//   {
+//     name: "Assists",
+//     uid: "total_assists",
+//     sortable: true,
+//   },
+//   {
+//     name: "Points",
+//     uid: "total_points",
+//     sortable: true,
+//   },
+// ];
+
+const columns = [
   {
-    name: "Play Type",
-    uid: "play_type",
+    name: "Rank",
+    uid: "rank",
+    sortable: true,
   },
   {
-    name: "Average Shift (seconds)",
-    uid: "avg_shift_length",
+    name: "First Name",
+    uid: "firstname",
+    sortable: true,
+  },
+  {
+    name: "Last Name",
+    uid: "lastname",
+    sortable: true,
+  },
+  {
+    name: "Goals",
+    uid: "numgoalz",
+    sortable: true,
+  },
+  {
+    name: "Assists",
+    uid: "numassistz",
+    sortable: true,
+  },
+  {
+    name: "Points",
+    uid: "numpointz",
+    sortable: true,
+  },
+  {
+    name: "+/-",
+    uid: "plusminuz",
     sortable: true,
   },
 ];
 
-const INITIAL_VISIBLE_COLUMNS = ["play_type", "avg_shift_length"];
+const INITIAL_VISIBLE_COLUMNS = [
+  "rank",
+  "firstname",
+  "lastname",
+  "numgoalz",
+  "numassistz",
+  "numpointz",
+  "plusminuz",
+];
 
 export function capitalize(s) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
 }
 
-export default function AvgShiftByPlay() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure(); // for modal
+interface Props {
+  season: string;
+  stat: string;
+}
 
+export default function Top25ByStat({ season, stat }: Props) {
   const [filterValue, setFilterValue] = React.useState("");
 
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -62,20 +117,27 @@ export default function AvgShiftByPlay() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const [sortDescriptor, setSortDescriptor] = React.useState({
-    column: "play_type",
-    direction: "ascending",
+    column: stat,
+    direction: "descending",
   });
 
   const [players, setPlayers] = useState<any[]>([]);
 
   useEffect(() => {
     const getPlayers = async () => {
-      const { data, error } = await supabase.rpc("avg_shift_by_play");
+      const { data, error } = await supabase.rpc("get_top_25", {
+        season_param: season,
+        stat: stat,
+      });
 
       if (error) {
         console.error("Error performing query:", error);
       } else {
+        data.forEach((player, index) => {
+          player.rank = index + 1;
+        });
         setPlayers(data);
+        console;
       }
     };
 
@@ -115,17 +177,6 @@ export default function AvgShiftByPlay() {
       return sortDescriptor.direction === "descending" ? -cmp : cmp;
     });
   }, [sortDescriptor, items]);
-
-  const renderCell = React.useCallback((user, columnKey) => {
-    const cellValue = user[columnKey];
-
-    switch (columnKey) {
-      case "avg_shift_length":
-        return cellValue.toFixed(1);
-      default:
-        return cellValue;
-    }
-  }, []);
 
   const onRowsPerPageChange = React.useCallback((e) => {
     setRowsPerPage(Number(e.target.value));
@@ -176,17 +227,8 @@ export default function AvgShiftByPlay() {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-700 text-medium">
-            {"Avg. Shift by Play Type"}{" "}
-            {/*<span className="font-semibold">{" " + first + " " + last}</span>*/}
-            <Link
-              aria-label="Query info"
-              className="text-default-400 text-sm hover:opacity-75 hover:cursor-pointer"
-              onPress={onOpen}
-            >
-              <i className="bi bi-question-circle text-sm text-default-600" />
-            </Link>
+            Top 25 Players by {capitalize(stat)}
           </span>
-
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
@@ -288,40 +330,14 @@ export default function AvgShiftByPlay() {
         >
           {sortedItems.map((item) => (
             <TableRow
-              key={item.id}
+              key={item.rank}
               className="cursor-pointer hover:bg-default/40 hover:rounded-full"
             >
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
+              {(columnKey) => <TableCell>{item[columnKey]}</TableCell>}
             </TableRow>
           ))}
         </TableBody>
       </Table>
-
-      {/*info modal popup*/}
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Average Shift by Play
-              </ModalHeader>
-              <ModalBody>
-                <p>
-                  This query displays the average shift length of a player when
-                  they attain the associated play type.
-                </p>
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="flat" onPress={onClose}>
-                  Close
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
     </div>
   );
 }

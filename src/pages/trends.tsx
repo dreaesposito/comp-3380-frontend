@@ -137,7 +137,12 @@ export default function TrendsPage() {
         </h2> */}
 
         {loading ? (
-          <Spinner size="lg" className="scale-150 p-14" color="default" variant="gradient" />
+          <Spinner
+            size="lg"
+            className="scale-150 p-14"
+            color="default"
+            variant="gradient"
+          />
         ) : (
           <ResponsiveContainer
             className="items-center"
