@@ -23,7 +23,6 @@ import {
   TableHeader,
   TableRow,
   useDisclosure,
-  User,
 } from "@heroui/react";
 
 import supabase from "@/utils/supabase.ts";
@@ -57,11 +56,7 @@ export function capitalize(s) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
 }
 
-interface Props {
-  season: string;
-}
-
-export default function GoalsByVenue({ season }: Props) {
+export default function GoalsByVenue({ selectedSeason }: string) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure(); // for modal
 
   const [filterValue, setFilterValue] = React.useState("");
@@ -84,7 +79,7 @@ export default function GoalsByVenue({ season }: Props) {
   useEffect(() => {
     const getPlayers = async () => {
       const { data, error } = await supabase.rpc("goals_by_venue", {
-        season_type: season,
+        season_type: selectedSeason,
       });
 
       if (error) {
@@ -95,7 +90,7 @@ export default function GoalsByVenue({ season }: Props) {
     };
 
     getPlayers(); // Call the async function
-  }, []);
+  }, [selectedSeason]);
 
   const [page, setPage] = React.useState(1);
 
@@ -189,13 +184,13 @@ export default function GoalsByVenue({ season }: Props) {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-600 text-medium">
-            {"Goals by Venue ("}
-            {season}
-            {") "}
+            {"Goals by Venue: "}
+            {selectedSeason}
+            {" "}
             {/*<span className="font-semibold">{" " + first + " " + last}</span>*/}
             <Link
               aria-label="Query info"
-              className="text-default-300 text-sm hover:opacity-75 hover:cursor-pointer"
+              className="text-default-300 text-xs hover:opacity-75 hover:cursor-pointer"
               onPress={onOpen}
             >
               <i className="bi bi-question-circle text-sm text-default-600" />

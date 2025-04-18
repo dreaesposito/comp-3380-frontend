@@ -48,11 +48,11 @@ export function capitalize(s) {
 const INITIAL_VISIBLE_COLUMNS = ["team_name", "goal_total"];
 
 interface Props {
-  first: string;
-  last: string;
+  firstName: string;
+  lastName: string;
 }
 
-export default function TotalGoalsByTeam({ first, last }: Props) {
+export default function TotalGoalsByTeam({ firstName, lastName }: Props) {
   const [filterValue, setFilterValue] = React.useState("");
 
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -73,8 +73,8 @@ export default function TotalGoalsByTeam({ first, last }: Props) {
   useEffect(() => {
     const getPlayers = async () => {
       const { data, error } = await supabase.rpc("total_goals_by_team", {
-        first_name: first,
-        last_name: last,
+        first_name: firstName,
+        last_name: lastName,
       });
 
       if (error) {
@@ -84,8 +84,8 @@ export default function TotalGoalsByTeam({ first, last }: Props) {
       }
     };
 
-    getPlayers(); // Call the async function
-  }, []);
+    getPlayers();
+  }, [firstName, lastName]); // re-call if these values change
 
   const [page, setPage] = React.useState(1);
 
@@ -221,7 +221,9 @@ export default function TotalGoalsByTeam({ first, last }: Props) {
         <div className="flex justify-between items-center">
           <span className="text-default-700 text-medium">
             Goals by team for
-            <span className="font-semibold">{" " + first + " " + last}</span>
+            <span className="font-semibold">
+              {" " + firstName + " " + lastName}
+            </span>
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:

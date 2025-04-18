@@ -59,11 +59,7 @@ export function capitalize(s) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
 }
 
-interface Props {
-  numRows: number;
-}
-
-export default function TopPlayersPenalties({ numRows }: Props) {
+export default function TopPlayersPenalties({ numRows }: number) {
   const [filterValue, setFilterValue] = React.useState("");
 
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -99,7 +95,7 @@ export default function TopPlayersPenalties({ numRows }: Props) {
     };
 
     getPlayers(); // Call the async function
-  }, []);
+  }, [numRows]);
 
   const [page, setPage] = React.useState(1);
 
