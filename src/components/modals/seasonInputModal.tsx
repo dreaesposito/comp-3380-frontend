@@ -45,10 +45,10 @@ export default function SeasonInputModal(props: ChildProps) {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 500));
     props.callbackFunction(props.tableToRender, {
       selectedSeason: selectedSeason,
     });
+    await new Promise((resolve) => setTimeout(resolve, 500));
     resetForm();
     props.onOpenChange();
     setIsLoading(false);

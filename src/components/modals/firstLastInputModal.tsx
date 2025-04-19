@@ -45,11 +45,11 @@ export default function FirstLastInputModal(props: ChildProps) {
 
     if (valid) {
       setIsLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 500));
       props.callbackFunction(props.tableToRender, {
         firstName: firstName,
         lastName: lastName,
       });
+      await new Promise((resolve) => setTimeout(resolve, 500));
       resetForm();
       props.onOpenChange();
       setIsLoading(false);

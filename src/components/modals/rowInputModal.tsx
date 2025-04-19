@@ -31,8 +31,8 @@ export default function RowInputModal(props: ChildProps) {
       setErrors({ numRows: "Please enter a number between 1 and 2000" });
     } else {
       setIsLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 500));
       props.callbackFunction(props.tableToRender, { numRows: Number(numRows) });
+      await new Promise((resolve) => setTimeout(resolve, 500));
       resetForm();
       props.onOpenChange();
       setIsLoading(false);
