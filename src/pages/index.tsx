@@ -1,16 +1,17 @@
 import { ReactElement, useState } from "react";
+import { Tab, Tabs } from "@heroui/tabs";
+import { Button, useDisclosure } from "@heroui/react";
+import { Link } from "@heroui/link";
+
+import Queries from "./queries";
+
 import TotalGoalsByTeam from "@/components/tables/totalGoalsByTeam.tsx";
 import TotalGAP from "@/components/tables/totalGAP.tsx";
 import AvgShiftByPlay from "@/components/tables/avgShiftByPlay.tsx";
 import GoalsByVenue from "@/components/tables/goalsByVenue.tsx";
-import { Tab, Tabs } from "@heroui/tabs";
 import DefaultLayout from "@/layouts/default";
-import Queries from "./queries";
 import { QueryTabs } from "@/types/QueryTabs";
 import { TestTable } from "@/pages/blog.tsx";
-import { Button, useDisclosure } from "@heroui/react";
-import { Link } from "@heroui/link";
-
 import TopNoOfficialPenalties from "@/components/tables/topNoOfficialPenalties.tsx";
 import TopTeamsPlayedFor from "@/components/tables/topTeamsPlayedFor.tsx";
 import TopPlayersPenalties from "@/components/tables/topPlayersPenalties.tsx";
@@ -44,7 +45,7 @@ export default function IndexPage() {
   // needed for actually rendering a table
   const [tableParams, setTableParams] = useState<any>();
   const [renderedTable, setRenderedTable] = useState<Table>(
-    Table.TotalGAP, // Starting table for the page
+    Table.Top25ByStat, // Starting table for the page
   );
 
   const activateTable = (table: Table, params: any) => {
@@ -79,7 +80,7 @@ export default function IndexPage() {
       case Table.TotalGoalsByTeam:
         return <TotalGoalsByTeam {...tableParams} />;
       case Table.TotalGAP:
-        return <TotalGAP first="Sidney" last="Crosby" />;
+        return <TotalGAP {...{ firstName: "Sidney", lastName: "Crosby" }} />; // Rendered table by default
       case Table.AvgShiftByPlay:
         return <AvgShiftByPlay />;
       case Table.AvgShiftByPeriod:
@@ -90,27 +91,24 @@ export default function IndexPage() {
         return <TopNoOfficialPenalties numRows={25} />;
       case Table.TopTeamsPlayedFor:
         return <TopTeamsPlayedFor numRows={20} />;
-      case "topPlayersPenalties":
-        return <TopPlayersPenalties numRows={15} />;
-      case "totalPlayoffWins":
+      case Table.TopPlayersPenalties:
+        return <TopPlayersPenalties {...tableParams} />;
+      case Table.TotalPlayoffWins:
         return <TotalPlayoffWins season_name="2013-2014" team_name="Rangers" />;
-      case "playersScoredAgainstAllTeams":
+      case Table.PlayersScoredAgainstAllTeams:
         return <PlayersScoredAgainstAllTeams />;
-      case "top25ByStat":
+      case Table.Top25ByStat:
         return <Top25ByStat season="2015-2016" stat="goals" />;
-      case "avgGoalsPerShot":
+      case Table.AvgGoalsPerShot:
         return <AvgGoalsPerShot first="Sidney" last="Crosby" />;
-      case "allTeams":
+      case Table.AllTeams:
         return <AllTeams />;
-      case "searchPlayer":
+      case Table.SearchPlayer:
         return <SearchPlayer name="alex" />;
-      case "schedule":
+      case Table.Schedule:
         return (
           <Schedule end_year="2016" start_year="2015" team_name="Rangers" />
         );
-
-      case Table.TopPlayersPenalties:
-        return <TopPlayersPenalties {...tableParams} />;
       case Table.DEFAULT:
         return <TestTable />;
       default:
@@ -183,7 +181,7 @@ export default function IndexPage() {
             className="text-default-400 text-sm hover:opacity-75 hover:cursor-pointer"
             onPress={() => openModal(Modal.InfoModal)}
           >
-            <i className="bi bi-question-circle text-lg"></i>
+            <i className="bi bi-question-circle text-lg" />
           </Link>
         </div>
 
@@ -199,8 +197,6 @@ export default function IndexPage() {
             {(item) => (
               <Tab key={item.id} title={item.label}>
                 <Queries emitToParent={activateTable} selectedKey={item.id} />
-                {/*<DisplayTables selectedKey={item.id} />*/}
-                {/*{childData}*/}
               </Tab>
             )}
           </Tabs>
