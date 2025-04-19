@@ -7,5 +7,13 @@ export const enum Table {
   TopNoOfficialPenalties,
   TopTeamsPlayedFor,
   TopPlayersPenalties,
+  TotalPlayoffWins,
+  PlayersScoredAgainstAllTeams,
+  Top25ByStat,
+  AvgGoalsPerShot,
+  AllTeams,
+  SearchPlayer,
+  Schedule,
+  GordieHoweHatTricks,
   DEFAULT,
 }
