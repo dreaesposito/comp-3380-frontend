@@ -1,11 +1,4 @@
-// @ts-nocheck
-
-// TODO - add games played?
-
-import { ChevronDownIcon } from "@/components/common/tableIcons.tsx";
-
 import React, { useEffect, useState } from "react";
-
 import {
   Button,
   Dropdown,
@@ -22,6 +15,7 @@ import {
   User,
 } from "@heroui/react";
 
+import { ChevronDownIcon } from "@/components/common/tableIcons.tsx";
 import supabase from "@/utils/supabase.ts";
 
 // for dropdown mapping
@@ -29,6 +23,16 @@ export const columns = [
   {
     name: "Season",
     uid: "season_name",
+    sortable: true,
+  },
+  {
+    name: "Season Games",
+    uid: "regseason_gps",
+    sortable: true,
+  },
+  {
+    name: "Playoff Games",
+    uid: "playoff_gps",
     sortable: true,
   },
   {
@@ -50,32 +54,35 @@ export const columns = [
 
 const INITIAL_VISIBLE_COLUMNS = [
   "season_name",
+  "regseason_gps",
+  "playoff_gps",
   "total_goals",
   "total_assists",
   "total_points",
 ];
 
-export function capitalize(s) {
+export function capitalize(s: any) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
 }
 
-interface Props {
-  first: string;
-  last: string;
-}
-
-export default function TotalGAP({ first, last }: Props) {
+export default function TotalGAP({
+  firstName,
+  lastName,
+}: {
+  firstName: string;
+  lastName: string;
+}) {
   const [filterValue, setFilterValue] = React.useState("");
 
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
+  const [selectedKeys, setSelectedKeys] = React.useState<any>(new Set([]));
 
-  const [visibleColumns, setVisibleColumns] = React.useState(
+  const [visibleColumns, setVisibleColumns] = React.useState<any>(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
 
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const [sortDescriptor, setSortDescriptor] = React.useState({
+  const [sortDescriptor, setSortDescriptor] = React.useState<any>({
     column: "total_assists",
     direction: "descending",
   });
@@ -85,8 +92,8 @@ export default function TotalGAP({ first, last }: Props) {
   useEffect(() => {
     const getPlayers = async () => {
       const { data, error } = await supabase.rpc("total_gap", {
-        first_name: first,
-        last_name: last,
+        first_name: firstName,
+        last_name: lastName,
       });
 
       if (error) {
@@ -97,7 +104,7 @@ export default function TotalGAP({ first, last }: Props) {
     };
 
     getPlayers(); // Call the async function
-  }, []);
+  }, [firstName, lastName]);
 
   const [page, setPage] = React.useState(1);
 
@@ -105,7 +112,7 @@ export default function TotalGAP({ first, last }: Props) {
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
-    if (visibleColumns === "all") return columns;
+    // if (visibleColumns === "all") return columns;
 
     return columns.filter((column) =>
       Array.from(visibleColumns).includes(column.uid),
@@ -133,7 +140,7 @@ export default function TotalGAP({ first, last }: Props) {
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((user, columnKey) => {
+  const renderCell = React.useCallback((user: any, columnKey: any) => {
     const cellValue = user[columnKey];
 
     switch (columnKey) {
@@ -141,10 +148,10 @@ export default function TotalGAP({ first, last }: Props) {
         return (
           <User
             avatarProps={{
-              radius: "xl",
+              radius: "full",
               size: "sm",
               src: user.team_logo,
-              color: "",
+              color: undefined,
             }}
             name={user.team_city + " " + cellValue}
           />
@@ -166,12 +173,12 @@ export default function TotalGAP({ first, last }: Props) {
     }
   }, []);
 
-  const onRowsPerPageChange = React.useCallback((e) => {
+  const onRowsPerPageChange = React.useCallback((e: any) => {
     setRowsPerPage(Number(e.target.value));
     setPage(1);
   }, []);
 
-  const onSearchChange = React.useCallback((value) => {
+  const onSearchChange = React.useCallback((value: any) => {
     if (value) {
       setFilterValue(value);
       setPage(1);
@@ -216,7 +223,7 @@ export default function TotalGAP({ first, last }: Props) {
         <div className="flex justify-between items-center">
           <span className="text-default-700 text-medium">
             Stats for
-            <span className="font-semibold">{" " + first + " " + last}</span>
+            <span className="font-semibold">{" " + firstName + " " + lastName}</span>
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -306,7 +313,6 @@ export default function TotalGAP({ first, last }: Props) {
           {(column) => (
             <TableColumn
               key={column.uid}
-              alignItems="center"
               allowsSorting={column.sortable}
             >
               {column.name}
