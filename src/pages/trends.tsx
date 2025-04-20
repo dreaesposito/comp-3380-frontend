@@ -9,7 +9,7 @@ import supabase from "../utils/supabase";
 
 import React from "react";
 
-
+import TotalGoalsByTeam from "@/components/tables/playerSeasonStats";
 
 import { useEffect, useState } from "react";
 import {
@@ -42,6 +42,9 @@ export default function TrendsPage() {
   const [loading, setIsLoading] = useState(false);
   const [selectedMetric, setSelectedMetric] = useState("numpenalties");
   const [chartType, setChartType] = useState("bar");
+
+  const [showGraph, setShowGraph] = useState(false);
+  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -113,30 +116,10 @@ export default function TrendsPage() {
     }
   }, [chartType, selectedMetric, data]);
 
-  const handleSelect = async (player: Player) => {
-    console.log("Selected player:", player);
-  }
 
-  return (
-    <DefaultLayout>
-      {/* <h1 className="text-center text-3xl font-extrabold mb-8">Stats by Season</h1> */}
-      <div className="w-3/4 mx-auto mb-4">
-        <h1 className="text-center text-4xl font-bold">Stats by Season</h1>
-      </div>
 
-      <div className="w-3/4 mx-auto mb-4">
-      <div className="p-4">
-       <SearchBar placeholder="Search players..." onSelect={handleSelect} /> 
-      {/* <ul className="mt-4 space-y-2">
-        {results.map((player) => (
-          <li key={player.id} className="border p-2 rounded-md">
-            {player.name}
-          </li>
-        ))}
-      </ul> */}
-    </div>
-      </div>
-
+  const chartDiv = React.useMemo(() => {
+    return (
       <div className="md:w-3/4 w-lg place-items-center p-6 border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-900 rounded-xl shadow-lg mx-auto">
         {/* <h2 className="text-xl font-bold mb-4">Trends Per Season</h2> */}
 
@@ -152,12 +135,6 @@ export default function TrendsPage() {
             </Button>
           ))}
         </div>
-        {/* <h2 className="text-xl font-bold mb-4">Penalties Per Season</h2>
-        <h2 className="text-xl font-bold mb-4">
-          {selectedMetric === "numpenalties" && "Penalties Per Season"}
-          {selectedMetric === "numgoals" && "Goals Per Season"}
-          {selectedMetric === "numshots" && "Shots Per Season"}
-        </h2> */}
 
         {loading ? (
           <Spinner
@@ -197,6 +174,36 @@ export default function TrendsPage() {
           <span className="ml-1">Line Chart</span>
         </div>
       </div>
+    );
+  }, []);
+
+  const handleSelect = async (player: Player) => {
+    console.log("Selected player:", player);
+    setSelectedPlayer(player)
+  }
+
+  return (
+    <DefaultLayout>
+      {/* <h1 className="text-center text-3xl font-extrabold mb-8">Stats by Season</h1> */}
+      <div className="w-3/4 mx-auto mb-4">
+        <h1 className="text-center text-4xl font-bold">Player Analysis</h1>
+      </div>
+
+      <div className="w-3/4 mx-auto mb-4">
+        <div className="p-4">
+          <SearchBar placeholder="Search players..." onSelect={handleSelect} /> 
+      
+        </div>
+      </div>
+
+      {selectedPlayer && (
+        <div>
+          <TotalGoalsByTeam player={selectedPlayer}></TotalGoalsByTeam>
+        </div>
+      )}
+      
+
+
     </DefaultLayout>
   );
 }

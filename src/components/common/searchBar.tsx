@@ -166,12 +166,12 @@ const SearchBar = ({ placeholder = "Search...", onSelect}: SearchBarProps) => {
         />
         {/* <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute left-3 top-2.5" /> */}
       {query.length > 0 && (
-        <div className="absolute w-full bg-white border border-gray-200 rounded-md shadow-md mt-1 z-10 max-h-64 overflow-y-auto">
+        <div className="absolute w-full bg-default-100 border border-default-200 rounded-md shadow-md mt-1 z-10 max-h-64 overflow-y-auto">
           {filteredPlayers.length > 0 ? (
             filteredPlayers.map((player, index) => (
               <div
                 key={index}
-                className="flex justify-between items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                className="flex justify-between  items-center px-4 py-2 hover:bg-default/60 cursor-pointer"
                 onClick={() => {
                   console.log("Selection was ", player.firstname + " " + player.lastname)
                   setQuery("");
