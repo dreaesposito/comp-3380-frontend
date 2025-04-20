@@ -9,6 +9,8 @@ import supabase from "../utils/supabase";
 
 import React from "react";
 
+
+
 import { useEffect, useState } from "react";
 import {
   BarChart,
@@ -24,6 +26,10 @@ import {
 
 import { Button } from "@heroui/button";
 import { Spinner, Switch } from "@heroui/react";
+
+import SearchBar from "@/components/common/searchBar";
+import { Player } from "@/types/Player";
+
 
 const metrics = [
   { key: "numpenalties", label: "Penalties" },
@@ -107,11 +113,28 @@ export default function TrendsPage() {
     }
   }, [chartType, selectedMetric, data]);
 
+  const handleSelect = async (player: Player) => {
+    console.log("Selected player:", player);
+  }
+
   return (
     <DefaultLayout>
       {/* <h1 className="text-center text-3xl font-extrabold mb-8">Stats by Season</h1> */}
       <div className="w-3/4 mx-auto mb-4">
         <h1 className="text-center text-4xl font-bold">Stats by Season</h1>
+      </div>
+
+      <div className="w-3/4 mx-auto mb-4">
+      <div className="p-4">
+       <SearchBar placeholder="Search players..." onSelect={handleSelect} /> 
+      {/* <ul className="mt-4 space-y-2">
+        {results.map((player) => (
+          <li key={player.id} className="border p-2 rounded-md">
+            {player.name}
+          </li>
+        ))}
+      </ul> */}
+    </div>
       </div>
 
       <div className="md:w-3/4 w-lg place-items-center p-6 border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-900 rounded-xl shadow-lg mx-auto">

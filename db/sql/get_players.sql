@@ -1,18 +1,18 @@
 CREATE OR REPLACE FUNCTION get_players(
-    str TEXT
+    name TEXT
 )
 RETURNS TABLE (
-    fn VARCHAR(30),
-    ln VARCHAR(30)
+    fname VARCHAR(30),
+    lname VARCHAR(30)
 ) AS $$
 BEGIN
     RETURN QUERY
 
     SELECT firstname,
-    lastname
+           lastname
     FROM players
-    WHERE firstname LIKE str
-    OR lastname LIKE str
+    WHERE firstname LIKE name
+    OR lastname LIKE name
     LIMIT 10;
 END;
 $$ LANGUAGE plpgsql;
