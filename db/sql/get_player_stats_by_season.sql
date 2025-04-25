@@ -3,8 +3,10 @@ CREATE OR REPLACE FUNCTION get_player_stats_by_season(
     lname TEXT
 )
 RETURNS TABLE (
+    pid INT,
     season VARCHAR(10),
     team VARCHAR(30),
+    teamStartDate DATE,
     gamesPlayed BIGINT,
     numGoalz BIGINT,
     numAssistz BIGINT,
@@ -36,12 +38,10 @@ BEGIN
         WHERE assists.playerID = player_id
         GROUP BY games.season
     ),
-    teamRanks AS (
-        TODO
-    ),
     seasonOther AS (
         SELECT games.season, 
                teams.teamname, 
+               playsOn.startDate,
                SUM(playsIn.plusMinus) as plusMinus, 
                COUNT(DISTINCT games.gameID) as numGames
         FROM playsIn
@@ -52,12 +52,13 @@ BEGIN
           AND (playsOn.enddate IS NULL OR playsOn.enddate >= games.datetime::date)
         LEFT JOIN teams ON playsOn.teamID = teams.teamID
         WHERE playsIn.playerID = player_id
-        GROUP BY games.season, teams.teamname
+        GROUP BY games.season, teams.teamname, playsOn.startDate
     ),
     totals AS (
         SELECT 
             seasonGoals.season AS seasonYears,
             teamname,
+            startDate,
             numGames,
             numGoals, 
             numAssists, 
@@ -68,13 +69,16 @@ BEGIN
         JOIN seasonOther ON seasonGoals.season = seasonOther.season
     )
     SELECT 
+        player_id,
         seasonYears,
         teamname,
+        startDate,
         numGames,
         numGoals, 
         numAssists, 
         numPoints, 
         plusMinus
-    FROM totals;
+    FROM totals
+    ORDER BY seasonYears ASC, startDate ASC;
 END;
 $$ LANGUAGE plpgsql;

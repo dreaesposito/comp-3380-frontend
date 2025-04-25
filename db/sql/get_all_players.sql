@@ -7,7 +7,7 @@ BEGIN
   SELECT json_agg(sub)
   INTO result
   FROM (
-    SELECT firstname, lastname, city AS team
+    SELECT players.playerid, firstname, lastname, city AS team
     FROM players
     LEFT JOIN playsOn 
       ON players.playerid = playsOn.playerid

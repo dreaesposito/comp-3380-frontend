@@ -24,6 +24,12 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+import {
+Card,
+CardHeader,
+CardBody,
+} from "@heroui/react";
+
 import { Button } from "@heroui/button";
 import { Spinner, Switch } from "@heroui/react";
 
@@ -45,6 +51,8 @@ export default function TrendsPage() {
 
   const [showGraph, setShowGraph] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
+
+  const [playerInfo, setPlayerInfo] = useState<any | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -180,6 +188,15 @@ export default function TrendsPage() {
   const handleSelect = async (player: Player) => {
     console.log("Selected player:", player);
     setSelectedPlayer(player)
+
+      const { data, error } = await supabase.rpc("get_player_info", { pid: player.playerid});
+        if (error) {
+          console.error("Error fetching player information:", error);
+        } else {
+          console.log("fetched player info:", data);
+          setPlayerInfo(data);
+        }
+
   }
 
   return (
@@ -196,10 +213,42 @@ export default function TrendsPage() {
         </div>
       </div>
 
-      {selectedPlayer && (
-        <div>
-          <TotalGoalsByTeam player={selectedPlayer}></TotalGoalsByTeam>
+      {selectedPlayer && playerInfo && (
+        <div className="flex gap-4 w-full">
+        {/* Player Info Card (2/3 width) */}
+        <div className="w-1/3 bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md">
+          {/* Replace with actual player info
+          <h2 className="text-lg font-semibold mb-2">Player Info</h2>
+          <p>Height: 6'1"</p>
+          <p>Weight: 200 lbs</p>
+          <p>Position: Forward</p> */}
+          <Card className="p-6">
+                <CardHeader className="flex pl-16 text-xl font-bold">{playerInfo[0].fn} {playerInfo[0].ln}</CardHeader>
+                <CardBody className="flex justify-center items-center">
+                <div className="flex items-center">
+              <img 
+                src={playerInfo[0].img} // Ensure the player image URL is provided in the player data
+                alt={`${playerInfo[0].fn} ${playerInfo[0].ln}`} 
+                className="w-32 h-32 mr-6 rounded-full mr-14" // Adjust size as needed
+              />
+              <div>
+                <p><strong>Nationality:</strong> {playerInfo[0].nat}</p>
+                <p><strong>Birthdate:</strong> {playerInfo[0].bd}</p>
+                <p><strong>Height:</strong> {playerInfo[0].h}</p>
+                <p><strong>Weight:</strong> {playerInfo[0].w}</p>
+                <p><strong>Player Type:</strong> {playerInfo[0].pt}</p>
+              </div>
+            </div>
+
+                </CardBody>
+              </Card>
         </div>
+      
+        {/* Goals by Team (1/3 width) */}
+        <div className="w-2/3 outline outline-1 outline-gray-300 rounded-xl p-4 shadow-sm bg-white dark:bg-gray-900">
+          <TotalGoalsByTeam player={selectedPlayer} />
+        </div>
+      </div>
       )}
       
 

@@ -9,7 +9,7 @@ RETURNS TABLE (
     h VARCHAR(30),
     w INT,
     pt VARCHAR(30),
-    img VARCHAR(255)
+    img TEXT
 ) AS $$
 BEGIN
     RETURN QUERY
