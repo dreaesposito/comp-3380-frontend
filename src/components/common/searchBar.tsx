@@ -74,6 +74,7 @@ interface SearchBarProps {
 const SearchBar = ({ placeholder = "Search...", onSelect}: SearchBarProps) => {
   const [query, setQuery] = useState("");
   const [allPlayers, setAllPlayers] = useState<Player[]>([]);
+  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
 
   // Fetch all players once on mount
@@ -123,6 +124,13 @@ const SearchBar = ({ placeholder = "Search...", onSelect}: SearchBarProps) => {
     // return `${player.firstName} ${player.lastName}`.toLowerCase().includes(query.toLowerCase());
   });
   
+  // const showSelectedPlayer = (player: Player) => {
+  //   console.log("Player:", player);
+  //   setSelectedPlayer(player)
+
+  //   placeholder = player.firstname + " " + player.lastname;
+
+  // }
 
   useEffect(() => {
     console.log("AllPlayers updated:", allPlayers);
@@ -141,6 +149,7 @@ const SearchBar = ({ placeholder = "Search...", onSelect}: SearchBarProps) => {
   //   return () => clearTimeout(handler);
   // }, [query, debounceTime, allPlayers]);
 
+
   return (
     <div className="relative w-full max-w-md mx-auto">
       {/* <input
@@ -157,7 +166,7 @@ const SearchBar = ({ placeholder = "Search...", onSelect}: SearchBarProps) => {
               inputWrapper: "border-1",
             }}
             placeholder={placeholder}
-            size="sm"
+            size="md"
             startContent={<SearchIcon className="text-default-300" />}
             value={query}
             variant="bordered"
@@ -165,34 +174,37 @@ const SearchBar = ({ placeholder = "Search...", onSelect}: SearchBarProps) => {
             onValueChange={setQuery}
         />
         {/* <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute left-3 top-2.5" /> */}
-      {query.length > 0 && (
-        <div className="absolute w-full bg-default-100 border border-default-200 rounded-md shadow-md mt-1 z-10 max-h-64 overflow-y-auto">
-          {filteredPlayers.length > 0 ? (
-            filteredPlayers.map((player, index) => (
-              <div
-                key={index}
-                className="flex justify-between  items-center px-4 py-2 hover:bg-default/60 cursor-pointer"
-                onClick={() => {
-                  console.log("Selection was ", player.firstname + " " + player.lastname)
-                  setQuery("");
-                  // Optionally close dropdown here or keep it open
-                  onSelect(player);
-                }}
-              >
-                {/* {player.firstname} {player.lastname} — {player.team} */}
-                <span>
-                  {player.firstname} {player.lastname}
-                </span>
-                <span className="text-sm text-gray-400 ml-4">
-                  {player.team}
-                </span>
-              </div>
-            ))
-          ) : (
-            <div className="px-4 py-2 text-gray-500">No results found</div>
-          )}
+        {query.length > 0 && !(selectedPlayer && `${selectedPlayer.firstname} ${selectedPlayer.lastname}` === query) && (
+  <div className="absolute w-full bg-default-100 border border-default-200 rounded-md shadow-md mt-1 z-50 max-h-64 overflow-y-auto pointer-events-auto">
+
+    {filteredPlayers.length > 0 ? (
+      filteredPlayers.map((player, index) => (
+        <div
+          key={index}
+          className="flex justify-between items-center px-4 py-2 hover:bg-default/60 cursor-pointer"
+          onClick={() => {
+            console.log("Selection was ", player.firstname + " " + player.lastname)
+            setQuery(`${player.firstname} ${player.lastname}`);
+            setSelectedPlayer(player);
+            // Optionally close dropdown here or keep it open
+            onSelect(player);
+          }}
+        >
+          <span>
+            {player.firstname} {player.lastname}
+          </span>
+          <span className="text-sm text-gray-400 ml-4">
+            {player.team}
+            {/* {player.team.slice(0, 3)} */}
+          </span>
         </div>
-      )}
+      ))
+    ) : (
+      <div className="px-4 py-2 text-gray-500">No results found</div>
+    )}
+  </div>
+)}
+
     </div>
   );
 };

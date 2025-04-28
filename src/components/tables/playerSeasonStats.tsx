@@ -52,37 +52,37 @@ const columns = [
   {
     name: "Season",
     uid: "season",
-    sortable: true,
+    sortable: false,
   },
   {
     name: "Team",
     uid: "team",
-    sortable: true,
+    sortable: false,
   },
   {
     name: "Games Played",
     uid: "gamesplayed",
-    sortable: true,
+    sortable: false,
   },
   {
     name: "Goals",
     uid: "numgoalz",
-    sortable: true,
+    sortable: false,
   },
   {
     name: "Assists",
     uid: "numassistz",
-    sortable: true,
+    sortable: false,
   },
   {
     name: "Points",
     uid: "numpointz",
-    sortable: true,
+    sortable: false,
   },
   {
     name: "+/-",
     uid: "plusminuz",
-    sortable: true,
+    sortable: false,
   },
 ];
 
@@ -106,7 +106,7 @@ interface Props {
   player: Player
 }
 
-export default function Top25ByStat({ player }: Props) {
+export default function PlayerSeasonStats({ player }: Props) {
   const season = "2015-2016";
   const stat = "p";
   // const [filterValue, setFilterValue] = React.useState("");
@@ -145,7 +145,7 @@ export default function Top25ByStat({ player }: Props) {
     };
 
     getPlayers(); // Call the async function
-  }, []);
+  }, [player]);
 
   const [page, setPage] = React.useState(1);
 
@@ -195,64 +195,100 @@ export default function Top25ByStat({ player }: Props) {
   //   }
   // }, []);
 
+  // const topContent = React.useMemo(() => {
+  //   return (
+  //     <div className="flex flex-col gap-4">
+
+  //         <div className="flex gap-3">
+  //           <Dropdown>
+  //             <DropdownTrigger className="hidden sm:flex">
+  //               <Button
+  //                 endContent={<ChevronDownIcon className="text-small" />}
+  //                 size="sm"
+  //                 variant="flat"
+  //               >
+  //                 Columns
+  //               </Button>
+  //             </DropdownTrigger>
+  //             <DropdownMenu
+  //               disallowEmptySelection
+  //               aria-label="Table Columns"
+  //               closeOnSelect={false}
+  //               selectedKeys={visibleColumns}
+  //               selectionMode="multiple"
+  //               onSelectionChange={setVisibleColumns}
+  //             >
+  //               {columns.map((column) => (
+  //                 <DropdownItem key={column.uid} className="capitalize">
+  //                   {capitalize(column.name)}
+  //                 </DropdownItem>
+  //               ))}
+  //             </DropdownMenu>
+  //           </Dropdown>
+
+  //       </div>
+  //       <div className="flex justify-between items-center">
+  //         <span className="text-default-800 text-medium text-bold">
+  //           Season Stats
+  //         </span>
+  //         {/* <label className="flex items-center text-default-400 text-small">
+  //           Rows per page:
+  //           <select
+  //             className="bg-transparent outline-none text-default-400 text-small"
+  //             onChange={onRowsPerPageChange}
+  //           >
+  //             <option value="10">10</option>
+  //             <option value="15">15</option>
+  //             <option value="25">25</option>
+  //           </select>
+  //         </label> */}
+  //       </div>
+  //     </div>
+  //   );
+  // }, [
+  //   // filterValue,
+  //   visibleColumns,
+  //   // onSearchChange,
+  //   // onRowsPerPageChange,
+  //   // players.length,
+  //   // hasSearchFilter,
+  // ]);
+
   const topContent = React.useMemo(() => {
     return (
-      <div className="flex flex-col gap-4">
-
-          <div className="flex gap-3">
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  size="sm"
-                  variant="flat"
-                >
-                  Columns
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={visibleColumns}
-                selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
-              >
-                {columns.map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-default-700 text-medium">
-            Season Stats for {player.firstname} {player.lastname}
-          </span>
-          {/* <label className="flex items-center text-default-400 text-small">
-            Rows per page:
-            <select
-              className="bg-transparent outline-none text-default-400 text-small"
-              onChange={onRowsPerPageChange}
+      <div className="flex justify-between items-center w-full">
+        <h2 className="text-2xl font-bold text-default-800">
+          Season Stats
+        </h2>
+  
+        <Dropdown>
+          <DropdownTrigger className="flex">
+            <Button
+              endContent={<ChevronDownIcon className="text-small" />}
+              size="sm"
+              variant="flat"
             >
-              <option value="10">10</option>
-              <option value="15">15</option>
-              <option value="25">25</option>
-            </select>
-          </label> */}
-        </div>
+              Columns
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu
+            disallowEmptySelection
+            aria-label="Table Columns"
+            closeOnSelect={false}
+            selectedKeys={visibleColumns}
+            selectionMode="multiple"
+            onSelectionChange={setVisibleColumns}
+          >
+            {columns.map((column) => (
+              <DropdownItem key={column.uid} className="capitalize">
+                {capitalize(column.name)}
+              </DropdownItem>
+            ))}
+          </DropdownMenu>
+        </Dropdown>
       </div>
     );
-  }, [
-    // filterValue,
-    visibleColumns,
-    // onSearchChange,
-    // onRowsPerPageChange,
-    // players.length,
-    // hasSearchFilter,
-  ]);
+  }, [visibleColumns]);
 
   // const bottomContent = React.useMemo(() => {
   //   return (
@@ -294,7 +330,7 @@ export default function Top25ByStat({ player }: Props) {
   );
 
   return (
-    <div>
+    <div className="w-full overflow-x-auto">
       <Table
         isCompact
         isHeaderSticky
@@ -325,7 +361,7 @@ export default function Top25ByStat({ player }: Props) {
           )}
         </TableHeader>
         <TableBody
-          emptyContent={"Select an option to load data"}
+          emptyContent={"Loading data..."}
           items={seasonStats}
         >
           {seasonStats.map((item) => (

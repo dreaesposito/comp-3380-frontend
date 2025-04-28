@@ -3,26 +3,13 @@
 //
 // ///////////////////////////////////
 // import { title } from "@/components/primitives";
-import DefaultLayout from "@/layouts/default";
-
 import supabase from "../utils/supabase";
 
-import React from "react";
-
-import TotalGoalsByTeam from "@/components/tables/playerSeasonStats";
+import DefaultLayout from "@/layouts/default";
+import PlayerSeasonStats from "@/components/tables/playerSeasonStats";
+import PlayerStatsChart from "@/components/common/playerStatsChart";
 
 import { useEffect, useState } from "react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-  LineChart,
-  Line,
-  ResponsiveContainer,
-} from "recharts";
 
 import {
 Card,
@@ -30,173 +17,40 @@ CardHeader,
 CardBody,
 } from "@heroui/react";
 
-import { Button } from "@heroui/button";
-import { Spinner, Switch } from "@heroui/react";
-
 import SearchBar from "@/components/common/searchBar";
 import { Player } from "@/types/Player";
 
-
-const metrics = [
-  { key: "numpenalties", label: "Penalties" },
-  { key: "numgoals", label: "Goals" },
-  { key: "numshots", label: "Shots" },
-];
-
 export default function TrendsPage() {
-  const [data, setData] = useState([]);
-  const [loading, setIsLoading] = useState(false);
-  const [selectedMetric, setSelectedMetric] = useState("numpenalties");
-  const [chartType, setChartType] = useState("bar");
-
-  const [showGraph, setShowGraph] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
-
   const [playerInfo, setPlayerInfo] = useState<any | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      let rpcfunc = "";
-      if (selectedMetric === "numpenalties")
-        rpcfunc = "get_penalties_per_season";
-      else if (selectedMetric === "numgoals") rpcfunc = "get_goals_per_season";
-      else if (selectedMetric === "numshots") rpcfunc = "get_shots_per_season";
-
-      setIsLoading(true);
-      const { data, error } = await supabase.rpc(rpcfunc);
-
-      if (error) {
-        console.error("Error fetching penalties:", error);
-      } else {
-        // console.log(data);
-        setData(data);
-      }
-
-      setIsLoading(false);
-    };
-
-    fetchData();
-  }, [selectedMetric, chartType]);
-
-  const chartContent = React.useMemo(() => {
-    if (chartType === "bar") {
-      return (
-        <BarChart
-          data={data}
-          margin={{ top: 20, right: 30, left: 30, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="season" />
-          <YAxis
-            label={{
-              value: `Number of ${metrics.find((metric) => metric.key === selectedMetric)?.label}`,
-              angle: -90,
-              position: "insideLeft",
-              dx: -25,
-              style: { textAnchor: "middle", fill: "#555" },
-            }}
-          />
-          <Tooltip />
-          <Bar dataKey={selectedMetric} fill="#8884d8" />
-        </BarChart>
-      );
-    } else {
-      return (
-        <LineChart
-          data={data}
-          margin={{ top: 20, right: 30, left: 30, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="season" />
-          <YAxis
-            label={{
-              value: `Number of ${metrics.find((metric) => metric.key === selectedMetric)?.label}`,
-              angle: -90,
-              position: "insideLeft",
-              dx: -25,
-              style: { textAnchor: "middle", fill: "#555" },
-            }}
-          />
-          <Tooltip />
-          <Line type="monotone" dataKey={selectedMetric} stroke="#82ca9d" />
-        </LineChart>
-      );
-    }
-  }, [chartType, selectedMetric, data]);
-
-
-
-  const chartDiv = React.useMemo(() => {
-    return (
-      <div className="md:w-3/4 w-lg place-items-center p-6 border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-900 rounded-xl shadow-lg mx-auto">
-        {/* <h2 className="text-xl font-bold mb-4">Trends Per Season</h2> */}
-
-        <div className="flex justify-center space-x-4 mb-6">
-          {metrics.map((metric) => (
-            <Button
-              key={metric.label}
-              variant={selectedMetric === metric.key ? "solid" : "bordered"}
-              // color={selectedMetric === metric.key ? "success" : "default"}
-              onPress={() => setSelectedMetric(metric.key)}
-            >
-              {metric.label}
-            </Button>
-          ))}
-        </div>
-
-        {loading ? (
-          <Spinner
-            size="lg"
-            className="scale-150 p-14"
-            color="default"
-            variant="gradient"
-          />
-        ) : (
-          <ResponsiveContainer
-            className="items-center"
-            height={300}
-            width="100%"
-          >
-            {chartContent}
-          </ResponsiveContainer>
-        )}
-
-        {/* <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="season" />
-            <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="numpenalties" stroke="#82ca9d" />
-          </LineChart>
-        </ResponsiveContainer>  */}
-
-        <div className="flex justify-center space-x-4 mt-4">
-          <span className="mr-1">Bar Chart</span>
-          <Switch
-            checked={chartType === "line"}
-            onChange={() => setChartType(chartType === "bar" ? "line" : "bar")}
-            className="rounded-full w-12 h-6"
-            color="default"
-          />
-          <span className="ml-1">Line Chart</span>
-        </div>
-      </div>
-    );
-  }, []);
 
   const handleSelect = async (player: Player) => {
     console.log("Selected player:", player);
     setSelectedPlayer(player)
 
-      const { data, error } = await supabase.rpc("get_player_info", { pid: player.playerid});
-        if (error) {
-          console.error("Error fetching player information:", error);
-        } else {
-          console.log("fetched player info:", data);
-          setPlayerInfo(data);
-        }
+    const { data, error } = await supabase.rpc("get_player_info", { pid: player.playerid});
+    if (error) {
+      console.error("Error fetching player information:", error);
+    } else {
+      console.log("fetched player info:", data);
+      setPlayerInfo(data);
+    }
+  }
 
+  function calculateAge(birthdate: string): number {
+    const today = new Date();
+    const birthDate = new Date(birthdate);
+  
+    let age = today.getFullYear() - birthDate.getFullYear();
+  
+    const hasHadBirthdayThisYear =
+      today.getMonth() > birthDate.getMonth() ||
+      (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
+  
+    if (!hasHadBirthdayThisYear) {
+      age--;
+    }
+    return age;
   }
 
   return (
@@ -214,45 +68,48 @@ export default function TrendsPage() {
       </div>
 
       {selectedPlayer && playerInfo && (
+      <div className="">
         <div className="flex gap-4 w-full">
-        {/* Player Info Card (2/3 width) */}
-        <div className="w-1/3 bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md">
-          {/* Replace with actual player info
-          <h2 className="text-lg font-semibold mb-2">Player Info</h2>
-          <p>Height: 6'1"</p>
-          <p>Weight: 200 lbs</p>
-          <p>Position: Forward</p> */}
-          <Card className="p-6">
-                <CardHeader className="flex pl-16 text-xl font-bold">{playerInfo[0].fn} {playerInfo[0].ln}</CardHeader>
-                <CardBody className="flex justify-center items-center">
-                <div className="flex items-center">
-              <img 
-                src={playerInfo[0].img} // Ensure the player image URL is provided in the player data
-                alt={`${playerInfo[0].fn} ${playerInfo[0].ln}`} 
-                className="w-32 h-32 mr-6 rounded-full mr-14" // Adjust size as needed
-              />
-              <div>
-                <p><strong>Nationality:</strong> {playerInfo[0].nat}</p>
-                <p><strong>Birthdate:</strong> {playerInfo[0].bd}</p>
-                <p><strong>Height:</strong> {playerInfo[0].h}</p>
-                <p><strong>Weight:</strong> {playerInfo[0].w}</p>
-                <p><strong>Player Type:</strong> {playerInfo[0].pt}</p>
+          {/* <div className="w-1/3 bg-default-50 rounded-xl p-4 shadow-md"> */}
+          <Card className="w-1/3 bg-default-50 rounded-xl shadow-md p-6">
+            <CardHeader className="flex justify-center text-3xl font-bold">
+              <div className="flex gap-2">
+                <span>{playerInfo[0].fn}</span>
+                <span>{playerInfo[0].ln}</span>
               </div>
-            </div>
+            </CardHeader>
+            <CardBody className="flex justify-center items-center">
+              <div className="flex items-center">
+                <img 
+                  src={playerInfo[0].img} 
+                  alt={`${playerInfo[0].fn} ${playerInfo[0].ln}`} 
+                  className="w-24 h-24 mr-6 rounded-full mr-14" 
+                />
+                <div className="flex flex-col gap-1.5">
+                  <p><strong>Type:</strong> {playerInfo[0].pt}</p>
+                  <p><strong>Nationality:</strong> {playerInfo[0].nat}</p>
+                  <p><strong>Age:</strong> {calculateAge(playerInfo[0].bd)}</p>
+                  {/* <p><strong>Birthdate:</strong> {playerInfo[0].bd}</p> */}
+                  <p><strong>Height:</strong> {playerInfo[0].h}</p>
+                  <p><strong>Weight:</strong> {playerInfo[0].w}</p>
+                </div>
+              </div>
+            </CardBody>
+          </Card>
+          {/* </div> */}
 
-                </CardBody>
-              </Card>
+          <div className="w-2/3 bg-default-50 rounded-xl p-6 shadow-md">
+            <PlayerSeasonStats player={selectedPlayer} />
+          </div>
         </div>
-      
-        {/* Goals by Team (1/3 width) */}
-        <div className="w-2/3 outline outline-1 outline-gray-300 rounded-xl p-4 shadow-sm bg-white dark:bg-gray-900">
-          <TotalGoalsByTeam player={selectedPlayer} />
+        
+        <div className="w-full bg-default-50 rounded-xl p-6 shadow-md mt-4">
+          <h2 className="text-2xl font-bold mb-4 text-center">Player Comparison</h2>
+          <PlayerStatsChart player={selectedPlayer} />
         </div>
       </div>
+
       )}
-      
-
-
     </DefaultLayout>
   );
 }

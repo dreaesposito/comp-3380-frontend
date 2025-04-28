@@ -9,6 +9,8 @@ RETURNS TABLE (
     teamStartDate DATE,
     gamesPlayed BIGINT,
     numGoalz BIGINT,
+    numPenaltiez BIGINT,
+    numShotz BIGINT,
     numAssistz BIGINT,
     numPointz BIGINT,
     plusMinuz BIGINT
@@ -19,7 +21,8 @@ BEGIN
     SELECT playerid INTO player_id
     FROM players
     WHERE firstname = fname 
-    AND lastname = lname;
+    AND lastname = lname
+    LIMIT 1;
 
     RETURN QUERY
     WITH seasonGoals AS (
@@ -27,6 +30,22 @@ BEGIN
         FROM plays
         JOIN games ON plays.gameID = games.gameID
         WHERE plays.playType = 'Goal'
+          and playerid = player_id
+        GROUP BY games.season
+    ),
+    seasonPenalties AS (
+        SELECT games.season, COUNT(*) as numPenalties
+        FROM plays
+        JOIN games ON plays.gameID = games.gameID
+        WHERE plays.playType = 'Penalty'
+          and playerid = player_id
+        GROUP BY games.season
+    ),
+    seasonShots AS (
+        SELECT games.season, COUNT(*) as numShots
+        FROM plays
+        JOIN games ON plays.gameID = games.gameID
+        WHERE plays.playType = 'Shot'
           and playerid = player_id
         GROUP BY games.season
     ),
@@ -60,11 +79,15 @@ BEGIN
             teamname,
             startDate,
             numGames,
-            numGoals, 
+            numGoals,
+            numPenalties,
+            numShots,
             numAssists, 
             numGoals + numAssists AS numPoints, 
             plusMinus
-        FROM seasonGoals
+        FROM seasonGoals 
+        JOIN seasonPenalties ON seasonGoals.season = seasonPenalties.season
+        JOIN seasonShots ON seasonGoals.season = seasonShots.season
         JOIN seasonAssists ON seasonGoals.season = seasonAssists.season
         JOIN seasonOther ON seasonGoals.season = seasonOther.season
     )
@@ -74,7 +97,9 @@ BEGIN
         teamname,
         startDate,
         numGames,
-        numGoals, 
+        numGoals,
+        numPenalties,
+        numShots,
         numAssists, 
         numPoints, 
         plusMinus
