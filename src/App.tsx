@@ -6,7 +6,7 @@ import AboutPage from "@/pages/about";
 import NotFound from "@/pages/notFound";
 import SearchPage from "@/pages/search";
 import LeadersPage from "@/pages/leaders";
-import TrendsPage from "@/pages/trends";
+import PlayerAnalysisPage from "@/pages/players";
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
       <Route element={<IndexPage />} path="/" />
       <Route element={<SearchPage />} path="/search" />
       <Route element={<LeadersPage />} path="/leaders" />
-      <Route element={<TrendsPage />} path="/trends" />
+      <Route element={<PlayerAnalysisPage />} path="/players" />
       <Route element={<BlogPage />} path="/blog" />
       <Route element={<AboutPage />} path="/about" />
       <Route element={<NotFound />} path="*" />

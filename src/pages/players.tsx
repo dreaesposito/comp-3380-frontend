@@ -20,7 +20,7 @@ CardBody,
 import SearchBar from "@/components/common/searchBar";
 import { Player } from "@/types/Player";
 
-export default function TrendsPage() {
+export default function PlayerAnalysisPage() {
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [playerInfo, setPlayerInfo] = useState<any | null>(null);
 

@@ -52,20 +52,20 @@ export const Navbar = () => {
             </Link>
           </NavbarBrand>
         </NavbarItem>
-        <NavbarItem
+        {/* <NavbarItem
           className="hidden md:flex gap-2"
           isActive={location.pathname === "/leaders"}
         >
           <Link className={styles.linkStyle} color="foreground" href="/leaders">
             <p className="text-inherit">Players</p>
           </Link>
-        </NavbarItem>
+        </NavbarItem> */}
         <NavbarItem
           className="hidden md:flex gap-2"
-          isActive={location.pathname === "/trends"}
+          isActive={location.pathname === "/players"}
         >
-          <Link className={styles.linkStyle} color="foreground" href="/trends">
-            <p className="text-inherit">Trends</p>
+          <Link className={styles.linkStyle} color="foreground" href="/players">
+            <p className="text-inherit">Players</p>
           </Link>
         </NavbarItem>
       </NavbarContent>
