@@ -80,7 +80,7 @@ export default function IndexPage() {
       case Table.TotalGoalsByTeam:
         return <TotalGoalsByTeam {...tableParams} />;
       case Table.TotalGAP:
-        return <TotalGAP {...{ firstName: "Sidney", lastName: "Crosby" }} />; // Rendered table by default
+        return <TotalGAP {...{ playerId: "8458529", firstName: "Alex", lastName: "Kovalev" }} />; // Rendered table by default
       case Table.AvgShiftByPlay:
         return <AvgShiftByPlay />;
       case Table.AvgShiftByPeriod:

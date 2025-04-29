@@ -48,11 +48,16 @@ export function capitalize(s) {
 const INITIAL_VISIBLE_COLUMNS = ["team_name", "goal_total"];
 
 interface Props {
+  playerId: string;
   firstName: string;
   lastName: string;
 }
 
-export default function TotalGoalsByTeam({ firstName, lastName }: Props) {
+export default function TotalGoalsByTeam({
+  playerId,
+  firstName,
+  lastName,
+}: Props) {
   const [filterValue, setFilterValue] = React.useState("");
 
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -73,8 +78,7 @@ export default function TotalGoalsByTeam({ firstName, lastName }: Props) {
   useEffect(() => {
     const getPlayers = async () => {
       const { data, error } = await supabase.rpc("total_goals_by_team", {
-        first_name: firstName,
-        last_name: lastName,
+        player_id: playerId,
       });
 
       if (error) {
@@ -85,7 +89,7 @@ export default function TotalGoalsByTeam({ firstName, lastName }: Props) {
     };
 
     getPlayers();
-  }, [firstName, lastName]); // re-call if these values change
+  }, [playerId]); // re-call if these values change
 
   const [page, setPage] = React.useState(1);
 
@@ -246,6 +250,8 @@ export default function TotalGoalsByTeam({ firstName, lastName }: Props) {
     onRowsPerPageChange,
     players.length,
     hasSearchFilter,
+    firstName,
+    lastName,
   ]);
 
   const bottomContent = React.useMemo(() => {
