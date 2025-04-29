@@ -19,7 +19,7 @@ export default function InfoModal(props: ChildProps) {
         backdrop="opaque"
         classNames={{
           backdrop:
-            "bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20",
+            "bg-gradient-to-t from-zinc-700 to-zinc-700/10 backdrop-opacity-20",
         }}
         isOpen={props.isOpen}
         placement="top-center"
