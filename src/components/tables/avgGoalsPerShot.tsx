@@ -52,11 +52,11 @@ export function capitalize(s) {
 }
 
 interface Props {
-  first: string;
-  last: string;
+  firstName: string;
+  lastName: string;
 }
 
-export default function AvgGoalsPerShot({ first, last }: Props) {
+export default function AvgGoalsPerShot({ firstName, lastName }: Props) {
   const [filterValue, setFilterValue] = React.useState("");
 
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -68,7 +68,7 @@ export default function AvgGoalsPerShot({ first, last }: Props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const [sortDescriptor, setSortDescriptor] = React.useState({
-    column: first,
+    column: firstName,
     direction: "descending",
   });
 
@@ -77,8 +77,8 @@ export default function AvgGoalsPerShot({ first, last }: Props) {
   useEffect(() => {
     const getPlayers = async () => {
       const { data, error } = await supabase.rpc("goals_per_shot_all_players", {
-        first: first,
-        last: last,
+        first: firstName,
+        last: lastName,
       });
 
       console.log(data);
@@ -95,7 +95,7 @@ export default function AvgGoalsPerShot({ first, last }: Props) {
     };
 
     getPlayers(); // Call the async function
-  }, []);
+  }, [firstName, lastName]);
 
   const [page, setPage] = React.useState(1);
 
@@ -179,7 +179,7 @@ export default function AvgGoalsPerShot({ first, last }: Props) {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-700 text-medium">Stats for</span>
+          <span className="text-default-700 text-medium">Stats for {firstName} {lastName}</span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
@@ -201,6 +201,8 @@ export default function AvgGoalsPerShot({ first, last }: Props) {
     onRowsPerPageChange,
     players.length,
     hasSearchFilter,
+    firstName,
+    lastName,
   ]);
 
   const bottomContent = React.useMemo(() => {

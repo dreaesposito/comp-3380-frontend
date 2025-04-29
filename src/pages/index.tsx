@@ -45,7 +45,7 @@ export default function IndexPage() {
   // needed for actually rendering a table
   const [tableParams, setTableParams] = useState<any>();
   const [renderedTable, setRenderedTable] = useState<Table>(
-    Table.Top25ByStat, // Starting table for the page
+    Table.AvgGoalsPerShot, // Starting table for the page
   );
 
   const activateTable = (table: Table, params: any) => {
@@ -100,7 +100,7 @@ export default function IndexPage() {
       case Table.Top25ByStat:
         return <Top25ByStat season="2015-2016" stat="goals" />;
       case Table.AvgGoalsPerShot:
-        return <AvgGoalsPerShot first="Sidney" last="Crosby" />;
+        return <AvgGoalsPerShot {...{firstName: "Tom", lastName: "Wilson" }} />;
       case Table.AllTeams:
         return <AllTeams />;
       case Table.SearchPlayer:
