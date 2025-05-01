@@ -30,6 +30,7 @@ import RowInputModal from "@/components/modals/rowInputModal.tsx";
 import SeasonInputModal from "@/components/modals/seasonInputModal.tsx";
 import FirstLastInputModal from "@/components/modals/firstLastInputModal.tsx";
 import * as TableInfo from "@/types/TableInfo.ts";
+import SeasonTeamInputModal from "@/components/modals/seasonTeamInputModal.tsx";
 
 export default function IndexPage() {
   const [menuVisible, setMenuVisible] = useState<boolean>(true);
@@ -94,7 +95,7 @@ export default function IndexPage() {
       case Table.TopPlayersPenalties:
         return <TopPlayersPenalties {...tableParams} />;
       case Table.TotalPlayoffWins:
-        return <TotalPlayoffWins season_name="2013-2014" team_name="Rangers" />;
+        return <TotalPlayoffWins {...tableParams} />;
       case Table.PlayersScoredAgainstAllTeams:
         return <PlayersScoredAgainstAllTeams />;
       case Table.Top25ByStat:
@@ -126,6 +127,8 @@ export default function IndexPage() {
         return <SeasonInputModal {...modalProps} />;
       case Modal.FirstLastInput:
         return <FirstLastInputModal {...modalProps} />;
+      case Modal.SeasonTeamInput:
+        return <SeasonTeamInputModal {...modalProps} />;
       default:
         return null; // shouldn't happen
     }
@@ -157,6 +160,10 @@ export default function IndexPage() {
 
         <Button onPress={() => prepareTable(TableInfo.TotalGoalsByTeamInfo)}>
           GoalsByTeam
+        </Button>
+
+        <Button onPress={() => prepareTable(TableInfo.TotalPlayoffWinsInfo)}>
+          TotalPlayoffWins
         </Button>
 
         <div className="flex gap-3">
