@@ -8,6 +8,7 @@ import {
 } from "@heroui/react";
 import { useMemo, useState } from "react";
 import { Listbox, ListboxItem } from "@heroui/listbox";
+
 import { Table } from "@/types/Table.ts";
 
 const seasons = [
@@ -22,7 +23,7 @@ const seasons = [
 ];
 
 const ListboxWrapper = ({ children }: { children: any }) => (
-  <div className="w-[300px] border-small px-1 py-2 rounded-small border-default-200 dark:border-default-100">
+  <div className="w-[250px] border-small px-1 py-2 rounded-small border-default-200 dark:border-default-100">
     {children}
   </div>
 );
@@ -34,7 +35,7 @@ interface ChildProps {
   callbackFunction: (table: Table, params: {}) => void;
 }
 
-// TODO - update design of selection box
+
 export default function SeasonInputModal(props: ChildProps) {
   const [selectedKeys, setSelectedKeys] = useState(new Set(["2012-2013"]));
   const [loading, setIsLoading] = useState(false);
@@ -65,7 +66,9 @@ export default function SeasonInputModal(props: ChildProps) {
         classNames={{
           backdrop:
             "bg-gradient-to-t from-zinc-700 to-zinc-700/10 backdrop-opacity-20",
+          body: "justify-center items-center",
         }}
+        size={"xs"}
         isOpen={props.isOpen}
         placement="top-center"
         onClose={resetForm}
@@ -102,7 +105,12 @@ export default function SeasonInputModal(props: ChildProps) {
                 <Button color="default" variant="flat" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" isLoading={loading} variant="solid" onPress={handleSubmit}>
+                <Button
+                  color="primary"
+                  isLoading={loading}
+                  variant="solid"
+                  onPress={handleSubmit}
+                >
                   Search DB
                 </Button>
               </ModalFooter>
