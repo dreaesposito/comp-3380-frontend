@@ -1,19 +1,11 @@
-import { querySubtitle, queryTitle } from "@/components/primitives";
 import { QueryTabs } from "@/types/QueryTabs";
-import { Listbox, ListboxItem } from "@heroui/listbox";
-// import { Blog } from "@/pages/blog.tsx";
-// import QueryInput from "./QueryInput";
+
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  useDisclosure,
+  Card,
+  CardBody,
+  CardHeader,
+  ScrollShadow,
 } from "@heroui/react";
-import { Input } from "@heroui/input";
-import { Button } from "@heroui/button";
-import { useState } from "react";
 
 export default function Queries({
   selectedKey,
@@ -22,26 +14,26 @@ export default function Queries({
   selectedKey: QueryTabs;
   emitToParent: (firstName: any, lastName: any) => void;
 }) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  // const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  // const [firstName, setFirstName] = useState("");
+  // const [lastName, setLastName] = useState("");
 
-  // send the data from the modal to the parent
-  const handleFormSubmit = () => {
-    emitToParent(firstName, lastName);
-    resetForm();
-    onOpenChange();
-  };
+  // // send the data from the modal to the parent
+  // const handleFormSubmit = () => {
+  //   emitToParent(firstName, lastName);
+  //   resetForm();
+  //   onOpenChange();
+  // };
 
-  const resetForm = () => {
-    setFirstName("");
-    setLastName("");
-  };
+  // const resetForm = () => {
+  //   setFirstName("");
+  //   setLastName("");
+  // };
 
-  const handleModalSelection = (queryKey: number, id: number) => {
-    onOpen(); // open the modal
-    console.log(`Query key: ${queryKey}, ID:${id}`);
-  };
+  // const handleModalSelection = (queryKey: number, id: number) => {
+  //   onOpen(); // open the modal
+  //   console.log(`Query key: ${queryKey}, ID:${id}`);
+  // };
 
   const queryComponents: Map<
     QueryTabs,
@@ -70,6 +62,22 @@ export default function Queries({
           id: 4,
           label: "Another tes",
           description: "owengowenowie go owigeo wi owieg ",
+        },
+        {
+          id: 5,
+          label: "Test Query",
+          description: "123 test description",
+        },
+        {
+          id: 6,
+          label: "Test Query",
+          description: "123 test description",
+        },
+        {
+          id: 7,
+          label: "Top Point/Goal/Assist Scorers",
+          description:
+            "Determine which players had the most points, goals, or assists in a season",
         },
       ],
     ],
@@ -101,22 +109,38 @@ export default function Queries({
     ],
   ]);
 
-  return (
-    <>
-      <Listbox className="horizontal-listbox">
-        {queryComponents.get(selectedKey)!.map((query) => (
-          <ListboxItem
-            key={query.id}
-            className="bg-default/25 rounded-xl h-30"
-            onPress={() => handleModalSelection(selectedKey, query.id)}
-          >
-            <span className={queryTitle()}>{query.label}</span>
-            <span className={querySubtitle()}>{query.description}</span>
-          </ListboxItem>
-        ))}
-      </Listbox>
 
-      {/*<QueryInput />*/}
+
+  return (
+    // <ScrollShadow 
+    //   orientation="horizontal"
+    //   className="overflow-x-scroll scrollbar-hide"
+    // > 
+      <div className="flex flex-wrap"> {/* remove flex wrap, add w-max and uncomment scroll shadow to get scroll functionality*/}
+          {queryComponents.get(selectedKey)!.map((query) => (
+            <Card
+              key={query.id}
+              shadow="sm"
+              className="min-w-[200px] max-w-[300px] h-[150px] m-2 flex-none"
+              isHoverable={true}
+            >
+              <CardHeader>
+                <span className="whitespace-nowrap">{query.label}</span>
+              </CardHeader>
+              <CardBody>
+                <span>
+                  {query.description}
+                </span>
+              </CardBody>
+            </Card>
+          ))}
+      </div>
+  //  </ScrollShadow>
+  );
+}
+
+
+   {/* <QueryInput />
       <Modal
         isOpen={isOpen}
         placement="top-center"
@@ -164,7 +188,4 @@ export default function Queries({
             </>
           )}
         </ModalContent>
-      </Modal>
-    </>
-  );
-}
+      </Modal> */}

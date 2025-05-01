@@ -144,9 +144,61 @@ export default function IndexPage() {
     }
   }
 
+  const hideQueriesButton = () => {
+    return (
+      <Button
+        className="ml-3"
+        endContent={
+          menuVisible ? (
+            <i className="bi bi-arrow-up" />
+          ) : (
+            <i className="bi bi-arrow-down" />
+          )
+        }
+        // variant="bordered"
+        onPress={() => setMenuVisible(!menuVisible)}
+      >
+        {`${menuVisible ? "Hide" : "Show"} Queries`}
+      </Button>
+    )
+  }
+
+  const queryOptions = () => {
+    return (
+      <div className="block w-full">
+        <div className="flex w-full justify-start flex-wrap">
+          { menuVisible ? (
+            <>
+              {hideQueriesButton()}
+              <Tabs
+                aria-label="Dynamic tabs"
+                variant="underlined"
+                items={tabs}
+                classNames={{
+                  panel: "block w-full",
+                }}
+    
+              >
+                {(item) => (
+                  <Tab key={item.id} title={item.label}>
+                      <Queries emitToParent={activateTable} selectedKey={item.id} />
+                  </Tab>
+                )}
+              </Tabs>
+            </>
+          ) : (
+            <>
+              {hideQueriesButton()}
+            </>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <DefaultLayout>
-      <div className="pb-4">
+      {/* <div className="pb-4">
         <Button onPress={() => prepareTable(TableInfo.TopPlayersPenaltiesInfo)}>
           TopPlayersPenalties
         </Button>
@@ -158,8 +210,9 @@ export default function IndexPage() {
         <Button onPress={() => prepareTable(TableInfo.TotalGoalsByTeamInfo)}>
           GoalsByTeam
         </Button>
+      </div> */}
 
-        <div className="flex gap-3">
+{/* <div className="flex gap-3">
           <Button
             className="text-default-500"
             endContent={
@@ -187,21 +240,39 @@ export default function IndexPage() {
 
         <div
           className={`${menuVisible ? "" : "hidden"} items-center mt-2 p-2 bg-default/10 shadow-gray-400 rounded-2xl`}
-        >
+        > */}
+
+
+          
+      {/* <div
+        className={
+          menuVisible ? "block w-full" : "hidden"
+        }
+      >     
+        <div className="flex w-full justify-start flex-wrap">
+
+
           <Tabs
-            isVertical
             aria-label="Dynamic tabs"
-            className="content-center"
+            variant="underlined"
             items={tabs}
+            classNames={{
+              panel: "block w-full",
+            }}
+ 
           >
             {(item) => (
               <Tab key={item.id} title={item.label}>
-                <Queries emitToParent={activateTable} selectedKey={item.id} />
+                  <Queries emitToParent={activateTable} selectedKey={item.id} />
               </Tab>
             )}
           </Tabs>
         </div>
-      </div>
+      </div> */}
+      {/* <div className="block w-full">
+        {queryOptions()}
+      </div> */}
+      {queryOptions()}
 
       {/*Table type for each Query type*/}
       {tableRenderSwitch(renderedTable)}
