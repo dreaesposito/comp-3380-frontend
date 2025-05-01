@@ -66,9 +66,11 @@ export function capitalize(s: any) {
 }
 
 export default function TotalGAP({
+  playerId,
   firstName,
   lastName,
 }: {
+  playerId: string;
   firstName: string;
   lastName: string;
 }) {
@@ -92,8 +94,7 @@ export default function TotalGAP({
   useEffect(() => {
     const getPlayers = async () => {
       const { data, error } = await supabase.rpc("total_gap", {
-        first_name: firstName,
-        last_name: lastName,
+        plr_id: playerId,
       });
 
       if (error) {
@@ -104,7 +105,7 @@ export default function TotalGAP({
     };
 
     getPlayers(); // Call the async function
-  }, [firstName, lastName]);
+  }, [playerId]);
 
   const [page, setPage] = React.useState(1);
 
@@ -223,7 +224,9 @@ export default function TotalGAP({
         <div className="flex justify-between items-center">
           <span className="text-default-700 text-medium">
             Stats for
-            <span className="font-semibold">{" " + firstName + " " + lastName}</span>
+            <span className="font-semibold">
+              {" " + firstName + " " + lastName}
+            </span>
           </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
@@ -246,6 +249,8 @@ export default function TotalGAP({
     onRowsPerPageChange,
     players.length,
     hasSearchFilter,
+    firstName,
+    lastName,
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -311,10 +316,7 @@ export default function TotalGAP({
       >
         <TableHeader columns={headerColumns}>
           {(column) => (
-            <TableColumn
-              key={column.uid}
-              allowsSorting={column.sortable}
-            >
+            <TableColumn key={column.uid} allowsSorting={column.sortable}>
               {column.name}
             </TableColumn>
           )}

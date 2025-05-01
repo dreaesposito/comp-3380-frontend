@@ -30,6 +30,7 @@ import RowInputModal from "@/components/modals/rowInputModal.tsx";
 import SeasonInputModal from "@/components/modals/seasonInputModal.tsx";
 import FirstLastInputModal from "@/components/modals/firstLastInputModal.tsx";
 import * as TableInfo from "@/types/TableInfo.ts";
+import SeasonTeamInputModal from "@/components/modals/seasonTeamInputModal.tsx";
 
 export default function IndexPage() {
   const [menuVisible, setMenuVisible] = useState<boolean>(true);
@@ -80,7 +81,7 @@ export default function IndexPage() {
       case Table.TotalGoalsByTeam:
         return <TotalGoalsByTeam {...tableParams} />;
       case Table.TotalGAP:
-        return <TotalGAP {...{ firstName: "Sidney", lastName: "Crosby" }} />; // Rendered table by default
+        return <TotalGAP {...{ playerId: "8458529", firstName: "Alex", lastName: "Kovalev" }} />; // Rendered table by default
       case Table.AvgShiftByPlay:
         return <AvgShiftByPlay />;
       case Table.AvgShiftByPeriod:
@@ -94,13 +95,13 @@ export default function IndexPage() {
       case Table.TopPlayersPenalties:
         return <TopPlayersPenalties {...tableParams} />;
       case Table.TotalPlayoffWins:
-        return <TotalPlayoffWins season_name="2013-2014" team_name="Rangers" />;
+        return <TotalPlayoffWins {...tableParams} />;
       case Table.PlayersScoredAgainstAllTeams:
         return <PlayersScoredAgainstAllTeams />;
       case Table.Top25ByStat:
         return <Top25ByStat season="2015-2016" stat="goals" />;
       case Table.AvgGoalsPerShot:
-        return <AvgGoalsPerShot first="Sidney" last="Crosby" />;
+        return <AvgGoalsPerShot {...{firstName: "Tom", lastName: "Wilson" }} />;
       case Table.AllTeams:
         return <AllTeams />;
       case Table.SearchPlayer:
@@ -126,6 +127,8 @@ export default function IndexPage() {
         return <SeasonInputModal {...modalProps} />;
       case Modal.FirstLastInput:
         return <FirstLastInputModal {...modalProps} />;
+      case Modal.SeasonTeamInput:
+        return <SeasonTeamInputModal {...modalProps} />;
       default:
         return null; // shouldn't happen
     }
@@ -177,7 +180,7 @@ export default function IndexPage() {
                 classNames={{
                   panel: "block w-full",
                 }}
-    
+
               >
                 {(item) => (
                   <Tab key={item.id} title={item.label}>
@@ -209,6 +212,10 @@ export default function IndexPage() {
 
         <Button onPress={() => prepareTable(TableInfo.TotalGoalsByTeamInfo)}>
           GoalsByTeam
+        </Button>
+
+        <Button onPress={() => prepareTable(TableInfo.TotalPlayoffWinsInfo)}>
+          TotalPlayoffWins
         </Button>
       </div> */}
 
@@ -243,12 +250,12 @@ export default function IndexPage() {
         > */}
 
 
-          
+
       {/* <div
         className={
           menuVisible ? "block w-full" : "hidden"
         }
-      >     
+      >
         <div className="flex w-full justify-start flex-wrap">
 
 
@@ -259,7 +266,7 @@ export default function IndexPage() {
             classNames={{
               panel: "block w-full",
             }}
- 
+
           >
             {(item) => (
               <Tab key={item.id} title={item.label}>
