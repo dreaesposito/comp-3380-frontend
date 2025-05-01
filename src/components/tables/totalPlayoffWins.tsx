@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import React, { EventHandler, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableHeader,
@@ -14,8 +14,6 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  User,
-  Pagination,
 } from "@heroui/react";
 
 import {
@@ -47,11 +45,11 @@ export function capitalize(s) {
 const INITIAL_VISIBLE_COLUMNS = ["total_playoff_wins", "max_possible"];
 
 interface Props {
-  season_name: string;
-  team_name: string;
+  seasonName: string;
+  teamName: string;
 }
 
-export default function TotalGoalsByTeam({ season_name, team_name }: Props) {
+export default function TotalPlayoffWins({ seasonName, teamName }: Props) {
   const [filterValue, setFilterValue] = React.useState("");
 
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -75,8 +73,8 @@ export default function TotalGoalsByTeam({ season_name, team_name }: Props) {
   useEffect(() => {
     const getPlayers = async () => {
       const { data, error } = await supabase.rpc("total_playoff_wins", {
-        season_name: season_name,
-        team_name: team_name,
+        season_name: seasonName,
+        team_name: teamName,
       });
 
       if (error) {
@@ -88,7 +86,7 @@ export default function TotalGoalsByTeam({ season_name, team_name }: Props) {
     };
 
     getPlayers(); // Call the async function
-  }, []);
+  }, [teamName, seasonName]);
 
   const [page, setPage] = React.useState(1);
 
@@ -163,7 +161,7 @@ export default function TotalGoalsByTeam({ season_name, team_name }: Props) {
           <span className="text-default-700 text-medium">
             Total playoff wins for the
             <span className="font-semibold">
-              {" " + season_name + " " + team_name}
+              {" " + seasonName + " " + teamName}
             </span>
           </span>
           <label className="flex items-center text-default-400 text-small">
@@ -187,6 +185,8 @@ export default function TotalGoalsByTeam({ season_name, team_name }: Props) {
     onRowsPerPageChange,
     players.length,
     hasSearchFilter,
+    teamName,
+    seasonName,
   ]);
 
   const classNames = React.useMemo(
