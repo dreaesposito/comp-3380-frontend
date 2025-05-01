@@ -3,5 +3,6 @@ export enum Modal {
   FirstLastInput,
   RowInput,
   SeasonInput,
+  SeasonTeamInput,
   None,
 }
