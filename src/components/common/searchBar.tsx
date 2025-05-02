@@ -88,8 +88,8 @@ const SearchBar = ({ placeholder = "Search...", onSelect}: SearchBarProps) => {
         const players = (data || []) as Player[];
         setAllPlayers(players);
         //onResults(data || []); // show all by default
-        console.log(players);
-        console.log(allPlayers.length)
+        // console.log(players);
+        // console.log(allPlayers.length)
       }
     };
 
@@ -132,9 +132,9 @@ const SearchBar = ({ placeholder = "Search...", onSelect}: SearchBarProps) => {
 
   // }
 
-  useEffect(() => {
-    console.log("AllPlayers updated:", allPlayers);
-  }, [allPlayers]);
+  // useEffect(() => {
+  //   console.log("AllPlayers updated:", allPlayers);
+  // }, [allPlayers]);
 
   // Filter local data on query change
   // useEffect(() => {
@@ -183,7 +183,7 @@ const SearchBar = ({ placeholder = "Search...", onSelect}: SearchBarProps) => {
           key={index}
           className="flex justify-between items-center px-4 py-2 hover:bg-default/60 cursor-pointer"
           onClick={() => {
-            console.log("Selection was ", player.firstname + " " + player.lastname)
+            // console.log("Selection was ", player.firstname + " " + player.lastname)
             setQuery(`${player.firstname} ${player.lastname}`);
             setSelectedPlayer(player);
             // Optionally close dropdown here or keep it open

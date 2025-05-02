@@ -28,16 +28,6 @@ import supabase from "@/utils/supabase.ts";
 
 const columns = [
   {
-    name: "Home",
-    uid: "first_name",
-    sortable: true,
-  },
-  {
-    name: "Last Name",
-    uid: "last_name",
-    sortable: true,
-  },
-  {
     name: "Player Type",
     uid: "player_type",
   },
@@ -59,8 +49,6 @@ const columns = [
 ];
 
 const INITIAL_VISIBLE_COLUMNS = [
-  "first_name",
-  "last_name",
   "player_type",
   "player_nationality",
   "birth_date",
@@ -72,10 +60,11 @@ export function capitalize(s) {
 }
 
 interface Props {
-  name: string;
+  firstName: string;
+  lastName: string;
 }
 
-export default function SearchPlayer({ name }: Props) {
+export default function SearchPlayer({ firstName, lastName }: Props) {
   const [filterValue, setFilterValue] = React.useState("");
 
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -94,13 +83,13 @@ export default function SearchPlayer({ name }: Props) {
   const [players, setPlayers] = useState<any[]>([]);
 
   useEffect(() => {
+    // console.log(firstName)
     const getPlayers = async () => {
-      console.log(name);
       const { data, error } = await supabase.rpc("search_player", {
-        name: name,
+        name: firstName + " " + lastName,
       });
 
-      console.log(data);
+      // console.log(data);
 
       if (error) {
         console.error("Error performing query:", error);
@@ -197,7 +186,7 @@ export default function SearchPlayer({ name }: Props) {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-700 text-medium">All Teams</span>
+          <span className="text-default-700 text-medium">{capitalize(firstName) + " " + capitalize(lastName)}</span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select

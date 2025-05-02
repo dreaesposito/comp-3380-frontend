@@ -24,30 +24,6 @@ import {
 
 import supabase from "@/utils/supabase.ts";
 
-// for dropdown mapping
-// export const columns = [
-//   {
-//     name: "Season",
-//     uid: "season_name",
-//     sortable: true,
-//   },
-//   {
-//     name: "Goals",
-//     uid: "total_goals",
-//     sortable: true,
-//   },
-//   {
-//     name: "Assists",
-//     uid: "total_assists",
-//     sortable: true,
-//   },
-//   {
-//     name: "Points",
-//     uid: "total_points",
-//     sortable: true,
-//   },
-// ];
-
 const columns = [
   {
     name: "Rank",
@@ -100,12 +76,20 @@ export function capitalize(s) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
 }
 
-interface Props {
-  season: string;
-  stat: string;
+enum StatType {
+  goals = "g",
+  assists = "a",
+  points = "p",
+  plusMinus = "pm"
 }
 
-export default function Top25ByStat({ season, stat }: Props) {
+interface Props {
+  selectedSeason: string;
+}
+
+export default function Top25ByStat({ selectedSeason }: Props) {
+  const [stat, setStat] = React.useState<StatType>(StatType.goals)
+
   const [filterValue, setFilterValue] = React.useState("");
 
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -113,6 +97,21 @@ export default function Top25ByStat({ season, stat }: Props) {
   const [visibleColumns, setVisibleColumns] = React.useState(
     new Set(INITIAL_VISIBLE_COLUMNS),
   );
+
+  function statToString(s: StatType): string {
+    console.log(s)
+
+    switch(s) {
+      case StatType.assists:
+        return "Assists"
+      case StatType.goals:
+        return "Goals"
+      case StatType.points:
+        return "Points"
+      case StatType.plusMinus:
+        return "+/-"
+    }
+  }
 
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -125,9 +124,11 @@ export default function Top25ByStat({ season, stat }: Props) {
 
   useEffect(() => {
     const getPlayers = async () => {
+      // console.log(selectedSeason);
+      // console.log(stat)
       const { data, error } = await supabase.rpc("get_top_25", {
-        season_param: season,
-        stat: stat,
+        season_param: selectedSeason,
+        stat: stat
       });
 
       if (error) {
@@ -142,7 +143,7 @@ export default function Top25ByStat({ season, stat }: Props) {
     };
 
     getPlayers(); // Call the async function
-  }, []);
+  }, [selectedSeason, stat]);
 
   const [page, setPage] = React.useState(1);
 
@@ -195,8 +196,7 @@ export default function Top25ByStat({ season, stat }: Props) {
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
-        <div className="flex justify-between gap-3 items-end">
-          <div />
+        <div className="flex justify-end gap-3 items-end">
           <div className="flex gap-3">
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
@@ -226,9 +226,30 @@ export default function Top25ByStat({ season, stat }: Props) {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-700 text-medium">
-            Top 25 Players by {capitalize(stat)}
-          </span>
+          <div className="flex items-center gap-1">
+            <span className="text-default-700 text-medium">
+              Top 25 Players ({selectedSeason}) by: 
+            </span>
+            <Dropdown>
+              <DropdownTrigger className="hidden sm:flex">
+                <span className="italic font-bold">{statToString(stat)}</span>
+              </DropdownTrigger>
+              <DropdownMenu
+                disallowEmptySelection
+                aria-label="top stat"
+                selectionMode="single"
+                selectedKeys={[stat]}
+                onSelectionChange={(val) => setStat(Array.from(val)[0])}
+              >
+                {Object.values(StatType).map((value) => (
+                  <DropdownItem key={value} className="capitalize">
+                    {statToString(value)}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+          
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
@@ -244,6 +265,8 @@ export default function Top25ByStat({ season, stat }: Props) {
       </div>
     );
   }, [
+    stat,
+    selectedSeason,
     filterValue,
     visibleColumns,
     onSearchChange,

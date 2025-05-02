@@ -1,95 +1,82 @@
 import { QueryTabs } from "@/types/QueryTabs";
+import { Table } from "@/types/Table.ts";
+import { Modal } from "@/types/Modal.ts";
+import * as TableInfo from "@/types/TableInfo.ts";
 
 import {
   Card,
   CardBody,
   CardHeader,
-  ScrollShadow,
+  useDisclosure,
 } from "@heroui/react";
+import RowInputModal from "@/components/modals/rowInputModal";
+import SeasonInputModal from "@/components/modals/seasonInputModal";
+import FirstLastInputModal from "@/components/modals/firstLastInputModal";
+import SeasonTeamInputModal from "@/components/modals/seasonTeamInputModal";
+import { useState } from "react";
 
 export default function Queries({
   selectedKey,
-  emitToParent,
+  onModalSubmission,
 }: {
   selectedKey: QueryTabs;
-  emitToParent: (firstName: any, lastName: any) => void;
+  onModalSubmission: (table: Table, params: any) => void;
 }) {
-  // const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  // const [firstName, setFirstName] = useState("");
-  // const [lastName, setLastName] = useState("");
-
-  // // send the data from the modal to the parent
-  // const handleFormSubmit = () => {
-  //   emitToParent(firstName, lastName);
-  //   resetForm();
-  //   onOpenChange();
-  // };
-
-  // const resetForm = () => {
-  //   setFirstName("");
-  //   setLastName("");
-  // };
-
-  // const handleModalSelection = (queryKey: number, id: number) => {
-  //   onOpen(); // open the modal
-  //   console.log(`Query key: ${queryKey}, ID:${id}`);
-  // };
-
   const queryComponents: Map<
     QueryTabs,
-    { id: number; label: string; description: string }[]
+    { id: number, label: string; description: string, tableInfo: TableInfo.NHLTableInfo }[]
   > = new Map([
     [
-      QueryTabs.skaters,
+      QueryTabs.players,
       [
         {
           id: 1,
-          label: "Find skaters",
-          description: "Search for a skater by name",
+          label: "Find Player",
+          description: "Search for a player by name",
+          tableInfo: TableInfo.SearchPlayerInfo
         },
         {
           id: 2,
-          label: "Top Point/Goal/Assist Scorers",
-          description:
-            "Determine which players had the most points, goals, or assists in a season",
-        },
-        {
+          label: "Season Stats",
+          description: "Determine the stats of a player in a particular season",
+          tableInfo: TableInfo.PlayerSeasonStatsInfo
+        }
+        ,{
           id: 3,
-          label: "Test Query",
-          description: "123 test description",
+          label: "Players Scored Against All Teams",
+          description: "Find players who have scored against every time in the league, including their own team",
+          tableInfo: TableInfo.PlayersScoredAgainstAllTeamsInfo
         },
         {
           id: 4,
-          label: "Another tes",
-          description: "owengowenowie go owigeo wi owieg ",
+          label: "Top 25 Players By Statistic",
+          description: "Determine the top 25 players by a particular statistic. Options include: Goals, Assists, Points, and Plus/Minus",
+          tableInfo: TableInfo.Top25ByStatInfo
         },
         {
           id: 5,
-          label: "Test Query",
-          description: "123 test description",
+          label: "Most Penalty Minutes",
+          description: "Find players with the most all time penalty minutes",
+          tableInfo: TableInfo.TopPlayersPenaltiesInfo
         },
         {
           id: 6,
-          label: "Test Query",
-          description: "123 test description",
+          label: "Top Teams Played For",
+          description: "Find the biggest suitcases in the league",
+          tableInfo: TableInfo.TopTeamsPlayedForInfo
         },
         {
           id: 7,
-          label: "Top Point/Goal/Assist Scorers",
-          description:
-            "Determine which players had the most points, goals, or assists in a season",
+          label: "Total Goals/Assists/Points",
+          description: "Find the total goals, assists, and points for a player",
+          tableInfo: TableInfo.TotalGAPInfo
         },
-      ],
-    ],
-    [
-      QueryTabs.goalies,
-      [
         {
-          id: 1,
-          label: "Best save percentage",
-          description:
-            "Determine which goalies had the best save percentage in a season",
-        },
+          id: 8,
+          label: "Total Goals By Team",
+          description: "Determine how many goals a player has scored against each team in the league",
+          tableInfo: TableInfo.TotalGoalsByTeamInfo
+        }
       ],
     ],
     [
@@ -97,32 +84,112 @@ export default function Queries({
       [
         {
           id: 1,
-          label: "Winning Teams",
-          description: "Find teams with the most wins in a season.",
+          label: "All Teams",
+          description: "Find all teams in the league",
+          tableInfo: TableInfo.AllTeamsInfo
         },
         {
           id: 2,
-          label: "Schedule",
-          description: "Find the schedule for a team in a season.",
+          label: "Playoff Wins",
+          description: "Find the total playoff wins for a team in a season",
+          tableInfo: TableInfo.TotalPlayoffWinsInfo
         },
+        {
+          id: 3,
+          label: "Schedule",
+          description: "Determine the schedule for a team in a season",
+          tableInfo: TableInfo.ScheduleInfo
+        }
+      ],
+    ],
+    [
+      QueryTabs.misc,
+      [
+        {
+          id: 1,
+          label: "Average Shift By Period",
+          description: "Find the average shift length per period",
+          tableInfo: TableInfo.AvgShiftByPeriodInfo
+        },
+        {
+          id: 2, 
+          label: "Average Goals Per Shot",
+          description: "Find the average goals per shot for a player",
+          tableInfo: TableInfo.AvgGoalsPerShotInfo
+        },
+        {
+          id: 3,
+          label: "Average Shift By Play",
+          description: "Determine the average shift length for a specific play type",
+          tableInfo: TableInfo.AvgShiftByPlayInfo
+        },
+        {
+          id: 4,
+          label: "Goals By Venue",
+          description: "Determine the number of goals (home and away) scored at each venue in a season",
+          tableInfo: TableInfo.GoalsByVenueInfo
+        },
+        {
+          id: 5,
+          label: "Top Official Penalties",
+          description: "Find the top officials who have called the most penalties in their career",
+          tableInfo: TableInfo.TopNoOfficialPenaltiesInfo     
+        }
       ],
     ],
   ]);
 
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [currModal, setCurrModal] = useState<Modal | null>(null);
+  const [tableToRender, setTableToRender] = useState<Table>(
+    Table.DEFAULT, // Next user selection (might require more info from modal before rendering)
+  );
 
+  function prepareTable(current: TableInfo.NHLTableInfo) {
+    setTableToRender(current.table); // table for the modal to render
+    if (current.modal !== Modal.None) {
+      openModal(current.modal);
+    }
+  }
+
+  const modalProps = {  
+    isOpen: isOpen,
+    onOpenChange: onOpenChange,
+    tableToRender: tableToRender,
+    callbackFunction: onModalSubmission,
+  };
+
+  function modalRenderSwitch() {
+    switch (currModal) {
+      case Modal.RowInput:
+        return <RowInputModal {...modalProps} />;
+      case Modal.SeasonInput:
+        return <SeasonInputModal {...modalProps} />;
+      case Modal.FirstLastInput:
+        return <FirstLastInputModal {...modalProps} />;
+      case Modal.SeasonTeamInput:
+        return <SeasonTeamInputModal {...modalProps} />;
+      default:
+        return null; // shouldn't happen
+    }
+  }
+
+  function openModal(param: Modal) {
+    setCurrModal(param);
+    onOpen();
+  }
 
   return (
-    // <ScrollShadow 
-    //   orientation="horizontal"
-    //   className="overflow-x-scroll scrollbar-hide"
-    // > 
-      <div className="flex flex-wrap"> {/* remove flex wrap, add w-max and uncomment scroll shadow to get scroll functionality*/}
+    <>
+      <div className="flex flex-wrap">
           {queryComponents.get(selectedKey)!.map((query) => (
             <Card
               key={query.id}
               shadow="sm"
               className="min-w-[200px] max-w-[300px] h-[150px] m-2 flex-none"
               isHoverable={true}
+              isPressable
+              onPress={() => prepareTable(query.tableInfo)}
             >
               <CardHeader>
                 <span className="whitespace-nowrap">{query.label}</span>
@@ -135,57 +202,8 @@ export default function Queries({
             </Card>
           ))}
       </div>
-  //  </ScrollShadow>
+
+      {modalRenderSwitch()}
+    </>
   );
 }
-
-
-   {/* <QueryInput />
-      <Modal
-        isOpen={isOpen}
-        placement="top-center"
-        onClose={resetForm}
-        onOpenChange={onOpenChange}
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Modal Header
-              </ModalHeader>
-              <ModalBody>
-                <Input
-                  // endContent={<h1>endContent</h1>}
-                  isClearable
-                  label="First Name"
-                  placeholder=""
-                  value={firstName}
-                  variant="bordered"
-                  onValueChange={setFirstName}
-                />
-                <Input
-                  // endContent={<h1>endContent</h1>}
-                  isClearable
-                  label="Last Name"
-                  placeholder=""
-                  value={lastName}
-                  variant="bordered"
-                  onValueChange={setLastName}
-                />
-              </ModalBody>
-              <ModalFooter>
-                <Button color="default" variant="flat" onPress={onClose}>
-                  Close
-                </Button>
-                <Button
-                  color="primary"
-                  variant="solid"
-                  onPress={handleFormSubmit}
-                >
-                  Enter
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal> */}

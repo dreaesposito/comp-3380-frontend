@@ -1,5 +1,5 @@
 export const enum QueryTabs {
-  skaters,
-  goalies,
+  players,
   teams,
+  misc,
 }

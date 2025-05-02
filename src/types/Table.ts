@@ -15,5 +15,6 @@ export const enum Table {
   SearchPlayer,
   Schedule,
   GordieHoweHatTricks,
+  PlayerSeasonStats,
   DEFAULT,
 }

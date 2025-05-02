@@ -11,6 +11,11 @@ export const TotalGoalsByTeamInfo: NHLTableInfo = {
   modal: Modal.FirstLastInput,
 };
 
+export const PlayerSeasonStatsInfo: NHLTableInfo = {
+  table: Table.PlayerSeasonStats,
+  modal: Modal.FirstLastInput
+};
+
 export const TotalGAPInfo: NHLTableInfo = {
   table: Table.TotalGAP,
   modal: Modal.FirstLastInput,

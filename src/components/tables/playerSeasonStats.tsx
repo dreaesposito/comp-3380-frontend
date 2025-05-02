@@ -103,10 +103,12 @@ export function capitalize(s) {
 import { Player } from "@/types/Player";
 
 interface Props {
-  player: Player
+  // playerId: string;
+  firstName: string;
+  lastName: string;
 }
 
-export default function PlayerSeasonStats({ player }: Props) {
+export default function PlayerSeasonStats({ firstName, lastName }: Props) {
   const season = "2015-2016";
   const stat = "p";
   // const [filterValue, setFilterValue] = React.useState("");
@@ -128,9 +130,10 @@ export default function PlayerSeasonStats({ player }: Props) {
 
   useEffect(() => {
     const getPlayers = async () => {
+      console.log(firstName)
       const { data, error } = await supabase.rpc("get_player_stats_by_season", {
-        fname: player.firstname,
-        lname: player.lastname,
+        fname: firstName,
+        lname: lastName
       });
 
       if (error) {
@@ -145,7 +148,7 @@ export default function PlayerSeasonStats({ player }: Props) {
     };
 
     getPlayers(); // Call the async function
-  }, [player]);
+  }, [firstName, lastName]);
 
   const [page, setPage] = React.useState(1);
 
@@ -258,7 +261,7 @@ export default function PlayerSeasonStats({ player }: Props) {
     return (
       <div className="flex justify-between items-center w-full">
         <h2 className="text-2xl font-bold text-default-800">
-          Season Stats
+          {capitalize(firstName) + " " + capitalize(lastName)}
         </h2>
   
         <Dropdown>
@@ -307,7 +310,7 @@ export default function PlayerSeasonStats({ player }: Props) {
   //       />
   //     </div>
   //   );
-  // }, [selectedKeys, page,]);
+  // }, [selectedKeys, page]);
 
   const classNames = React.useMemo(
     () => ({
