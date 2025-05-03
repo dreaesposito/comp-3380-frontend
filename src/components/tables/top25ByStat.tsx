@@ -2,8 +2,6 @@
 
 // TODO - add games played?
 
-import { ChevronDownIcon } from "@/components/common/tableIcons.tsx";
-
 import React, { useEffect, useState } from "react";
 
 import {
@@ -12,6 +10,7 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  Input,
   Pagination,
   Table,
   TableBody,
@@ -22,43 +21,41 @@ import {
   User,
 } from "@heroui/react";
 
+import {
+  SearchIcon,
+  ChevronDownIcon,
+} from "@/components/common/tableIcons.tsx";
+
 import supabase from "@/utils/supabase.ts";
 
 const columns = [
   {
     name: "Rank",
-    uid: "rank",
-    sortable: true,
+    uid: "rank"
   },
   {
     name: "First Name",
-    uid: "firstname",
-    sortable: true,
+    uid: "firstname"
   },
   {
     name: "Last Name",
-    uid: "lastname",
-    sortable: true,
+    uid: "lastname"
   },
   {
     name: "Goals",
-    uid: "numgoalz",
-    sortable: true,
+    uid: "numgoalz"
   },
   {
     name: "Assists",
-    uid: "numassistz",
-    sortable: true,
+    uid: "numassistz"
   },
   {
     name: "Points",
-    uid: "numpointz",
-    sortable: true,
+    uid: "numpointz"
   },
   {
     name: "+/-",
-    uid: "plusminuz",
-    sortable: true,
+    uid: "plusminuz"
   },
 ];
 
@@ -90,7 +87,7 @@ interface Props {
 export default function Top25ByStat({ selectedSeason }: Props) {
   const [stat, setStat] = React.useState<StatType>(StatType.goals)
 
-  const [filterValue, setFilterValue] = React.useState("");
+  const [filterValue, setFilterValue] = React.useState<string>("");
 
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
 
@@ -99,8 +96,6 @@ export default function Top25ByStat({ selectedSeason }: Props) {
   );
 
   function statToString(s: StatType): string {
-    console.log(s)
-
     switch(s) {
       case StatType.assists:
         return "Assists"
@@ -115,17 +110,10 @@ export default function Top25ByStat({ selectedSeason }: Props) {
 
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const [sortDescriptor, setSortDescriptor] = React.useState({
-    column: stat,
-    direction: "descending",
-  });
-
   const [players, setPlayers] = useState<any[]>([]);
 
   useEffect(() => {
     const getPlayers = async () => {
-      // console.log(selectedSeason);
-      // console.log(stat)
       const { data, error } = await supabase.rpc("get_top_25", {
         season_param: selectedSeason,
         stat: stat
@@ -148,7 +136,6 @@ export default function Top25ByStat({ selectedSeason }: Props) {
   const [page, setPage] = React.useState(1);
 
   const pages = Math.ceil(players.length / rowsPerPage);
-  const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
@@ -158,26 +145,22 @@ export default function Top25ByStat({ selectedSeason }: Props) {
     );
   }, [visibleColumns]);
 
-  const filteredItems = React.useMemo(() => {
-    return [...players];
-  }, [players, filterValue]);
-
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
-    return filteredItems.slice(start, end);
-  }, [page, filteredItems, rowsPerPage]);
+    let items = [...players];
 
-  const sortedItems = React.useMemo(() => {
-    return [...items].sort((a, b) => {
-      const first = a[sortDescriptor.column];
-      const second = b[sortDescriptor.column];
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
+    if(filterValue) {
+      items = items.filter(item => 
+        item.firstname.toLowerCase().includes(filterValue.toLowerCase()) ||
+        item.lastname.toLowerCase().includes(filterValue.toLowerCase()) ||
+        (item.firstname.toLowerCase() + " " + item.lastname.toLowerCase()).includes(filterValue.toLowerCase())
+      )
+    }
 
-      return sortDescriptor.direction === "descending" ? -cmp : cmp;
-    });
-  }, [sortDescriptor, items]);
+    return items.slice(start, end);
+  }, [players, page, rowsPerPage, filterValue]);
 
   const onRowsPerPageChange = React.useCallback((e) => {
     setRowsPerPage(Number(e.target.value));
@@ -196,7 +179,28 @@ export default function Top25ByStat({ selectedSeason }: Props) {
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
-        <div className="flex justify-end gap-3 items-end">
+        <div className="flex justify-between gap-3 items-end">
+          <Input
+            isClearable
+            classNames={{
+              base: "w-full sm:max-w-[44%]",
+              inputWrapper: "border-1",
+            }}
+            placeholder="Search player..."
+            size="sm"
+            startContent={<SearchIcon className="text-default-300" />}
+            value={filterValue}
+            variant="bordered"
+            onClear={() => setFilterValue("")}
+            onValueChange={(value) => {
+              if(value) {
+                setPage(1)
+                setFilterValue(value)
+              } else {
+                setFilterValue("")
+              }
+            }}
+          />
           <div className="flex gap-3">
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
@@ -232,7 +236,7 @@ export default function Top25ByStat({ selectedSeason }: Props) {
             </span>
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
-                <span className="italic font-bold">{statToString(stat)}</span>
+                <span className="italic font-bold cursor-pointer">{statToString(stat)}</span>
               </DropdownTrigger>
               <DropdownMenu
                 disallowEmptySelection
@@ -265,14 +269,14 @@ export default function Top25ByStat({ selectedSeason }: Props) {
       </div>
     );
   }, [
+    items,
+    filterValue,
     stat,
     selectedSeason,
-    filterValue,
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    players.length,
-    hasSearchFilter,
+    players.length
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -283,8 +287,8 @@ export default function Top25ByStat({ selectedSeason }: Props) {
           classNames={{
             cursor: "bg-foreground text-background",
           }}
+          isDisabled={Boolean(filterValue)}
           color="default"
-          isDisabled={hasSearchFilter}
           page={page}
           total={pages}
           variant="light"
@@ -292,7 +296,7 @@ export default function Top25ByStat({ selectedSeason }: Props) {
         />
       </div>
     );
-  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+  }, [selectedKeys, items.length, page, pages, filterValue]);
 
   const classNames = React.useMemo(
     () => ({
@@ -330,18 +334,15 @@ export default function Top25ByStat({ selectedSeason }: Props) {
           },
         }}
         classNames={classNames}
-        sortDescriptor={sortDescriptor}
         topContent={topContent}
         topContentPlacement="outside"
         onSelectionChange={setSelectedKeys}
-        onSortChange={setSortDescriptor}
       >
         <TableHeader columns={headerColumns}>
           {(column) => (
             <TableColumn
               key={column.uid}
               alignItems="center"
-              allowsSorting={column.sortable}
             >
               {column.name}
             </TableColumn>
@@ -349,16 +350,16 @@ export default function Top25ByStat({ selectedSeason }: Props) {
         </TableHeader>
         <TableBody
           emptyContent={"Select an option to load data"}
-          items={sortedItems}
+          items={items}
         >
-          {sortedItems.map((item) => (
+          {(item) => (
             <TableRow
               key={item.rank}
               className="cursor-pointer hover:bg-default/40 hover:rounded-full"
             >
               {(columnKey) => <TableCell>{item[columnKey]}</TableCell>}
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
     </div>

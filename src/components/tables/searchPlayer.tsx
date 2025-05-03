@@ -102,7 +102,7 @@ export default function SearchPlayer({ firstName, lastName }: Props) {
     };
 
     getPlayers(); // Call the async function
-  }, []);
+  }, [firstName, lastName]);
 
   const [page, setPage] = React.useState(1);
 

@@ -55,8 +55,8 @@ export default function Queries({
         },
         {
           id: 5,
-          label: "Most Penalty Minutes",
-          description: "Find players with the most all time penalty minutes",
+          label: "Most Penalties",
+          description: "Find players who have taken the most penalties",
           tableInfo: TableInfo.TopPlayersPenaltiesInfo
         },
         {
@@ -149,6 +149,8 @@ export default function Queries({
     setTableToRender(current.table); // table for the modal to render
     if (current.modal !== Modal.None) {
       openModal(current.modal);
+    } else {
+      onModalSubmission(current.table, null);
     }
   }
 

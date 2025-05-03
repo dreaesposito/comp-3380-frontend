@@ -61,12 +61,15 @@ export function capitalize(s) {
 }
 
 interface Props {
-  end_year: string;
-  start_year: string;
-  team_name: string;
+  seasonName: string
+  teamName: string;
 }
 
-export default function Schedule({ end_year, start_year, team_name }: Props) {
+export default function Schedule({ seasonName, teamName }: Props) {
+  const seasonYears = seasonName.split("-");
+  const startYear = seasonYears[0];
+  const endYear = seasonYears[1];
+
   const [filterValue, setFilterValue] = React.useState("");
 
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -86,11 +89,13 @@ export default function Schedule({ end_year, start_year, team_name }: Props) {
 
   useEffect(() => {
     const getPlayers = async () => {
-      console.log(name);
+      
+
+
       const { data, error } = await supabase.rpc("team_schedule", {
-        end_year: end_year,
-        start_year: start_year,
-        team_name: team_name,
+        end_year: endYear,
+        start_year: startYear,
+        team_name: teamName,
       });
 
       console.log(data);

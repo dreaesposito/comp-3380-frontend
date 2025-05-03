@@ -98,7 +98,8 @@ export default function PlayersScoredAgainstAllTeams() {
       filteredUsers = filteredUsers.filter(
         (player) =>
           player.first_name.toLowerCase().includes(filterValue.toLowerCase()) ||
-          player.last_name.toLowerCase().includes(filterValue.toLowerCase()),
+          player.last_name.toLowerCase().includes(filterValue.toLowerCase()) ||
+          (player.first_name.toLowerCase() + " " + player.last_name.toLowerCase()).includes(filterValue.toLowerCase())
       );
     }
 
