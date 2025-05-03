@@ -179,7 +179,12 @@ export default function AvgGoalsPerShot({ firstName, lastName }: Props) {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-700 text-medium">Stats for {firstName} {lastName}</span>
+          <span className="text-xl">
+            Avg. Goals Per Shot For
+            <span className="font-semibold">
+                {" " + firstName + " " + lastName}
+            </span>
+          </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select

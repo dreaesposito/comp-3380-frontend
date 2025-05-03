@@ -158,7 +158,7 @@ export default function TotalPlayoffWins({ seasonName, teamName }: Props) {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-700 text-medium">
+          <span className="text-xl">
             Total playoff wins for the
             <span className="font-semibold">
               {" " + seasonName + " " + teamName}

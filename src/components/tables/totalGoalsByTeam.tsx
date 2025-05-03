@@ -35,7 +35,6 @@ export const columns = [
   {
     name: "Goal Total",
     uid: "goal_total",
-    sortable: true,
     classes: "sm:w-auto",
     width: "20%",
   },
@@ -223,7 +222,7 @@ export default function TotalGoalsByTeam({
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-700 text-medium">
+          <span className="text-xl">
             Goals by team for
             <span className="font-semibold">
               {" " + firstName + " " + lastName}

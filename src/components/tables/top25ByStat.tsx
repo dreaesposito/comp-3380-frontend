@@ -231,12 +231,12 @@ export default function Top25ByStat({ selectedSeason }: Props) {
         </div>
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-1">
-            <span className="text-default-700 text-medium">
+            <span className="text-xl">
               Top 25 Players ({selectedSeason}) by: 
             </span>
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
-                <span className="italic font-bold cursor-pointer">{statToString(stat)}</span>
+                <span className="text-xl italic font-bold cursor-pointer">{statToString(stat)}</span>
               </DropdownTrigger>
               <DropdownMenu
                 disallowEmptySelection

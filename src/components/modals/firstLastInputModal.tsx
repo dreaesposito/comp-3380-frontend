@@ -10,7 +10,7 @@ import {
   CardBody,
 } from "@heroui/react";
 import { useState } from "react";
-import { Table } from "@/types/Table.ts";
+import { QueryTable } from "@/types/Table.ts";
 import { Form } from "@heroui/form";
 import SearchBar from "@/components/common/searchBar.tsx";
 import { Player } from "@/types/Player.ts";
@@ -19,8 +19,8 @@ import supabase from "@/utils/supabase.ts";
 interface ChildProps {
   isOpen: boolean;
   onOpenChange: () => void;
-  tableToRender: Table;
-  callbackFunction: (table: Table, params: {}) => void;
+  tableToRender: QueryTable;
+  callbackFunction: (table: QueryTable, params: {}) => void;
 }
 
 export default function FirstLastInputModal(props: ChildProps) {

@@ -10,13 +10,13 @@ import React, { useState } from "react";
 import { Input } from "@heroui/input";
 import { Form } from "@heroui/form";
 
-import { Table } from "@/types/Table.ts";
+import { QueryTable } from "@/types/Table.ts";
 
 interface ChildProps {
   isOpen: boolean;
   onOpenChange: () => void;
-  tableToRender: Table;
-  callbackFunction: (table: Table, params: {}) => void;
+  tableToRender: QueryTable;
+  callbackFunction: (table: QueryTable, params: {}) => void;
 }
 
 export default function RowInputModal(props: ChildProps) {

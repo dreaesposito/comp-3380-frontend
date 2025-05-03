@@ -29,13 +29,11 @@ import supabase from "@/utils/supabase.ts";
 const columns = [
   {
     name: "City",
-    uid: "team_city",
-    sortable: true,
+    uid: "team_city"
   },
   {
     name: "Name",
-    uid: "team_name",
-    sortable: true,
+    uid: "team_name"
   },
 ];
 
@@ -161,7 +159,7 @@ export default function AllTeams() {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-700 text-medium">All Teams</span>
+          <span className="text-xl">All Teams</span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
@@ -251,7 +249,6 @@ export default function AllTeams() {
             <TableColumn
               key={column.uid}
               alignItems="center"
-              allowsSorting={column.sortable}
             >
               {column.name}
             </TableColumn>

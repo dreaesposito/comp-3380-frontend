@@ -1,4 +1,4 @@
-export const enum Table {
+export const enum QueryTable {
   TotalGoalsByTeam,
   TotalGAP,
   AvgShiftByPlay,

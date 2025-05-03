@@ -183,7 +183,7 @@ export default function GoalsByVenue({ selectedSeason }: string) {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-600 text-medium">
+          <span className="text-xl">
             {"Goals by Venue: "}
             {selectedSeason}
             {" "}
@@ -286,7 +286,6 @@ export default function GoalsByVenue({ selectedSeason }: string) {
             <TableColumn
               key={column.uid}
               alignItems="center"
-              allowsSorting={column.sortable}
               width={column.width}
             >
               {column.name}

@@ -22,33 +22,27 @@ import supabase from "@/utils/supabase.ts";
 export const columns = [
   {
     name: "Season",
-    uid: "season_name",
-    sortable: true,
+    uid: "season_name"
   },
   {
     name: "Season Games",
-    uid: "regseason_gps",
-    sortable: true,
+    uid: "regseason_gps"
   },
   {
     name: "Playoff Games",
-    uid: "playoff_gps",
-    sortable: true,
+    uid: "playoff_gps"
   },
   {
     name: "Goals",
-    uid: "total_goals",
-    sortable: true,
+    uid: "total_goals"
   },
   {
     name: "Assists",
-    uid: "total_assists",
-    sortable: true,
+    uid: "total_assists"
   },
   {
     name: "Points",
-    uid: "total_points",
-    sortable: true,
+    uid: "total_points"
   },
 ];
 
@@ -316,7 +310,7 @@ export default function TotalGAP({
       >
         <TableHeader columns={headerColumns}>
           {(column) => (
-            <TableColumn key={column.uid} allowsSorting={column.sortable}>
+            <TableColumn key={column.uid}>
               {column.name}
             </TableColumn>
           )}

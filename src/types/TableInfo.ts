@@ -1,87 +1,87 @@
-import { Table } from "@/types/Table.ts";
+import { QueryTable } from "@/types/Table.ts";
 import { Modal } from "@/types/Modal.ts";
 
 export type NHLTableInfo = {
-  table: Table;
+  table: QueryTable;
   modal: Modal;
 };
 
 export const TotalGoalsByTeamInfo: NHLTableInfo = {
-  table: Table.TotalGoalsByTeam,
+  table: QueryTable.TotalGoalsByTeam,
   modal: Modal.FirstLastInput,
 };
 
 export const PlayerSeasonStatsInfo: NHLTableInfo = {
-  table: Table.PlayerSeasonStats,
+  table: QueryTable.PlayerSeasonStats,
   modal: Modal.FirstLastInput
 };
 
 export const TotalGAPInfo: NHLTableInfo = {
-  table: Table.TotalGAP,
+  table: QueryTable.TotalGAP,
   modal: Modal.FirstLastInput,
 };
 
 export const AvgShiftByPlayInfo: NHLTableInfo = {
-  table: Table.AvgShiftByPlay,
+  table: QueryTable.AvgShiftByPlay,
   modal: Modal.None,
 };
 
 export const AvgShiftByPeriodInfo: NHLTableInfo = {
-  table: Table.AvgShiftByPeriod,
+  table: QueryTable.AvgShiftByPeriod,
   modal: Modal.None,
 };
 
 export const GoalsByVenueInfo: NHLTableInfo = {
-  table: Table.GoalsByVenue,
+  table: QueryTable.GoalsByVenue,
   modal: Modal.SeasonInput,
 };
 
 export const TopNoOfficialPenaltiesInfo: NHLTableInfo = {
-  table: Table.TopNoOfficialPenalties,
+  table: QueryTable.TopNoOfficialPenalties,
   modal: Modal.RowInput,
 };
 
 export const TopTeamsPlayedForInfo: NHLTableInfo = {
-  table: Table.TopTeamsPlayedFor,
+  table: QueryTable.TopTeamsPlayedFor,
   modal: Modal.RowInput,
 };
 
 export const TopPlayersPenaltiesInfo: NHLTableInfo = {
-  table: Table.TopPlayersPenalties,
+  table: QueryTable.TopPlayersPenalties,
   modal: Modal.RowInput,
 };
 
 export const TotalPlayoffWinsInfo: NHLTableInfo = {
-  table: Table.TotalPlayoffWins,
+  table: QueryTable.TotalPlayoffWins,
   modal: Modal.SeasonTeamInput,
 };
 
 export const PlayersScoredAgainstAllTeamsInfo: NHLTableInfo = {
-  table: Table.PlayersScoredAgainstAllTeams,
+  table: QueryTable.PlayersScoredAgainstAllTeams,
   modal: Modal.None,
 };
 
 export const Top25ByStatInfo: NHLTableInfo = {
-  table: Table.Top25ByStat,
+  table: QueryTable.Top25ByStat,
   modal: Modal.SeasonInput,
 };
 
 export const AvgGoalsPerShotInfo: NHLTableInfo = {
-  table: Table.AvgGoalsPerShot,
+  table: QueryTable.AvgGoalsPerShot,
   modal: Modal.FirstLastInput,
 };
 
 export const AllTeamsInfo: NHLTableInfo = {
-  table: Table.AllTeams,
+  table: QueryTable.AllTeams,
   modal: Modal.None,
 };
 
 export const SearchPlayerInfo: NHLTableInfo = {
-  table: Table.SearchPlayer,
+  table: QueryTable.SearchPlayer,
   modal: Modal.FirstLastInput,
 };
 
 export const ScheduleInfo: NHLTableInfo = {
-  table: Table.Schedule,
+  table: QueryTable.Schedule,
   modal: Modal.SeasonTeamInput,
 };

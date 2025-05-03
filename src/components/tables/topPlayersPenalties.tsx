@@ -24,26 +24,23 @@ import supabase from "@/utils/supabase.ts";
 export const columns = [
   {
     name: "#",
-    uid: "rank",
+    uid: "rank"
   },
   {
     name: "Player",
-    uid: "first_name",
+    uid: "first_name"
   },
   {
     name: "Weight",
-    uid: "player_weight",
-    sortable: true,
+    uid: "player_weight"
   },
   {
     name: "Height",
-    uid: "player_height",
-    sortable: true,
+    uid: "player_height"
   },
   {
     name: "Penalties",
-    uid: "num_penalties",
-    sortable: true,
+    uid: "num_penalties"
   },
 ];
 
@@ -192,10 +189,10 @@ export default function TopPlayersPenalties({ numRows }: number) {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-600 text-medium">
+          <span className="text-xl">
             {"Top " +
               (numRows > players.length ? players.length : numRows) +
-              " Players"}
+              " Players With The Most Penalties"}
           </span>
 
           <label className="flex items-center text-default-400 text-small">

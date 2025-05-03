@@ -1,5 +1,5 @@
 import { QueryTabs } from "@/types/QueryTabs";
-import { Table } from "@/types/Table.ts";
+import { QueryTable } from "@/types/Table.ts";
 import { Modal } from "@/types/Modal.ts";
 import * as TableInfo from "@/types/TableInfo.ts";
 
@@ -20,7 +20,7 @@ export default function Queries({
   onModalSubmission,
 }: {
   selectedKey: QueryTabs;
-  onModalSubmission: (table: Table, params: any) => void;
+  onModalSubmission: (table: QueryTable, params: any) => void;
 }) {
   const queryComponents: Map<
     QueryTabs,
@@ -141,8 +141,8 @@ export default function Queries({
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [currModal, setCurrModal] = useState<Modal | null>(null);
-  const [tableToRender, setTableToRender] = useState<Table>(
-    Table.DEFAULT, // Next user selection (might require more info from modal before rendering)
+  const [tableToRender, setTableToRender] = useState<QueryTable>(
+    QueryTable.DEFAULT, // Next user selection (might require more info from modal before rendering)
   );
 
   function prepareTable(current: TableInfo.NHLTableInfo) {

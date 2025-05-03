@@ -9,7 +9,7 @@ import {
 import { useMemo, useState } from "react";
 import { Listbox, ListboxItem } from "@heroui/listbox";
 
-import { Table } from "@/types/Table.ts";
+import { QueryTable } from "@/types/Table.ts";
 import { Team, teams } from "@/components/teams.ts";
 
 const seasons = [
@@ -32,8 +32,8 @@ const ListboxWrapper = ({ children }: { children: any }) => (
 interface ChildProps {
   isOpen: boolean;
   onOpenChange: () => void;
-  tableToRender: Table;
-  callbackFunction: (table: Table, params: {}) => void;
+  tableToRender: QueryTable;
+  callbackFunction: (table: QueryTable, params: {}) => void;
 }
 
 export default function SeasonTeamInputModal(props: ChildProps) {

@@ -24,30 +24,6 @@ import {
 
 import supabase from "@/utils/supabase.ts";
 
-// for dropdown mapping
-// export const columns = [
-//   {
-//     name: "Season",
-//     uid: "season_name",
-//     sortable: true,
-//   },
-//   {
-//     name: "Goals",
-//     uid: "total_goals",
-//     sortable: true,
-//   },
-//   {
-//     name: "Assists",
-//     uid: "total_assists",
-//     sortable: true,
-//   },
-//   {
-//     name: "Points",
-//     uid: "total_points",
-//     sortable: true,
-//   },
-// ];
-
 const columns = [
   {
     name: "Season",
@@ -121,11 +97,6 @@ export default function PlayerSeasonStats({ firstName, lastName }: Props) {
 
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  // const [sortDescriptor, setSortDescriptor] = React.useState({
-  //   column: "g",
-  //   direction: "descending",
-  // });
-
   const [seasonStats, setSeasonStats] = useState<any[]>([]);
 
   useEffect(() => {
@@ -152,9 +123,6 @@ export default function PlayerSeasonStats({ firstName, lastName }: Props) {
 
   const [page, setPage] = React.useState(1);
 
-  // const pages = Math.ceil(players.length / rowsPerPage);
-  // const hasSearchFilter = Boolean(filterValue);
-
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
 
@@ -163,106 +131,12 @@ export default function PlayerSeasonStats({ firstName, lastName }: Props) {
     );
   }, [visibleColumns]);
 
-  // const filteredItems = React.useMemo(() => {
-  //   return [...players];
-  // }, [players, filterValue]);
-
-  // const items = React.useMemo(() => {
-  //   const start = (page - 1) * rowsPerPage;
-  //   const end = start + rowsPerPage;
-
-  //   return filteredItems.slice(start, end);
-  // }, [page, filteredItems, rowsPerPage]);
-
-  // const sortedItems = React.useMemo(() => {
-  //   return [...items].sort((a, b) => {
-  //     const first = a[sortDescriptor.column];
-  //     const second = b[sortDescriptor.column];
-  //     const cmp = first < second ? -1 : first > second ? 1 : 0;
-
-  //     return sortDescriptor.direction === "descending" ? -cmp : cmp;
-  //   });
-  // }, [sortDescriptor, items]);
-
-  // const onRowsPerPageChange = React.useCallback((e) => {
-  //   setRowsPerPage(Number(e.target.value));
-  //   setPage(1);
-  // }, []);
-
-  // const onSearchChange = React.useCallback((value) => {
-  //   if (value) {
-  //     setFilterValue(value);
-  //     setPage(1);
-  //   } else {
-  //     setFilterValue("");
-  //   }
-  // }, []);
-
-  // const topContent = React.useMemo(() => {
-  //   return (
-  //     <div className="flex flex-col gap-4">
-
-  //         <div className="flex gap-3">
-  //           <Dropdown>
-  //             <DropdownTrigger className="hidden sm:flex">
-  //               <Button
-  //                 endContent={<ChevronDownIcon className="text-small" />}
-  //                 size="sm"
-  //                 variant="flat"
-  //               >
-  //                 Columns
-  //               </Button>
-  //             </DropdownTrigger>
-  //             <DropdownMenu
-  //               disallowEmptySelection
-  //               aria-label="Table Columns"
-  //               closeOnSelect={false}
-  //               selectedKeys={visibleColumns}
-  //               selectionMode="multiple"
-  //               onSelectionChange={setVisibleColumns}
-  //             >
-  //               {columns.map((column) => (
-  //                 <DropdownItem key={column.uid} className="capitalize">
-  //                   {capitalize(column.name)}
-  //                 </DropdownItem>
-  //               ))}
-  //             </DropdownMenu>
-  //           </Dropdown>
-
-  //       </div>
-  //       <div className="flex justify-between items-center">
-  //         <span className="text-default-800 text-medium text-bold">
-  //           Season Stats
-  //         </span>
-  //         {/* <label className="flex items-center text-default-400 text-small">
-  //           Rows per page:
-  //           <select
-  //             className="bg-transparent outline-none text-default-400 text-small"
-  //             onChange={onRowsPerPageChange}
-  //           >
-  //             <option value="10">10</option>
-  //             <option value="15">15</option>
-  //             <option value="25">25</option>
-  //           </select>
-  //         </label> */}
-  //       </div>
-  //     </div>
-  //   );
-  // }, [
-  //   // filterValue,
-  //   visibleColumns,
-  //   // onSearchChange,
-  //   // onRowsPerPageChange,
-  //   // players.length,
-  //   // hasSearchFilter,
-  // ]);
-
   const topContent = React.useMemo(() => {
     return (
       <div className="flex justify-between items-center w-full">
-        <h2 className="text-2xl font-bold text-default-800">
-          {capitalize(firstName) + " " + capitalize(lastName)}
-        </h2>
+        <span className="text-xl">
+          {"Season Stats: " + capitalize(firstName) + " " + capitalize(lastName)}
+        </span>
   
         <Dropdown>
           <DropdownTrigger className="flex">
@@ -291,27 +165,8 @@ export default function PlayerSeasonStats({ firstName, lastName }: Props) {
         </Dropdown>
       </div>
     );
-  }, [visibleColumns]);
-
-  // const bottomContent = React.useMemo(() => {
-  //   return (
-  //     <div className="py-2 px-2 flex justify-center items-center">
-  //       <Pagination
-  //         showControls
-  //         classNames={{
-  //           cursor: "bg-foreground text-background",
-  //         }}
-  //         color="default"
-  //         isDisabled={hasSearchFilter}
-  //         page={page}
-  //         total={pages}
-  //         variant="light"
-  //         onChange={setPage}
-  //       />
-  //     </div>
-  //   );
-  // }, [selectedKeys, page]);
-
+  }, [firstName, lastName, visibleColumns]); 
+ 
   const classNames = React.useMemo(
     () => ({
       wrapper: ["max-h-[382px]", "max-w-3xl"],
@@ -339,8 +194,6 @@ export default function PlayerSeasonStats({ firstName, lastName }: Props) {
         isHeaderSticky
         removeWrapper
         aria-label="Database table"
-        // bottomContent={bottomContent}
-        // bottomContentPlacement="outside"
         checkboxesProps={{
           classNames: {
             wrapper:

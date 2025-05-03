@@ -177,7 +177,7 @@ export default function AvgShiftByPeriod() {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-700 text-medium">
+          <span className="text-xl">
             {"Avg. Shift by Period"}{" "}
             {/*<span className="font-semibold">{" " + first + " " + last}</span>*/}
             <Link
@@ -278,7 +278,6 @@ export default function AvgShiftByPeriod() {
             <TableColumn
               key={column.uid}
               alignItems="center"
-              allowsSorting={column.sortable}
             >
               {column.name}
             </TableColumn>

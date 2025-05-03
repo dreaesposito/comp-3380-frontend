@@ -28,13 +28,11 @@ import supabase from "@/utils/supabase.ts";
 export const columns = [
   {
     name: "First Name",
-    uid: "first_name",
-    sortable: true,
+    uid: "first_name"
   },
   {
     name: "Last Name",
-    uid: "last_name",
-    sortable: true,
+    uid: "last_name"
   },
 ];
 
@@ -174,7 +172,7 @@ export default function PlayersScoredAgainstAllTeams() {
               base: "w-full sm:max-w-[44%]",
               inputWrapper: "border-1",
             }}
-            placeholder="Search team..."
+            placeholder="Search player..."
             size="sm"
             startContent={<SearchIcon className="text-default-300" />}
             value={filterValue}
@@ -211,7 +209,7 @@ export default function PlayersScoredAgainstAllTeams() {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-700 text-medium">
+          <span className="text-xl">
             Players who have scored against all teams
           </span>
           <label className="flex items-center text-default-400 text-small">

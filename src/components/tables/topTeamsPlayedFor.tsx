@@ -83,7 +83,7 @@ export default function TopTeamsPlayedFor({ numRows }: Props) {
     };
 
     getPlayers(); // Call the async function
-  }, []);
+  }, [numRows]);
 
   const [page, setPage] = React.useState(1);
 
@@ -180,10 +180,10 @@ export default function TopTeamsPlayedFor({ numRows }: Props) {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-600 text-medium">
+          <span className="text-xl">
             {"Top " +
               (numRows > players.length ? players.length : numRows) +
-              " Players"}
+              " Biggest Suitcases"}
           </span>
 
           <label className="flex items-center text-default-400 text-small">

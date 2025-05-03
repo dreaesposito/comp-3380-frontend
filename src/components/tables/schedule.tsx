@@ -89,9 +89,6 @@ export default function Schedule({ seasonName, teamName }: Props) {
 
   useEffect(() => {
     const getPlayers = async () => {
-      
-
-
       const { data, error } = await supabase.rpc("team_schedule", {
         end_year: endYear,
         start_year: startYear,
@@ -111,7 +108,7 @@ export default function Schedule({ seasonName, teamName }: Props) {
     };
 
     getPlayers(); // Call the async function
-  }, []);
+  }, [seasonName, teamName]);
 
   const [page, setPage] = React.useState(1);
 
@@ -195,7 +192,7 @@ export default function Schedule({ seasonName, teamName }: Props) {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-700 text-medium">All Teams</span>
+          <span className="text-xl">All Teams</span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select

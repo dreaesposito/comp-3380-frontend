@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { Tab, Tabs } from "@heroui/tabs";
 import { Button } from "@heroui/react";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableColumn,
+  TableRow,
+  TableCell
+} from "@heroui/table";
 
 import Queries from "./queries";
 
@@ -22,17 +30,15 @@ import AvgGoalsPerShot from "@/components/tables/avgGoalsPerShot";
 import AllTeams from "@/components/tables/allTeams";
 import SearchPlayer from "@/components/tables/searchPlayer";
 import Schedule from "@/components/tables/schedule";
-import { Table } from "@/types/Table.ts";
+import { QueryTable } from "@/types/Table.ts";
 import PlayerSeasonStats from "@/components/tables/playerSeasonStats";
 
 export default function IndexPage() {
   const [menuVisible, setMenuVisible] = useState<boolean>(true);
   const [tableParams, setTableParams] = useState<any>();
-  const [renderedTable, setRenderedTable] = useState<Table>(
-    Table.DEFAULT, // Starting table for the page
-  );
+  const [renderedTable, setRenderedTable] = useState<QueryTable>() // Starting table for the page
 
-  const activateTable = (table: Table, params: any) => {
+  const activateTable = (table: QueryTable, params: any) => {
     setTableParams(params);
     setRenderedTable(table);
   };
@@ -54,42 +60,53 @@ export default function IndexPage() {
 
   function tableRenderSwitch() {
     switch (renderedTable) {
-      case Table.TotalGoalsByTeam:
+      case QueryTable.TotalGoalsByTeam:
         return <TotalGoalsByTeam {...tableParams} />;
-      case Table.TotalGAP:
+      case QueryTable.TotalGAP:
         return <TotalGAP {...tableParams} />; // Rendered table by default
-      case Table.AvgShiftByPlay:
+      case QueryTable.AvgShiftByPlay:
         return <AvgShiftByPlay />;
-      case Table.AvgShiftByPeriod:
+      case QueryTable.AvgShiftByPeriod:
         return <AvgShiftByPeriod />;
-      case Table.GoalsByVenue:
+      case QueryTable.GoalsByVenue:
         return <GoalsByVenue {...tableParams} />;
-      case Table.TopNoOfficialPenalties:
+      case QueryTable.TopNoOfficialPenalties:
         return <TopNoOfficialPenalties {...tableParams} />;
-      case Table.TopTeamsPlayedFor:
+      case QueryTable.TopTeamsPlayedFor:
         return <TopTeamsPlayedFor {...tableParams} />;
-      case Table.TopPlayersPenalties:
+      case QueryTable.TopPlayersPenalties:
         return <TopPlayersPenalties {...tableParams} />;
-      case Table.TotalPlayoffWins:
+      case QueryTable.TotalPlayoffWins:
         return <TotalPlayoffWins {...tableParams} />;
-      case Table.PlayersScoredAgainstAllTeams:
+      case QueryTable.PlayersScoredAgainstAllTeams:
         return <PlayersScoredAgainstAllTeams />;
-      case Table.Top25ByStat:
+      case QueryTable.Top25ByStat:
         return <Top25ByStat {...tableParams} />;
-      case Table.AvgGoalsPerShot:
+      case QueryTable.AvgGoalsPerShot:
         return <AvgGoalsPerShot {...tableParams} />;
-      case Table.AllTeams:
+      case QueryTable.AllTeams:
         return <AllTeams />;
-      case Table.SearchPlayer:
+      case QueryTable.SearchPlayer:
         return <SearchPlayer {...tableParams}/>;
-      case Table.Schedule:
+      case QueryTable.Schedule:
         return <Schedule {...tableParams} />;
-      case Table.PlayerSeasonStats:
+      case QueryTable.PlayerSeasonStats:
         return <PlayerSeasonStats {...tableParams}/>
-      case Table.DEFAULT:
-        return <TestTable />;
       default:
-        return null; // shouldn't happen
+        return (
+          <Table
+            isHeaderSticky
+            removeWrapper
+          >
+            <TableHeader>
+              <TableColumn>{""}</TableColumn>
+            </TableHeader>
+            <TableBody emptyContent={"Select a query to get started"}>
+              {[]}
+            </TableBody>
+            
+          </Table>
+        )
     }
   }
 
