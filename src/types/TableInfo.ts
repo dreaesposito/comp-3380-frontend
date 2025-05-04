@@ -16,10 +16,10 @@ export const PlayerSeasonStatsInfo: NHLTableInfo = {
   modal: Modal.FirstLastInput
 };
 
-export const TotalGAPInfo: NHLTableInfo = {
-  table: QueryTable.TotalGAP,
-  modal: Modal.FirstLastInput,
-};
+// export const TotalGAPInfo: NHLTableInfo = {
+//   table: QueryTable.TotalGAP,
+//   modal: Modal.FirstLastInput,
+// };
 
 export const AvgShiftByPlayInfo: NHLTableInfo = {
   table: QueryTable.AvgShiftByPlay,

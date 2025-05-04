@@ -11,7 +11,7 @@ import {
 import Queries from "./queries";
 
 import TotalGoalsByTeam from "@/components/tables/totalGoalsByTeam.tsx";
-import TotalGAP from "@/components/tables/totalGAP.tsx";
+// import TotalGAP from "@/components/tables/totalGAP.tsx";
 import AvgShiftByPlay from "@/components/tables/avgShiftByPlay.tsx";
 import GoalsByVenue from "@/components/tables/goalsByVenue.tsx";
 import DefaultLayout from "@/layouts/default";
@@ -59,8 +59,8 @@ export default function IndexPage() {
     switch (renderedTable) {
       case QueryTable.TotalGoalsByTeam:
         return <TotalGoalsByTeam {...tableParams} />;
-      case QueryTable.TotalGAP:
-        return <TotalGAP {...tableParams} />; // Rendered table by default
+      // case QueryTable.TotalGAP:
+      //   return <TotalGAP {...tableParams} />;
       case QueryTable.AvgShiftByPlay:
         return <AvgShiftByPlay />;
       case QueryTable.AvgShiftByPeriod:

@@ -67,12 +67,6 @@ export default function Queries({
         },
         {
           id: 7,
-          label: "Total Goals/Assists/Points",
-          description: "Find the total goals, assists, and points for a player",
-          tableInfo: TableInfo.TotalGAPInfo
-        },
-        {
-          id: 8,
           label: "Total Goals By Team",
           description: "Determine how many goals a player has scored against each team in the league",
           tableInfo: TableInfo.TotalGoalsByTeamInfo
