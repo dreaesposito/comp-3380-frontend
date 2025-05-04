@@ -76,8 +76,8 @@ export const AllTeamsInfo: NHLTableInfo = {
   modal: Modal.None,
 };
 
-export const SearchPlayerInfo: NHLTableInfo = {
-  table: QueryTable.SearchPlayer,
+export const TeamHistoryInfo: NHLTableInfo = {
+  table: QueryTable.TeamHistory,
   modal: Modal.FirstLastInput,
 };
 

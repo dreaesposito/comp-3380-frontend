@@ -6,8 +6,6 @@ import {
   TableHeader,
   TableBody,
   TableColumn,
-  TableRow,
-  TableCell
 } from "@heroui/table";
 
 import Queries from "./queries";
@@ -18,7 +16,6 @@ import AvgShiftByPlay from "@/components/tables/avgShiftByPlay.tsx";
 import GoalsByVenue from "@/components/tables/goalsByVenue.tsx";
 import DefaultLayout from "@/layouts/default";
 import { QueryTabs } from "@/types/QueryTabs";
-import { TestTable } from "@/pages/blog.tsx";
 import TopNoOfficialPenalties from "@/components/tables/topNoOfficialPenalties.tsx";
 import TopTeamsPlayedFor from "@/components/tables/topTeamsPlayedFor.tsx";
 import TopPlayersPenalties from "@/components/tables/topPlayersPenalties.tsx";
@@ -28,7 +25,7 @@ import PlayersScoredAgainstAllTeams from "@/components/tables/playersScoredAgain
 import Top25ByStat from "@/components/tables/top25ByStat";
 import AvgGoalsPerShot from "@/components/tables/avgGoalsPerShot";
 import AllTeams from "@/components/tables/allTeams";
-import SearchPlayer from "@/components/tables/searchPlayer";
+import TeamHistory from "@/components/tables/teamHistory.tsx";
 import Schedule from "@/components/tables/schedule";
 import { QueryTable } from "@/types/Table.ts";
 import PlayerSeasonStats from "@/components/tables/playerSeasonStats";
@@ -86,8 +83,8 @@ export default function IndexPage() {
         return <AvgGoalsPerShot {...tableParams} />;
       case QueryTable.AllTeams:
         return <AllTeams />;
-      case QueryTable.SearchPlayer:
-        return <SearchPlayer {...tableParams}/>;
+      case QueryTable.TeamHistory:
+        return <TeamHistory {...tableParams}/>;
       case QueryTable.Schedule:
         return <Schedule {...tableParams} />;
       case QueryTable.PlayerSeasonStats:

@@ -1,17 +1,8 @@
 // @ts-nocheck
 
-// TODO - add games played?
-
-import { ChevronDownIcon } from "@/components/common/tableIcons.tsx";
-
 import React, { useEffect, useState } from "react";
 
 import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
   Pagination,
   Table,
   TableBody,
@@ -24,35 +15,34 @@ import {
 
 import supabase from "@/utils/supabase.ts";
 
-// for dropdown mapping
-
 const columns = [
   {
-    name: "Player Type",
-    uid: "player_type",
+    name: "",
+    uid: "team_logo",
+    width: "5%",
   },
   {
-    name: "Nationality",
-    uid: "player_nationality",
-    sortable: true,
+    name: "Team",
+    uid: "team_name",
+    width: "30%",
   },
   {
-    name: "Date of Birth",
-    uid: "birth_date",
-    sortable: true,
+    name: "Start Date",
+    uid: "start_date",
+    width: "40%",
   },
   {
-    name: "Weight",
-    uid: "player_weight",
-    sortable: true,
+    name: "End Date",
+    uid: "end_date",
+    width: "10%",
   },
 ];
 
 const INITIAL_VISIBLE_COLUMNS = [
-  "player_type",
-  "player_nationality",
-  "birth_date",
-  "player_weight",
+  "team_logo",
+  "team_name",
+  "start_date",
+  "end_date",
 ];
 
 export function capitalize(s) {
@@ -60,11 +50,12 @@ export function capitalize(s) {
 }
 
 interface Props {
+  playerId: string;
   firstName: string;
   lastName: string;
 }
 
-export default function SearchPlayer({ firstName, lastName }: Props) {
+export default function TeamHistory({ firstName, lastName, playerId }: Props) {
   const [filterValue, setFilterValue] = React.useState("");
 
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -85,8 +76,8 @@ export default function SearchPlayer({ firstName, lastName }: Props) {
   useEffect(() => {
     // console.log(firstName)
     const getPlayers = async () => {
-      const { data, error } = await supabase.rpc("search_player", {
-        name: firstName + " " + lastName,
+      const { data, error } = await supabase.rpc("get_players_teams", {
+        player_id: playerId,
       });
 
       // console.log(data);
@@ -94,9 +85,9 @@ export default function SearchPlayer({ firstName, lastName }: Props) {
       if (error) {
         console.error("Error performing query:", error);
       } else {
-        data.forEach((player, index) => {
-          player.rank = index + 1;
-        });
+        // data.forEach((player, index) => {
+        //   player.rank = index + 1;
+        // });
         setPlayers(data);
       }
     };
@@ -141,7 +132,7 @@ export default function SearchPlayer({ firstName, lastName }: Props) {
   const onRowsPerPageChange = React.useCallback((e) => {
     setRowsPerPage(Number(e.target.value));
     setPage(1);
-  }, []);
+  }, [firstName, lastName, playerId]);
 
   const onSearchChange = React.useCallback((value) => {
     if (value) {
@@ -152,41 +143,79 @@ export default function SearchPlayer({ firstName, lastName }: Props) {
     }
   }, []);
 
+  const renderCell = React.useCallback((user, columnKey) => {
+    const cellValue = user[columnKey];
+
+    switch (columnKey) {
+      case "team_name":
+        return <p>{user.team_city + " " + cellValue}</p>;
+      //   <User
+      //     avatarProps={{
+      //       radius: "xl",
+      //       size: "sm",
+      //       color: "",
+      //     }}
+      //     name={user.team_city + " " + cellValue}
+      //   />
+      // );
+      case "team_logo":
+        return (
+          <User
+            avatarProps={{
+              radius: "xl",
+              size: "sm",
+              src: user.team_logo,
+              color: "",
+            }}
+            name=""
+          />
+        );
+      default:
+        return cellValue;
+    }
+  }, []);
+
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
           <div />
           <div className="flex gap-3">
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  size="sm"
-                  variant="flat"
-                >
-                  Columns
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={visibleColumns}
-                selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
-              >
-                {columns.map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
+            {/*<Dropdown>*/}
+            {/*  <DropdownTrigger className="hidden sm:flex">*/}
+            {/*    <Button*/}
+            {/*      endContent={<ChevronDownIcon className="text-small" />}*/}
+            {/*      size="sm"*/}
+            {/*      variant="flat"*/}
+            {/*    >*/}
+            {/*      Columns*/}
+            {/*    </Button>*/}
+            {/*  </DropdownTrigger>*/}
+            {/*  <DropdownMenu*/}
+            {/*    disallowEmptySelection*/}
+            {/*    aria-label="Table Columns"*/}
+            {/*    closeOnSelect={false}*/}
+            {/*    selectedKeys={visibleColumns}*/}
+            {/*    selectionMode="multiple"*/}
+            {/*    onSelectionChange={setVisibleColumns}*/}
+            {/*  >*/}
+            {/*    {columns.map((column) => (*/}
+            {/*      <DropdownItem key={column.uid} className="capitalize">*/}
+            {/*        {capitalize(column.name)}*/}
+            {/*      </DropdownItem>*/}
+            {/*    ))}*/}
+            {/*  </DropdownMenu>*/}
+            {/*</Dropdown>*/}
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-700 text-medium">{capitalize(firstName) + " " + capitalize(lastName)}</span>
+          <span className="flex text-default-700 text-medium">
+            Teams for{" "}
+            <p className={"mx-1.5 font-medium"}>
+              {capitalize(firstName) + " " + capitalize(lastName)}
+            </p>
+            (as of 2020)
+          </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
@@ -208,6 +237,9 @@ export default function SearchPlayer({ firstName, lastName }: Props) {
     onRowsPerPageChange,
     players.length,
     hasSearchFilter,
+    firstName,
+    lastName,
+    playerId,
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -277,6 +309,7 @@ export default function SearchPlayer({ firstName, lastName }: Props) {
               key={column.uid}
               alignItems="center"
               allowsSorting={column.sortable}
+              width={column.width}
             >
               {column.name}
             </TableColumn>
@@ -291,7 +324,9 @@ export default function SearchPlayer({ firstName, lastName }: Props) {
               key={item.rank}
               className="cursor-pointer hover:bg-default/40 hover:rounded-full"
             >
-              {(columnKey) => <TableCell>{item[columnKey]}</TableCell>}
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>

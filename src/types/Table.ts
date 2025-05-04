@@ -12,7 +12,7 @@ export const enum QueryTable {
   Top25ByStat,
   AvgGoalsPerShot,
   AllTeams,
-  SearchPlayer,
+  TeamHistory,
   Schedule,
   GordieHoweHatTricks,
   PlayerSeasonStats,

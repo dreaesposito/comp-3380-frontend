@@ -31,9 +31,9 @@ export default function Queries({
       [
         {
           id: 1,
-          label: "Find Player",
-          description: "Search for a player by name",
-          tableInfo: TableInfo.SearchPlayerInfo
+          label: "Team History",
+          description: "Show a player's team history",
+          tableInfo: TableInfo.TeamHistoryInfo
         },
         {
           id: 2,
