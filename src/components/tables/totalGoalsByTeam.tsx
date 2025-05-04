@@ -24,13 +24,17 @@ import {
 } from "@/components/common/tableIcons.tsx";
 import supabase from "@/utils/supabase.ts";
 
-// for dropdown mapping
 export const columns = [
+  {
+    name: "",
+    uid: "team_logo",
+    width: "5%",
+  },
   {
     name: "Team",
     uid: "team_name",
     classes: "",
-    width: "55%",
+    width: "45%",
   },
   {
     name: "Goal Total",
@@ -44,7 +48,7 @@ export function capitalize(s) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
 }
 
-const INITIAL_VISIBLE_COLUMNS = ["team_name", "goal_total"];
+const INITIAL_VISIBLE_COLUMNS = ["team_logo", "team_name", "goal_total"];
 
 interface Props {
   playerId: string;
@@ -139,6 +143,8 @@ export default function TotalGoalsByTeam({
 
     switch (columnKey) {
       case "team_name":
+        return <p>{user.team_city + " " + cellValue}</p>;
+      case "team_logo":
         return (
           <User
             avatarProps={{
@@ -147,7 +153,7 @@ export default function TotalGoalsByTeam({
               src: user.team_logo,
               color: "",
             }}
-            name={user.team_city + " " + cellValue}
+            name=""
           />
         );
       case "goal_total":
@@ -193,33 +199,33 @@ export default function TotalGoalsByTeam({
             onClear={() => setFilterValue("")}
             onValueChange={onSearchChange}
           />
-          <div className="flex gap-3">
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  size="sm"
-                  variant="flat"
-                >
-                  Columns
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={visibleColumns}
-                selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
-              >
-                {columns.map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
-          </div>
+          {/*<div className="flex gap-3">*/}
+          {/*  <Dropdown>*/}
+          {/*    <DropdownTrigger className="hidden sm:flex">*/}
+          {/*      <Button*/}
+          {/*        endContent={<ChevronDownIcon className="text-small" />}*/}
+          {/*        size="sm"*/}
+          {/*        variant="flat"*/}
+          {/*      >*/}
+          {/*        Columns*/}
+          {/*      </Button>*/}
+          {/*    </DropdownTrigger>*/}
+          {/*    <DropdownMenu*/}
+          {/*      disallowEmptySelection*/}
+          {/*      aria-label="Table Columns"*/}
+          {/*      closeOnSelect={false}*/}
+          {/*      selectedKeys={visibleColumns}*/}
+          {/*      selectionMode="multiple"*/}
+          {/*      onSelectionChange={setVisibleColumns}*/}
+          {/*    >*/}
+          {/*      {columns.map((column) => (*/}
+          {/*        <DropdownItem key={column.uid} className="capitalize">*/}
+          {/*          {capitalize(column.name)}*/}
+          {/*        </DropdownItem>*/}
+          {/*      ))}*/}
+          {/*    </DropdownMenu>*/}
+          {/*  </Dropdown>*/}
+          {/*</div>*/}
         </div>
         <div className="flex justify-between items-center">
           <span className="text-xl">
