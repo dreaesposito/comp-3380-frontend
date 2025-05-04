@@ -9,7 +9,7 @@ import DefaultLayout from "@/layouts/default";
 import PlayerSeasonStats from "@/components/tables/playerSeasonStats";
 import PlayerStatsChart from "@/components/common/playerStatsChart";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
 Card,
@@ -99,7 +99,7 @@ export default function PlayerAnalysisPage() {
           {/* </div> */}
 
           <div className="w-2/3 bg-default-50 rounded-xl p-6 shadow-md">
-            <PlayerSeasonStats player={selectedPlayer} />
+            <PlayerSeasonStats firstName={selectedPlayer.firstname} lastName={selectedPlayer.lastname} />
           </div>
         </div>
         
