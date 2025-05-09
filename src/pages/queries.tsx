@@ -188,10 +188,10 @@ export default function Queries({
               onPress={() => prepareTable(query.tableInfo)}
             >
               <CardHeader>
-                <span className="whitespace-nowrap">{query.label}</span>
+                <span className="whitespace-nowrap font-semibold">{query.label}</span>
               </CardHeader>
               <CardBody>
-                <span>
+                <span className="text-default-600">
                   {query.description}
                 </span>
               </CardBody>

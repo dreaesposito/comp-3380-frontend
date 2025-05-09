@@ -28,16 +28,20 @@ import supabase from "@/utils/supabase.ts";
 
 const columns = [
   {
+    name: "Logo",
+    uid: "team_logo",
+  },
+  {
     name: "City",
-    uid: "team_city"
+    uid: "team_city",
   },
   {
     name: "Name",
-    uid: "team_name"
+    uid: "team_name",
   },
 ];
 
-const INITIAL_VISIBLE_COLUMNS = ["team_city", "team_name"];
+const INITIAL_VISIBLE_COLUMNS = ["team_logo", "team_city", "team_name"];
 
 export function capitalize(s) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
@@ -222,6 +226,27 @@ export default function AllTeams() {
     [],
   );
 
+  const renderCell = React.useCallback((user, columnKey) => {
+    const cellValue = user[columnKey];
+
+    switch (columnKey) {
+      case "team_logo":
+        return (
+          <User
+            avatarProps={{
+              radius: "xl",
+              size: "sm",
+              src: user.team_logo,
+              color: "",
+            }}
+            name=""
+          />
+        );
+      default:
+        return cellValue;
+    }
+  }, []);
+
   return (
     <div>
       <Table
@@ -249,6 +274,7 @@ export default function AllTeams() {
             <TableColumn
               key={column.uid}
               alignItems="center"
+              width={column.width}
             >
               {column.name}
             </TableColumn>
@@ -263,7 +289,7 @@ export default function AllTeams() {
               key={item.rank}
               className="cursor-pointer hover:bg-default/40 hover:rounded-full"
             >
-              {(columnKey) => <TableCell>{item[columnKey]}</TableCell>}
+              {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
             </TableRow>
           ))}
         </TableBody>

@@ -209,8 +209,8 @@ export default function TeamHistory({ firstName, lastName, playerId }: Props) {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="flex text-default-700 text-medium">
-            Teams for{" "}
+          <span className="flex text-default-700 text-xl">
+            Team history for {" "}
             <p className={"mx-1.5 font-medium"}>
               {capitalize(firstName) + " " + capitalize(lastName)}
             </p>
