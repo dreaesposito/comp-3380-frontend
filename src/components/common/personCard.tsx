@@ -26,7 +26,7 @@ export const PersonCard: React.FC<Props> = ({ person }) => {
   return (
     <div>
       {/*need outer div element for proper styling*/}
-      <div className="rounded-2xl hover:shadow-2xl hover:shadow-zinc-300 dark:shadow-zinc-700 transition-shadow duration-250">
+      <div className="md:w-full w-[300px] rounded-2xl hover:shadow-2xl hover:shadow-zinc-300 dark:shadow-zinc-700 transition-shadow duration-250">
         <Card className="py-4 max-w-sm mx-auto">
           <CardHeader className="pb-0 pt-2 px-4 flex-col items-center">
             <Image
@@ -42,7 +42,7 @@ export const PersonCard: React.FC<Props> = ({ person }) => {
           </CardBody>
           <Divider />
           <CardFooter className="pb-0 pt-2 px-4">
-            <div className="grid grid-cols-2 content-center md:grid-cols-2 md:gap-3 mx-auto">
+            <div className="grid grid-cols-2 content-center md:grid-cols-2 gap-4 mx-auto">
               <Button
                 isExternal
                 as={Link}
@@ -55,8 +55,8 @@ export const PersonCard: React.FC<Props> = ({ person }) => {
                 <i className="text-2xl bi bi-github" />
               </Button>
               <Button
-                as={Link}
                 isExternal
+                as={Link}
                 className="object-cover rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600"
                 color="primary"
                 href={person.linkedin}
