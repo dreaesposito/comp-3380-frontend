@@ -61,8 +61,6 @@ export default function PlayerStatsChart({ player }: Props) {
   const [comparePlayer, setComparePlayer] = useState<Player | null>(null);
   const [comparePlayerStats, setComparePlayerStats] = useState<PlayerStat[]>([]);
 
-  const [showGraph, setShowGraph] = useState(false);
-
   useEffect(() => {
     const fetchData = async () => {
       // let rpcfunc = "";
@@ -342,11 +340,6 @@ export default function PlayerStatsChart({ player }: Props) {
         <div className="flex items-center justify-center space-x-4 mb-4">
           {ChartLegend}
         </div>
-
-
-        {/* <h2 className="text-xl font-bold mb-4">Trends Per Season</h2> */}
-
-  
 
         {loading ? (
           <Spinner

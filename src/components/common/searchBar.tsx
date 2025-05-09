@@ -1,7 +1,4 @@
 import { useState, useEffect } from "react";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
-
-
 
 export const SearchIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -33,26 +30,7 @@ export const SearchIcon = (props: React.SVGProps<SVGSVGElement>) => {
   );
 };
 
-import {
-
-  Input,
-  Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  Chip,
-  User,
-  Pagination,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  Card,
-  CardHeader,
-  CardBody,
-  ModalFooter,
-} from "@heroui/react";
+import { Input } from "@heroui/react";
 
 
 import supabase from "../../utils/supabase";
@@ -62,14 +40,7 @@ import { Player } from "@/types/Player";
 interface SearchBarProps {
   placeholder?: string;
   onSelect: (player: Player) => Promise<void>;
-  // debounceTime?: number;
 }
-
-// export interface Player {
-//   firstname: string;
-//   lastname: string;
-//   team: string;
-// }
 
 const SearchBar = ({ placeholder = "Search...", onSelect}: SearchBarProps) => {
   const [query, setQuery] = useState("");
@@ -87,9 +58,6 @@ const SearchBar = ({ placeholder = "Search...", onSelect}: SearchBarProps) => {
       } else {
         const players = (data || []) as Player[];
         setAllPlayers(players);
-        //onResults(data || []); // show all by default
-        // console.log(players);
-        // console.log(allPlayers.length)
       }
     };
 
@@ -97,7 +65,6 @@ const SearchBar = ({ placeholder = "Search...", onSelect}: SearchBarProps) => {
   }, []);
 
   const filteredPlayers = allPlayers.filter((player) => {
-    // console.log(player);
     let matches = false;
 
     if (
@@ -112,53 +79,14 @@ const SearchBar = ({ placeholder = "Search...", onSelect}: SearchBarProps) => {
       if (((player.firstname).toLowerCase() + " " + (player.lastname).toLowerCase()).includes(query.toLowerCase()) && query != " "){
 
         matches = true
-        // console.log(`player match: ${player}`)
       }
-      // if ((player.lastname).toLowerCase().includes(query.toLowerCase())){
-
-      //   matches = true
-      //   console.log(`last name match for player: ${player.lastname}`)
-      // }
     }
     return matches;
     // return `${player.firstName} ${player.lastName}`.toLowerCase().includes(query.toLowerCase());
   });
-  
-  // const showSelectedPlayer = (player: Player) => {
-  //   console.log("Player:", player);
-  //   setSelectedPlayer(player)
-
-  //   placeholder = player.firstname + " " + player.lastname;
-
-  // }
-
-  // useEffect(() => {
-  //   console.log("AllPlayers updated:", allPlayers);
-  // }, [allPlayers]);
-
-  // Filter local data on query change
-  // useEffect(() => {
-  //   const handler = setTimeout(() => {
-  //     const lowerQuery = query.toLowerCase();
-  //     const filtered = allPlayers.filter((player) =>
-  //       player.name.toLowerCase().includes(lowerQuery)
-  //     );
-  //     //onResults(filtered);
-  //   }, debounceTime);
-
-  //   return () => clearTimeout(handler);
-  // }, [query, debounceTime, allPlayers]);
-
 
   return (
     <div className="relative w-full max-w-md mx-auto">
-      {/* <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder={placeholder}
-        className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      /> */}
       <Input
             isClearable
             classNames={{
@@ -170,10 +98,8 @@ const SearchBar = ({ placeholder = "Search...", onSelect}: SearchBarProps) => {
             startContent={<SearchIcon className="text-default-300" />}
             value={query}
             variant="bordered"
-            //onClear={() => setFilterValue("")}
             onValueChange={setQuery}
         />
-        {/* <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute left-3 top-2.5" /> */}
         {query.length > 0 && !(selectedPlayer && `${selectedPlayer.firstname} ${selectedPlayer.lastname}` === query) && (
   <div className="absolute w-full bg-default-100 border border-default-200 rounded-md shadow-md mt-1 z-50 max-h-64 overflow-y-auto pointer-events-auto">
 
@@ -183,7 +109,6 @@ const SearchBar = ({ placeholder = "Search...", onSelect}: SearchBarProps) => {
           key={index}
           className="flex justify-between items-center px-4 py-2 hover:bg-default/60 cursor-pointer"
           onClick={() => {
-            // console.log("Selection was ", player.firstname + " " + player.lastname)
             setQuery(`${player.firstname} ${player.lastname}`);
             setSelectedPlayer(player);
             // Optionally close dropdown here or keep it open

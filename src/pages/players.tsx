@@ -83,7 +83,7 @@ export default function PlayerAnalysisPage() {
                 <img 
                   src={playerInfo[0].img} 
                   alt={`${playerInfo[0].fn} ${playerInfo[0].ln}`} 
-                  className="w-24 h-24 mr-6 rounded-full mr-14" 
+                  className="w-24 h-24 mr-6 rounded-full" 
                 />
                 <div className="flex flex-col gap-1.5">
                   <p><strong>Type:</strong> {playerInfo[0].pt}</p>
