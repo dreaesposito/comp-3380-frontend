@@ -74,7 +74,7 @@ export const Navbar = () => {
           isActive={location.pathname === "/players"}
         >
           <Link className={styles.linkStyle} color="foreground" href="/players">
-            <p className="text-inherit">Analysis</p>
+            <p className="text-inherit">Player Analysis</p>
           </Link>
         </NavbarItem>
       </NavbarContent>
@@ -117,7 +117,7 @@ export const Navbar = () => {
             <Link
               className={styles.linkStyle}
               color="foreground"
-              href="/leaders"
+              href="/players"
             >
               <p className="text-inherit">Player Analysis</p>
             </Link>
