@@ -25,14 +25,14 @@ export default function PlayerAnalysisPage() {
   const [playerInfo, setPlayerInfo] = useState<any | null>(null);
 
   const handleSelect = async (player: Player) => {
-    console.log("Selected player:", player);
+    // console.log("Selected player:", player);
     setSelectedPlayer(player)
 
     const { data, error } = await supabase.rpc("get_player_info", { pid: player.playerid});
     if (error) {
       console.error("Error fetching player information:", error);
     } else {
-      console.log("fetched player info:", data);
+      // console.log("fetched player info:", data);
       setPlayerInfo(data);
     }
   }

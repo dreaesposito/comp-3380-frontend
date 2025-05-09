@@ -77,7 +77,7 @@ export default function PlayerStatsChart({ player }: Props) {
       if (error) {
         console.error("Error fetching player:", error);
       } else {
-        console.log(data)
+       //  console.log(data)
         setplayerStats(data);
       }
       setIsLoading(false);
@@ -104,8 +104,8 @@ export default function PlayerStatsChart({ player }: Props) {
   
   const combinedStats = useMemo(() => {
 
-    console.log("Player: ", playerStats);
-    console.log("Compare Player:", comparePlayerStats);
+    // console.log("Player: ", playerStats);
+    // console.log("Compare Player:", comparePlayerStats);
 
 
     // Get all unique seasons from both player and comparePlayer stats
@@ -116,7 +116,7 @@ export default function PlayerStatsChart({ player }: Props) {
       ]),
     ];
 
-    console.log("All season: ", allSeasons)
+    // console.log("All season: ", allSeasons)
 
     
   
@@ -126,7 +126,7 @@ export default function PlayerStatsChart({ player }: Props) {
       const playerStat: any = playerStats.find((stat) => stat.season === season) || {};
       const compareStat: any = comparePlayerStats.find((stat) => stat.season === season) || {};
 
-      console.log("Season: ", season)
+     // console.log("Season: ", season)
       // console.log("Player stat: ", playerStat)
       // console.log("Compare Player stat: ", compareStat)
   
@@ -137,7 +137,7 @@ export default function PlayerStatsChart({ player }: Props) {
         return acc;
       }, {});
 
-      console.log("Combined stats: ", seasonStats);
+      // console.log("Combined stats: ", seasonStats);
       
       return {
         season,
@@ -145,7 +145,7 @@ export default function PlayerStatsChart({ player }: Props) {
       };
     });
 
-    console.log("Result: ", result);
+    // console.log("Result: ", result);
   
     const sortedData = result.sort((a, b) => {
       const [aStartYear] = a.season.split('-').map(Number);
@@ -155,7 +155,7 @@ export default function PlayerStatsChart({ player }: Props) {
       return aStartYear - bStartYear || parseInt(a.season.split('-')[1]) - parseInt(b.season.split('-')[1]);
     });
 
-    console.log("Sorted: ", sortedData);
+    // console.log("Sorted: ", sortedData);
 
     return sortedData;
   }, [playerStats, comparePlayerStats]);
@@ -260,7 +260,7 @@ export default function PlayerStatsChart({ player }: Props) {
   }, [player, comparePlayer]);
 
   const handleSelect = async (comparePlayer: Player) => {
-    console.log("Player to compare:", comparePlayer);
+    // console.log("Player to compare:", comparePlayer);
     setComparePlayer(comparePlayer)
 
     const { data, error } = await supabase.rpc("get_player_stats_by_season", {
@@ -270,7 +270,7 @@ export default function PlayerStatsChart({ player }: Props) {
     if (error) {
       console.error("Error fetching player information:", error);
     } else {
-      console.log("fetched player info:", data);
+      // console.log("fetched player info:", data);
       setComparePlayerStats(data);
     }
   }

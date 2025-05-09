@@ -69,7 +69,7 @@ export default function AllTeams() {
     const getPlayers = async () => {
       const { data, error } = await supabase.rpc("all_teams");
 
-      console.log(data);
+      // console.log(data);
 
       if (error) {
         console.error("Error performing query:", error);

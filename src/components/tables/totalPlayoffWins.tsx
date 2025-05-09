@@ -80,7 +80,7 @@ export default function TotalPlayoffWins({ seasonName, teamName }: Props) {
       if (error) {
         console.error("Error performing query:", error);
       } else {
-        console.log("Data:", data);
+        // console.log("Data:", data);
         setPlayers(data);
       }
     };

@@ -81,7 +81,7 @@ export default function AvgGoalsPerShot({ firstName, lastName }: Props) {
         last: lastName,
       });
 
-      console.log(data);
+      // console.log(data);
 
       if (error) {
         console.error("Error performing query:", error);

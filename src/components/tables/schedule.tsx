@@ -95,7 +95,7 @@ export default function Schedule({ seasonName, teamName }: Props) {
         team_name: teamName,
       });
 
-      console.log(data);
+      // console.log(data);
 
       if (error) {
         console.error("Error performing query:", error);

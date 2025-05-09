@@ -12,7 +12,9 @@ import { useLocation } from "react-router-dom";
 
 import styles from "@/styles/navbar.module.css";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { NhlLogo } from "@/components/icons";
+import nhlLogo from "@/assets/nhl-logo.png";
+// import { NhlLogo } from "@/components/icons";
+// import * as React from "react";
 
 export const Navbar = () => {
   const location = useLocation();
@@ -47,7 +49,14 @@ export const Navbar = () => {
               color="foreground"
               href="/"
             >
-              <NhlLogo />
+              {/*<NhlLogo />*/}
+
+              <img
+                alt="logo"
+                className="w-6 h-6 object-contain"
+                src={nhlLogo}
+              />
+
               <p className="font-bold text-inherit">NHL Database</p>
             </Link>
           </NavbarBrand>

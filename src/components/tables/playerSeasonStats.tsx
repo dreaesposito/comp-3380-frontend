@@ -101,7 +101,7 @@ export default function PlayerSeasonStats({ firstName, lastName }: Props) {
 
   useEffect(() => {
     const getPlayers = async () => {
-      console.log(firstName)
+      // console.log(firstName)
       const { data, error } = await supabase.rpc("get_player_stats_by_season", {
         fname: firstName,
         lname: lastName
