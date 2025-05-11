@@ -44,7 +44,7 @@ export default function Queries({
         ,{
           id: 3,
           label: "Players Scored Against All Teams",
-          description: "Find players who have scored against every time in the league, including their own team",
+          description: "Find players who have scored against every team in the league, including their own team",
           tableInfo: TableInfo.PlayersScoredAgainstAllTeamsInfo
         },
         {
