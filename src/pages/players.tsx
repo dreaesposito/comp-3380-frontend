@@ -1,10 +1,3 @@
-///////////////////////////////////////
-// npm install recharts
-//
-// ///////////////////////////////////
-// import { title } from "@/components/primitives";
-import supabase from "../utils/supabase";
-
 import DefaultLayout from "@/layouts/default";
 import PlayerSeasonStats from "@/components/tables/playerSeasonStats";
 import PlayerStatsChart from "@/components/common/playerStatsChart";
@@ -19,20 +12,19 @@ CardBody,
 
 import SearchBar from "@/components/common/searchBar";
 import { Player } from "@/types/Player";
+import supabase from "../utils/supabase";
 
 export default function PlayerAnalysisPage() {
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [playerInfo, setPlayerInfo] = useState<any | null>(null);
 
   const handleSelect = async (player: Player) => {
-    // console.log("Selected player:", player);
     setSelectedPlayer(player)
 
     const { data, error } = await supabase.rpc("get_player_info", { pid: player.playerid});
     if (error) {
       console.error("Error fetching player information:", error);
     } else {
-      // console.log("fetched player info:", data);
       setPlayerInfo(data);
     }
   }
@@ -55,15 +47,13 @@ export default function PlayerAnalysisPage() {
 
   return (
     <DefaultLayout>
-      {/* <h1 className="text-center text-3xl font-extrabold mb-8">Stats by Season</h1> */}
-      <div className="w-3/4 mx-auto mb-4">
+      <div className="w-3/4 mx-auto mb-4" style={{ marginTop: selectedPlayer ? "0px" : "100px" }}>
         <h1 className="text-center text-4xl font-bold">Player Analysis</h1>
       </div>
 
       <div className="w-3/4 mx-auto mb-4">
         <div className="p-4">
           <SearchBar placeholder="Search players..." onSelect={handleSelect} /> 
-      
         </div>
       </div>
 
@@ -97,19 +87,17 @@ export default function PlayerAnalysisPage() {
             </CardBody>
           </Card>
           {/* </div> */}
-
           <div className="w-2/3 bg-default-50 rounded-xl p-6 shadow-md">
             <PlayerSeasonStats firstName={selectedPlayer.firstname} lastName={selectedPlayer.lastname} />
           </div>
         </div>
-        
         <div className="w-full bg-default-50 rounded-xl p-6 shadow-md mt-4">
           <h2 className="text-2xl font-bold mb-4 text-center">Player Comparison</h2>
           <PlayerStatsChart player={selectedPlayer} />
         </div>
       </div>
-
       )}
+
     </DefaultLayout>
   );
 }

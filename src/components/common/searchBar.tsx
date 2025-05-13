@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { Input } from "@heroui/react";
+import supabase from "../../utils/supabase";
+import { Player } from "@/types/Player";
 
 export const SearchIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -30,13 +33,6 @@ export const SearchIcon = (props: React.SVGProps<SVGSVGElement>) => {
   );
 };
 
-import { Input } from "@heroui/react";
-
-
-import supabase from "../../utils/supabase";
-
-import { Player } from "@/types/Player";
-
 interface SearchBarProps {
   placeholder?: string;
   onSelect: (player: Player) => Promise<void>;
@@ -46,7 +42,6 @@ const SearchBar = ({ placeholder = "Search...", onSelect}: SearchBarProps) => {
   const [query, setQuery] = useState("");
   const [allPlayers, setAllPlayers] = useState<Player[]>([]);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
-
 
   // Fetch all players once on mount
   useEffect(() => {
@@ -77,12 +72,10 @@ const SearchBar = ({ placeholder = "Search...", onSelect}: SearchBarProps) => {
     } else {
 
       if (((player.firstname).toLowerCase() + " " + (player.lastname).toLowerCase()).includes(query.toLowerCase()) && query != " "){
-
         matches = true
       }
     }
     return matches;
-    // return `${player.firstName} ${player.lastName}`.toLowerCase().includes(query.toLowerCase());
   });
 
   return (
@@ -100,36 +93,35 @@ const SearchBar = ({ placeholder = "Search...", onSelect}: SearchBarProps) => {
             variant="bordered"
             onValueChange={setQuery}
         />
-        {query.length > 0 && !(selectedPlayer && `${selectedPlayer.firstname} ${selectedPlayer.lastname}` === query) && (
-  <div className="absolute w-full bg-default-100 border border-default-200 rounded-md shadow-md mt-1 z-50 max-h-64 overflow-y-auto pointer-events-auto">
+      {query.length > 0 && !(selectedPlayer && `${selectedPlayer.firstname} ${selectedPlayer.lastname}` === query) && (
+        <div className="absolute w-full bg-default-100 border border-default-200 rounded-md shadow-md mt-1 z-50 max-h-64 overflow-y-auto pointer-events-auto">
 
-    {filteredPlayers.length > 0 ? (
-      filteredPlayers.map((player, index) => (
-        <div
-          key={index}
-          className="flex justify-between items-center px-4 py-2 hover:bg-default/60 cursor-pointer"
-          onClick={() => {
-            setQuery(`${player.firstname} ${player.lastname}`);
-            setSelectedPlayer(player);
-            // Optionally close dropdown here or keep it open
-            onSelect(player);
-          }}
-        >
-          <span>
-            {player.firstname} {player.lastname}
-          </span>
-          <span className="text-sm text-gray-400 ml-4">
-            {player.team}
-            {/* {player.team.slice(0, 3)} */}
-          </span>
+          {filteredPlayers.length > 0 ? (
+            filteredPlayers.map((player, index) => (
+              <div
+                key={index}
+                className="flex justify-between items-center px-4 py-2 hover:bg-default/60 cursor-pointer"
+                onClick={() => {
+                  setQuery(`${player.firstname} ${player.lastname}`);
+                  setSelectedPlayer(player);
+                  // Optionally close dropdown here or keep it open
+                  onSelect(player);
+                }}
+              >
+                <span>
+                  {player.firstname} {player.lastname}
+                </span>
+                <span className="text-sm text-gray-400 ml-4">
+                  {player.team}
+                  {/* {player.team.slice(0, 3)} */}
+                </span>
+              </div>
+            ))
+          ) : (
+            <div className="px-4 py-2 text-gray-500">No results found</div>
+          )}
         </div>
-      ))
-    ) : (
-      <div className="px-4 py-2 text-gray-500">No results found</div>
-    )}
-  </div>
-)}
-
+      )}
     </div>
   );
 };

@@ -14,10 +14,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-import { ChevronDownIcon } from "@/components/common/tableIcons.tsx";
-
-import SearchBar from "@/components/common/searchBar";
-
 import {
   Dropdown,
   DropdownItem,
@@ -25,8 +21,9 @@ import {
   DropdownTrigger,
 } from "@heroui/react";
 
+import { ChevronDownIcon } from "@/components/common/tableIcons.tsx";
+import SearchBar from "@/components/common/searchBar";
 import { Player } from "@/types/Player";
-
 import supabase from "@/utils/supabase";
 
 interface Props {
@@ -40,10 +37,6 @@ type PlayerStat = {
   numshotz: number;
   plusminuz: number;
 };
-
-
-
-
 
 const metrics = [
   { key: "numpenaltiez", label: "Penalties" },
@@ -63,12 +56,6 @@ export default function PlayerStatsChart({ player }: Props) {
 
   useEffect(() => {
     const fetchData = async () => {
-      // let rpcfunc = "";
-      // if (selectedMetric === "numpenalties")
-      //   rpcfunc = "get_player_stats_by_season";
-      // else if (selectedMetric === "numgoals") rpcfunc = "get_goals_per_season";
-      // else if (selectedMetric === "numshots") rpcfunc = "get_shots_per_season";
-
       setIsLoading(true);
       const { data, error } = await supabase.rpc("get_player_stats_by_season", {
         fname: player.firstname,
@@ -77,7 +64,6 @@ export default function PlayerStatsChart({ player }: Props) {
       if (error) {
         console.error("Error fetching player:", error);
       } else {
-       //  console.log(data)
         setplayerStats(data);
       }
       setIsLoading(false);
@@ -86,28 +72,7 @@ export default function PlayerStatsChart({ player }: Props) {
     fetchData();
   }, [player]);
 
-  // const combinedStats = useMemo(() => {
-  //   if (!comparePlayerStats.length) return playerStats;
-
-  //   console.log("Player: ", playerStats);
-  //   console.log("Compare Player:", comparePlayerStats);
-
-  //   // for metric in metrics{
-
-  //   // }
-
-  
-
-  // }, [playerStats, comparePlayerStats]);
-
-
-  
   const combinedStats = useMemo(() => {
-
-    // console.log("Player: ", playerStats);
-    // console.log("Compare Player:", comparePlayerStats);
-
-
     // Get all unique seasons from both player and comparePlayer stats
     const allSeasons = [
       ...new Set([
@@ -116,28 +81,18 @@ export default function PlayerStatsChart({ player }: Props) {
       ]),
     ];
 
-    // console.log("All season: ", allSeasons)
-
-    
-  
     // Combine stats for each season
     const result = allSeasons.map((season) => {
       // Find player and compare stats for the season or {} if not available
       const playerStat: any = playerStats.find((stat) => stat.season === season) || {};
       const compareStat: any = comparePlayerStats.find((stat) => stat.season === season) || {};
 
-     // console.log("Season: ", season)
-      // console.log("Player stat: ", playerStat)
-      // console.log("Compare Player stat: ", compareStat)
-  
       // Build an object for each metric
       const seasonStats = metrics.reduce<{ [key: string]: number }>((acc, { key }) => {
         acc[`${key}`] = playerStat[key] || 0; // Fallback to 0 if no stat for this season
         acc[`comparePlayer_${key}`] = compareStat[key] || 0; // Fallback to 0 if no stat for this season
         return acc;
       }, {});
-
-      // console.log("Combined stats: ", seasonStats);
       
       return {
         season,
@@ -145,8 +100,6 @@ export default function PlayerStatsChart({ player }: Props) {
       };
     });
 
-    // console.log("Result: ", result);
-  
     const sortedData = result.sort((a, b) => {
       const [aStartYear] = a.season.split('-').map(Number);
       const [bStartYear] = b.season.split('-').map(Number);
@@ -155,15 +108,35 @@ export default function PlayerStatsChart({ player }: Props) {
       return aStartYear - bStartYear || parseInt(a.season.split('-')[1]) - parseInt(b.season.split('-')[1]);
     });
 
-    // console.log("Sorted: ", sortedData);
-
     return sortedData;
   }, [playerStats, comparePlayerStats]);
-  
-  
-  const colour1 = "#3B82F6"; //"#2563EB"
-  const colour2 = "#FB923C"; //"#F97316"
 
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (!active || !payload || !payload.length) return null;
+  
+    return (
+      <div className="bg-white border border-gray-300 rounded p-2 shadow text-sm">
+        <p><strong>Season:</strong> {label}</p>
+        {payload.map((entry: any, index: number) => {
+          const isCompare = entry.dataKey.startsWith("comparePlayer_");
+          const name = isCompare
+            ? `${comparePlayer?.firstname} ${comparePlayer?.lastname}`
+            : `${player.firstname} ${player.lastname}`;
+          const metricLabel =
+            metrics.find((m) => m.key === selectedMetric)?.label || "";
+  
+          return (
+            <p key={index} style={{ color: entry.color }}>
+              {name} {metricLabel}: {entry.value}
+            </p>
+          );
+        })}
+      </div>
+    );
+  };
+  
+  const colour1 = "#3B82F6";
+  const colour2 = "#FB923C";
   const chartContent = useMemo(() => {
     const margin = { top: 30, right: 30, left: 30, bottom: 30 };
 
@@ -179,7 +152,6 @@ export default function PlayerStatsChart({ player }: Props) {
                     tick={{ fontSize: 14 }}
                   />);
             
-
     const yAxis = (<YAxis
                     label={{
                       value: `${metrics.find((metric) => metric.key === selectedMetric)?.label}`,
@@ -192,9 +164,6 @@ export default function PlayerStatsChart({ player }: Props) {
                     tick={{ fontSize: 14 }}
                   />);
 
-    
-
-
     if (chartType === "bar") {
       return (
         <BarChart
@@ -204,8 +173,7 @@ export default function PlayerStatsChart({ player }: Props) {
           <CartesianGrid strokeDasharray="3 3" />
           {xAxis}
           {yAxis}
-          
-          <Tooltip />
+          <Tooltip content={<CustomTooltip />} />
           <Bar dataKey={selectedMetric} fill={colour1} />
           {comparePlayer && (
             <Bar dataKey={`comparePlayer_${selectedMetric}`} fill={colour2}/>
@@ -221,7 +189,7 @@ export default function PlayerStatsChart({ player }: Props) {
           <CartesianGrid strokeDasharray="3 3" />
           {xAxis}
           {yAxis}
-          <Tooltip />
+          <Tooltip content={<CustomTooltip />} />
           <Line type="monotone" dataKey={selectedMetric} stroke={colour1}/>
           {comparePlayer && (
             <Line type="monotone" dataKey={`comparePlayer_${selectedMetric}`} stroke={colour2}/> 
@@ -260,7 +228,6 @@ export default function PlayerStatsChart({ player }: Props) {
   }, [player, comparePlayer]);
 
   const handleSelect = async (comparePlayer: Player) => {
-    // console.log("Player to compare:", comparePlayer);
     setComparePlayer(comparePlayer)
 
     const { data, error } = await supabase.rpc("get_player_stats_by_season", {
@@ -270,7 +237,6 @@ export default function PlayerStatsChart({ player }: Props) {
     if (error) {
       console.error("Error fetching player information:", error);
     } else {
-      // console.log("fetched player info:", data);
       setComparePlayerStats(data);
     }
   }
@@ -308,22 +274,11 @@ export default function PlayerStatsChart({ player }: Props) {
               ))}
             </DropdownMenu>
           </Dropdown>
-          {/* {metrics.map((metric) => (
-            <Button
-              key={metric.label}
-              variant={selectedMetric === metric.key ? "solid" : "bordered"}
-              onPress={() => setSelectedMetric(metric.key)}
-            >
-              {metric.label}
-            </Button>
-          ))} */}
         </div>
-        
         <div className="w-3/4 mx-auto m-4 p-4 flex flex-col items-center space-y-4">
           <p><strong>Player to Compare:</strong></p>
           <SearchBar placeholder="Search players..." onSelect={handleSelect} /> 
         </div>
-
         <div className="flex justify-center space-x-4 m-6">
           <span className="mr-1">Bar Chart</span>
           <Switch
@@ -340,7 +295,6 @@ export default function PlayerStatsChart({ player }: Props) {
         <div className="flex items-center justify-center space-x-4 mb-4">
           {ChartLegend}
         </div>
-
         {loading ? (
           <Spinner
             size="lg"
@@ -357,8 +311,6 @@ export default function PlayerStatsChart({ player }: Props) {
             {chartContent}
           </ResponsiveContainer>
         )}
-
-        
       </div>
     </div>
   );
